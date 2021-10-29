@@ -3,6 +3,8 @@ import Header from "../components/Header/Header";
 import WelcomePage from "../components/WelcomePage/WelcomePage";
 import ProfilePage from "../components/ProfilePage/ProfilePage";
 import YourRequestsPage from "../components/YourRequests/YourRequests";
+import ReviewRequest from "../components/ReviewRequest/ReviewRequest";
+import EditPage from "../components/EditPage/EditPage";
 
 const Routes = () => {
   return (
@@ -21,6 +23,15 @@ const Routes = () => {
         <Route exact path="/yourRequests">
           <Header />
           <YourRequestsPage />
+        </Route>
+
+        <Route exact path="/Request">
+          <Header />
+          <ReviewRequest />
+        </Route>
+        <Route exact path="/Editor">
+          <Header />
+          <EditPage />
         </Route>
       </Switch>
     </BrowserRouter>
