@@ -6,19 +6,19 @@ const Header = () => {
     <div className={styles.headerContainer}>
       <div className={styles.header}>
         <NavLink to="/" className={styles.styledNav}>
-          <h4 classname={styles.navli}>DashBoard</h4>
+          <span className={styles.navli}>DashBoard</span>
         </NavLink>
 
         <NavLink to="/" className={styles.styledNav}>
-          <h4 classname={styles.navli}>Profile</h4>
+          <span className={styles.navli}>Profile</span>
         </NavLink>
 
         <NavLink to="/" className={styles.styledNav}>
-          <h4 classname={styles.navli}>Request Review</h4>
+          <span className={styles.navli}>Request Review</span>
         </NavLink>
 
         <NavLink to="/" className={styles.styledNav}>
-          <h4 classname={styles.navli}>View Pending</h4>
+          <span className={styles.navli}>View Pending</span>
         </NavLink>
       </div>
     </div>

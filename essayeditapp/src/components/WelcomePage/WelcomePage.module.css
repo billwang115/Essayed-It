@@ -1,0 +1,14 @@
+#loginContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.loginRow {
+  display: flex;
+}
+
+.loginText {
+  font-weight: 500;
+  color: #000;
+  font-size: 16;
+}
