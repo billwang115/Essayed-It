@@ -13,7 +13,7 @@ const Header = () => {
           <span className={styles.navli}>Profile</span>
         </NavLink>
 
-        <NavLink to="/" className={styles.styledNav}>
+        <NavLink to="/Request" className={styles.styledNav}>
           <span className={styles.navli}>Request Review</span>
         </NavLink>
 
