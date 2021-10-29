@@ -14,7 +14,7 @@
   font-size: 20px;
   font-family: Arial;
   height: 85vh;
-
+  resize: none;
 }
 
 .SubmitButton{
@@ -41,7 +41,4 @@
 }
 .Annotation {
   margin-top: 150px;
-}
-textarea{
-  resize:none;
 }

@@ -1,5 +1,5 @@
 
-import './EditPage.css';
+import styles from './EditPage.module.css';
 const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
 
 Donec vulputate nulla id justo ultrices varius. Mauris mattis bibendum dolor, quis consequat libero venenatis vel. Maecenas at posuere enim. Etiam aliquam rutrum pretium. Phasellus vehicula commodo tortor vel ultrices. Donec vel venenatis metus. Cras vel congue eros, vel malesuada libero. Nam auctor, nibh et dapibus vehicula, nisl tortor rhoncus lectus, quis ornare ex lectus sit amet ante. Praesent sit amet augue quam. Morbi imperdiet diam eget pharetra viverra. Aliquam ac lacus est. Integer fermentum quis quam sed malesuada. Donec finibus ligula a vestibulum lobortis.
@@ -13,26 +13,26 @@ Morbi convallis neque sit amet ante tempor, quis lacinia arcu sagittis. In hac h
 function EditPage() {
   return (
     <div>
-    <div className = "Page">
+    <div className = {styles.Page} >
 
-      <div className = "EssayBox">
-        <textarea value={lorumIpsum} className = "EssayBox"/>
+      <div>
+        <textarea value={lorumIpsum} className = {styles.EssayBox} />
       </div>
 
-      <div className = "Edits">
-        <div className = "Annotations"> {/*Each of these annotations will be seperate component*/}
-         <div className = "Annotation">
-           <h3> <div className = "GreenBox"> </div>This is an example of one edit for the essay, will be marked green in the text</h3>
+      <div className = {styles.Edits} >
+        <div className = {styles.Annotations} > {/*Each of these annotations will be seperate component*/}
+         <div className = {styles.Annotation} >
+           <h3> <div className = {styles.GreenBox} > </div>This is an example of one edit for the essay, will be marked green in the text</h3>
            <button> Change </button> <button> Remove </button>
          </div>
 
-         <div className = "Annotation">
-           <h3> <div className = "RedBox"> </div>This is an example of another edit for the essay, will be marked red in the text</h3>
+         <div className = {styles.Annotation}>
+           <h3> <div className = {styles.RedBox}> </div>This is an example of another edit for the essay, will be marked red in the text</h3>
            <button> Change </button> <button> Remove </button>
          </div>
       </div>
 
-        <div ><button className = "SubmitButton">Submit Edits</button></div>
+        <div ><button className = {styles.SubmitButton}>Submit Edits</button></div>
       </div>
     </div>
     </div>
