@@ -9,7 +9,7 @@ const Header = () => {
           <span className={styles.navli}>DashBoard</span>
         </NavLink>
 
-        <NavLink to="/" className={styles.styledNav}>
+        <NavLink to="/profile" className={styles.styledNav}>
           <span className={styles.navli}>Profile</span>
         </NavLink>
 
@@ -17,8 +17,8 @@ const Header = () => {
           <span className={styles.navli}>Request Review</span>
         </NavLink>
 
-        <NavLink to="/" className={styles.styledNav}>
-          <span className={styles.navli}>View Pending</span>
+        <NavLink to="/yourRequests" className={styles.styledNav}>
+          <span className={styles.navli}>Your Requests</span>
         </NavLink>
       </div>
     </div>
