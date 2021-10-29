@@ -5,7 +5,13 @@ const WelcomePage = () => {
     <div>
       <div id={styles.loginContainer}>
         <div className={styles.loginRow}>
-          <span className={styles.loginText}>Login</span>
+          <span className={styles.loginText}>Log In</span>
+          <input
+            type="text"
+            name="username"
+            placeholder="username"
+            className={styles.field}
+          />
         </div>
       </div>
     </div>

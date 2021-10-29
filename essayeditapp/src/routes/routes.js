@@ -6,8 +6,8 @@ const Routes = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Header />
         <Route exact path="/">
+          <Header />
           <WelcomePage />
         </Route>
       </Switch>
