@@ -1,0 +1,47 @@
+.Page {
+  position:absolute;
+  display:grid;
+  grid-template-columns: 30vw 30vw;
+  grid-column-gap: 4%;
+  left:50%;
+  transform: translate(-50%, 5%);
+}
+
+.EssayBox {
+  width: 30vw;
+  border-width: thick;
+  outline-style: none;
+  font-size: 20px;
+  font-family: Arial;
+  height: 85vh;
+
+}
+
+.SubmitButton{
+  display:block;
+  margin-top: 5%;
+  width: 20vw;
+  height: 3vh;
+  font-size: 20px;
+  position: absolute;
+  bottom: 0;
+}
+
+.GreenBox{
+  width: 10px;
+  height: 50px;
+  background-color: green;
+  display:inline-block;
+}
+.RedBox{
+  width: 10px;
+  height: 50px;
+  background-color: red;
+  display:inline-block;
+}
+.Annotation {
+  margin-top: 150px;
+}
+textarea{
+  resize:none;
+}

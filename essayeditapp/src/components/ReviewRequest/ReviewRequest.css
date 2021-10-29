@@ -1,0 +1,102 @@
+.BoxLabel {
+  font-size: 1.2vw;
+  font-family: 'Red Hat Display', sans-serif;
+  font-weight: bold;
+  color: black;
+}
+
+.TitleBox {
+  width: 20vw;
+  font-size: 30px;
+  border-width: thick;
+  outline-style: none;
+  font-family: Arial;
+}
+
+.DescriptionBox {
+  width: 20vw;
+  font-size: 30px;
+  border-width: thick;
+  outline-style: none;
+  height: 500px;
+  font-family: Arial;
+}
+.Description {
+  margin-top: 2vh;
+}
+
+.Page {
+  position:absolute;
+  display:grid;
+  grid-template-columns: 30vw 23vw;
+
+  grid-column-gap: 4%;
+  left:50%;
+
+  transform: translate(-50%, 5%);
+
+}
+
+
+.EssayBox {
+  width: 30vw;
+  border-width: thick;
+  outline-style: none;
+  font-size: 20px;
+  font-family: Arial;
+  height: 85vh;
+
+}
+
+.ButtonLayout {
+  display:grid;
+  grid-template-columns: 5vw 5vw 5vw;
+  grid-column-gap: 4%;
+  margin: 0 auto;
+  width: 80%;
+}
+
+
+.PriceSelection{
+  margin-top: 5%;
+  width: 21vw;
+}
+.ReviewOptionLabel {
+  display: block;
+  font-size: 1.2vw;
+  font-family: 'Red Hat Display', sans-serif;
+  left: 50%;
+  text-align: center;
+}
+
+.SubmitButton{
+  display:block;
+  margin: 0 auto;
+  margin-top: 5%;
+  width: 20vw;
+  height: 3vh;
+  font-size: 20px;
+}
+
+textarea{
+  resize:none;
+}
+
+h4 {
+  margin-top: -4%;
+  text-align: center;
+}
+input[name="radiogroup1"] {
+  display: none;
+}
+input[name="radiogroup1"]+label {
+  color:white;
+  background-color: gray;
+  padding: 10px;
+  text-align: center;
+
+  font-family: 'Red Hat Display', sans-serif;
+}
+input[name="radiogroup1"]:checked+label {
+  background-color: black;
+}
