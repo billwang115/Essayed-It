@@ -1,6 +1,7 @@
 .welcomePageContainer {
   background-color: aliceblue;
   padding-top: 20px;
+  padding-bottom: 20px;
   min-height: 100vh;
 }
 
@@ -53,7 +54,7 @@
 
 .welcomePageContent {
   max-width: 1200px;
-  margin: auto;
+  margin: 28px auto;
   display: flex;
   column-gap: 100px;
 }
@@ -63,7 +64,7 @@
   min-width: 400px;
   border-radius: 25px;
   border: 2px solid #263238;
-  padding: 60px;
+  padding: 58px;
 }
 
 .essayText {
@@ -75,7 +76,7 @@
 .titleContainer {
   flex-basis: 45%;
   text-align: center;
-  padding-top: 18%;
+  padding-top: 15%;
 }
 
 .pageTitle {
@@ -96,7 +97,7 @@
   display: flex;
   justify-content: space-around;
   margin-top: 90px;
-  column-gap: 40px;
+  column-gap: 45px;
 }
 
 .feature {
@@ -106,8 +107,8 @@
 }
 
 .featureIcon {
-  width: 95px;
-  height: 95px;
+  width: 82px;
+  height: 82px;
   margin-bottom: 10px;
 }
 
