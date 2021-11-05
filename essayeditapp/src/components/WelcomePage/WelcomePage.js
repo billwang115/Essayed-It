@@ -1,4 +1,7 @@
 import styles from "./WelcomePage.module.css";
+import reviewIcon from "../../assets/reviewIcon.png";
+import requestIcon from "../../assets/requestIcon.png";
+import creditIcon from "../../assets/diamondIcon.png";
 
 const WelcomePage = () => {
   return (
@@ -89,7 +92,7 @@ const WelcomePage = () => {
             <br />
             In addition, teachers need to be aware that IT within the classroom
             is extremely flexible, but that they need to plan what purpose IT
-            serves in each lesson. The skills a child learns are theimportant
+            serves in each lesson. The skills a child learns are the important
             part of any lesson, and it is the same with technology. IT needs to
             be used and understood in all subjects in the same way as the
             ability to read is necessary for all subjects, and “must be used
@@ -102,7 +105,38 @@ const WelcomePage = () => {
         </div>
 
         <div className={styles.titleContainer}>
-          <div className={styles.pageTitle}>Essayed It</div>
+          <h1 className={styles.pageTitle}>Essayed It</h1>
+          <div className={styles.pageSubtitle}>
+            Join Essayed It and be a part of the largest essay peer-review
+            network in the world
+          </div>
+
+          <div className={styles.featuresContainer}>
+            <div className={styles.feature}>
+              <img
+                src={reviewIcon}
+                alt="review-Icon"
+                className={styles.featureIcon}
+              />
+              <div className={styles.featureText}>Review Essays</div>
+            </div>
+            <div className={styles.feature}>
+              <img
+                src={requestIcon}
+                alt="request-Icon"
+                className={styles.featureIcon}
+              />
+              <div className={styles.featureText}>Request Reviews</div>
+            </div>
+            <div className={styles.feature}>
+              <img
+                src={creditIcon}
+                alt="credit-Icon"
+                className={styles.featureIcon}
+              />
+              <div className={styles.featureText}>Earn Credits</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
