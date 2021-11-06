@@ -47,12 +47,9 @@
   top: 0;
 }
 
-.ColoredBox{
-  background-color: var(--color);
-}
 
 .highlightedText {
-  background-color: red;
+  background-color: var(--color);
 }
 .GreenBox{
   width: 10px;

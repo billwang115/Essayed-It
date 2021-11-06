@@ -25,6 +25,11 @@ function EditPage() {
   const [editsArray, setEditsArray] = useState([]);
   const [currentEditObject, setcurrentEditObject] = useState(null);
 
+  const [currentHighlightIndex, setCurrentHighlightIndex] = useState(0);
+
+  const highlightColors = ["#FDFD6A", "#97FD6A", "#6AB4FD", "#FF8BF1", "#FFDB7A", "#9D83FF", "#FF839F"];
+
+
   function checkRange(initalRange, newRange) {
     return;
   }
@@ -51,8 +56,11 @@ function EditPage() {
     if (sel.toString() !== "") {
       let previous_text = sel.toString();
       let range = sel.getRangeAt(0).cloneRange();
+      const color = highlightColors[currentHighlightIndex];
+
       const span = document.createElement("span");
       span.classList.add(styles.highlightedText);
+      span.style = "--color: " + color;
       range.surroundContents(span);
       sel.removeAllRanges();
       sel.addRange(range);
@@ -60,6 +68,7 @@ function EditPage() {
       const EditObject = {
         previous_text: previous_text,
         curr_range: range,
+        highlight_color: color
       };
       setcurrentEditObject(EditObject);
 
@@ -84,11 +93,16 @@ function EditPage() {
   }
 
   function saveEditCallback(commentText){
+
       const new_edit = {
         EditObject: currentEditObject,
         comment: commentText
       };
       editsArray.push(new_edit);
+      if (currentHighlightIndex == highlightColors.length - 1) {
+        setCurrentHighlightIndex(0);
+      } else {setCurrentHighlightIndex(currentHighlightIndex + 1)}
+
       setCurrentlyEditing(false);
       setaddButton(false);
       setToggleAddEdit(false);
