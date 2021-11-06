@@ -23,11 +23,20 @@
   text-decoration: none;
 }
 
-.navli {
+.styledNav:hover > .navli {
   color: white;
+}
+
+.currentNav > .navli {
+  font-weight: 700;
+  color: white;
+}
+
+.navli {
+  color: #dfdfdf;
   line-height: 28px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 20px;
-  letter-spacing: 0.18px;
+  letter-spacing: 0.2px;
   user-select: none;
 }

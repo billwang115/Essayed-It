@@ -1,41 +1,70 @@
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "../components/Header/Header";
 import WelcomePage from "../components/WelcomePage/WelcomePage";
 import ProfilePage from "../components/ProfilePage/ProfilePage";
 import YourRequestsPage from "../components/YourRequests/YourRequests";
 import ReviewRequest from "../components/ReviewRequest/ReviewRequest";
 import EditPage from "../components/EditPage/EditPage";
+import ReviewEssaysPage from "../components/ReviewEssaysPage/ReviewEssaysPage";
 
-const Routes = () => {
+const Router = () => {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route exact path="/">
-          {/*<Header />*/}
-          <WelcomePage />
-        </Route>
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
 
-        <Route exact path="/profile">
-          <Header />
-          <ProfilePage />
-        </Route>
+        <Route
+          path="reviewEssays"
+          element={
+            <>
+              <Header />
+              <ReviewEssaysPage />
+            </>
+          }
+        />
 
-        <Route exact path="/yourRequests">
-          <Header />
-          <YourRequestsPage />
-        </Route>
+        <Route
+          path="profile"
+          element={
+            <>
+              <Header />
+              <ProfilePage />
+            </>
+          }
+        />
 
-        <Route exact path="/Request">
-          <Header />
-          <ReviewRequest />
-        </Route>
-        <Route exact path="/Editor">
-          <Header />
-          <EditPage />
-        </Route>
-      </Switch>
+        <Route
+          path="yourRequests"
+          element={
+            <>
+              <Header />
+              <YourRequestsPage />
+            </>
+          }
+        />
+
+        <Route
+          path="Request"
+          element={
+            <>
+              <Header />
+              <ReviewRequest />
+            </>
+          }
+        />
+
+        <Route
+          path="Editor"
+          element={
+            <>
+              <Header />
+              <EditPage />
+            </>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 };
 
-export default Routes;
+export default Router;

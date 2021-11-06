@@ -5,19 +5,39 @@ const Header = () => {
   return (
     <div className={styles.headerContainer}>
       <div className={styles.header}>
-        <NavLink to="/" className={styles.styledNav}>
+        <NavLink
+          to="/reviewEssays"
+          className={({ isActive }) =>
+            `${styles.styledNav} ${isActive && styles.currentNav}`
+          }
+        >
           <span className={styles.navli}>DashBoard</span>
         </NavLink>
 
-        <NavLink to="/profile" className={styles.styledNav}>
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            `${styles.styledNav} ${isActive && styles.currentNav}`
+          }
+        >
           <span className={styles.navli}>Profile</span>
         </NavLink>
 
-        <NavLink to="/Request" className={styles.styledNav}>
+        <NavLink
+          to="/Request"
+          className={({ isActive }) =>
+            `${styles.styledNav} ${isActive && styles.currentNav}`
+          }
+        >
           <span className={styles.navli}>Request Review</span>
         </NavLink>
 
-        <NavLink to="/yourRequests" className={styles.styledNav}>
+        <NavLink
+          to="/yourRequests"
+          className={({ isActive }) =>
+            `${styles.styledNav} ${isActive && styles.currentNav}`
+          }
+        >
           <span className={styles.navli}>Your Requests</span>
         </NavLink>
       </div>
