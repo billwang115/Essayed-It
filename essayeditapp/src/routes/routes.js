@@ -6,12 +6,15 @@ import YourRequestsPage from "../components/YourRequests/YourRequests";
 import ReviewRequest from "../components/ReviewRequest/ReviewRequest";
 import EditPage from "../components/EditPage/EditPage";
 import ReviewEssaysPage from "../components/ReviewEssaysPage/ReviewEssaysPage";
+import RequestDetailPage from "../components/RequestDetailPage/RequestDetailPage";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
+
+        <Route path="/viewRequest/:id" element={<RequestDetailPage />} />
 
         <Route
           path="reviewEssays"
