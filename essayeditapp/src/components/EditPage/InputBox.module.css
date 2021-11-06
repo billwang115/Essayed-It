@@ -1,0 +1,39 @@
+.BoxContainer {
+  background-color: #263238;
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #263238;
+  width: 16vw;
+  height: 35vh;
+  position: absolute;
+  left: -17vw;
+
+}
+
+.Title {
+  color: white;
+  text-align: center;
+  font-size: 95%;
+}
+
+.textInput {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  height: 25vh;
+  max-height: 25vh;
+  font-size: 15px;
+  border-radius: 15px;
+  padding: 10px;
+  resize: none;
+}
+
+.buttonsContainer{
+  display:flex;
+  justify-content: center;
+  margin-top: 1vh;
+}
+.buttons {
+  margin-left: 5px;
+}
