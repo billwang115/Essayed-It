@@ -1,6 +1,8 @@
 import styles from './EditPage.module.css';
 import React, { useState } from 'react';
 import InputBox from "./InputBox";
+import EditsList from "./EditsList";
+
 
 const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
 
@@ -23,61 +25,80 @@ function EditPage() {
   const [editsArray, setEditsArray] = useState([]);
   const [currentEditObject, setcurrentEditObject] = useState(null);
 
-
-  function checkRange(initalRange, newRange){
+  function checkRange(initalRange, newRange) {
     return;
   }
 
-  function onClickInTextArea(){
+  function onClickInTextArea() {
     if (currentlyEditing) {
       return;
     }
     const sel = window.getSelection();
-    if (sel.toString() !== ""){
+    if (sel.toString() !== "") {
       setaddButton(true);
       return;
     }
-    if (addButton){
+    if (addButton) {
       setaddButton(false);
     }
   }
 
-
-
-  function addNewEdit(){
+  function addNewEdit() {
     setCurrentlyEditing(true);
     setToggleAddEdit(true);
 
     const sel = window.getSelection();
-    if (sel.toString() !== ""){
-
+    if (sel.toString() !== "") {
+      let previous_text = sel.toString();
       let range = sel.getRangeAt(0).cloneRange();
-
       const span = document.createElement("span");
       span.classList.add(styles.highlightedText);
       range.surroundContents(span);
       sel.removeAllRanges();
       sel.addRange(range);
-      setcurrentEditObject(range);
+
+      const EditObject = {
+        previous_text: previous_text,
+        curr_range: range,
+      };
+      setcurrentEditObject(EditObject);
 
     }
   }
-  function cancelEditCallback(){
+
+  function cancelEditCallback() {
     setCurrentlyEditing(false);
     setaddButton(false);
     setToggleAddEdit(false);
-    const children = currentEditObject.childNodes;
-    console.log(currentEditObject);
-    for ( const child in children ) {
-        child.parentNode = currentEditObject.parentNode;
-     }
+
+    //TODO: Get canceling and deletion of edits working correctly
+    currentEditObject.curr_range.detach();
+    const old_text = new Range();
+    old_text.selectNodeContents(document.createTextNode(currentEditObject.previous_text));
+    old_text.setStart(currentEditObject.curr_range.startContainer, currentEditObject.curr_range.startOffset);
+    old_text.setEnd(currentEditObject.curr_range.endContainer, currentEditObject.curr_range.endOffset);
+    console.log(old_text);
+
+    // currentEditObject.previous_range.setStart(currentEditObject.curr_range.startContainer, currentEditObject.curr_range.startOffset);
+    // currentEditObject.previous_range.setEnd(currentEditObject.curr_range.endContainer, currentEditObject.curr_range.endOffset);
+  }
+
+  function saveEditCallback(commentText){
+      const new_edit = {
+        EditObject: currentEditObject,
+        comment: commentText
+      };
+      editsArray.push(new_edit);
+      setCurrentlyEditing(false);
+      setaddButton(false);
+      setToggleAddEdit(false);
   }
 
   return (
     <div className={styles.Page}>
       <div className={styles.PageContents}>
         {addButton ?
-          (toggleAddEdit ? <InputBox cancelEditCallback = {cancelEditCallback}/> : <div className = {styles.Instructions}><h2>Highlight text to add a comment</h2> <button onClick = {addNewEdit}> Add Comment </button></div>)
+          (toggleAddEdit ? <InputBox cancelEditCallback = {cancelEditCallback} saveEditCallback = {saveEditCallback}/> : <div className = {styles.Instructions}><h2>Highlight text to add a comment</h2> <button onClick = {addNewEdit}> Add Comment </button></div>)
           : <div className = {styles.Instructions}><h2>
             Highlight text to add a comment</h2> </div>
            }
@@ -86,27 +107,12 @@ function EditPage() {
         </div>
 
         <div className={styles.Edits}>
-          <div className={styles.Annotations}> {/*Each of these annotations will be seperate component*/}
-            <div className={styles.Annotation}>
-              <h3>
-                <div className={styles.GreenBox}> </div>This is an example of one edit for the essay, will be marked green in the text
-              </h3>
-              <button> Change </button> <button> Remove </button>
-            </div>
-
-            <div className={styles.Annotation}>
-              <h3>
-                <div className={styles.RedBox}> </div>This is an example of another edit for the essay, will be marked red in the text
-              </h3>
-              <button> Change </button> <button> Remove </button>
-            </div>
-          </div>
-
-
-
-
+          <EditsList editsArray = {editsArray}/>
           <div><button className={styles.SubmitButton}>Submit Edits</button></div>
         </div>
+
+
+
       </div>
     </div>
 
