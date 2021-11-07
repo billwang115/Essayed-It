@@ -22,7 +22,7 @@ function InputBox(props) {
   return (
     <div className = {styles.BoxContainer}>
       <h3 className = {styles.Title}> {props.Header}</h3>
-      <textarea defaultValue = {props.defaultValue} placeholder = "Add comment here" id = "textarea" className = {styles.textInput} />
+      <textarea defaultValue = {props.defaultValue} id = "textarea" className = {styles.textInput} />
       <div className = {styles.buttonsContainer}>
         {props.newInputBool ? <button onClick = {() => saveEdit(document.getElementById("textarea").value)} className = {styles.buttons}> Add Comment </button>
         :<button onClick = {() => saveChangedEdit(document.getElementById("textarea").value)} className = {styles.buttons}> Change Comment </button>}

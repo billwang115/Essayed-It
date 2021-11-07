@@ -1,8 +1,8 @@
 import styles from './EditPage.module.css';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import InputBox from "./InputBox";
 import EditsList from "./EditsList";
-import { NavLink } from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
 
@@ -13,8 +13,6 @@ Sed ac dolor consectetur, condimentum elit a, vestibulum risus. Nunc ut diam id 
 Morbi lacinia arcu mi, facilisis gravida dolor faucibus sed. Mauris feugiat elit sed elit varius fermentum. In a mauris lectus. Donec tempus mollis diam, efficitur gravida lorem posuere non. Phasellus consectetur nec nulla sit amet sagittis. Nam mi erat, tincidunt a facilisis sit amet, dictum ut ipsum. Suspendisse posuere ligula a lectus gravida, convallis blandit neque dapibus. Nunc semper eget nibh vel lacinia. Aenean volutpat hendrerit lacus non pretium. Nulla eget tellus mauris. Aenean pulvinar nulla non turpis varius lobortis. In imperdiet ex eu massa tincidunt pretium.
 
 Morbi convallis neque sit amet ante tempor, quis lacinia arcu sagittis. In hac habitasse platea dictumst. Maecenas condimentum elit sed sem efficitur lacinia. Suspendisse sit amet imperdiet erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin nec ultrices dolor. Praesent eu neque fermentum, blandit massa a, blandit diam. Donec congue, neque in vestibulum tincidunt, nisi urna dapibus eros, vel aliquet enim nisl id risus.  \n\n\n   The ability to add annotations will be within the textarea itself rather than have a button on the side.`;
-
-
 
 function EditPage() {
   const [toggleAddEdit, setToggleAddEdit] = useState(false);
@@ -34,15 +32,22 @@ function EditPage() {
   const [newInputBool, setNewInputBool] = useState(true);
   const [changingEditObject, setChangingEditObject] = useState(null);
 
-  const highlightColors = ["#FDFD6A", "#97FD6A", "#6AB4FD", "#FF8BF1", "#FFDB7A", "#9D83FF", "#FF839F"];
-
+  const highlightColors = [
+    "#FDFD6A",
+    "#97FD6A",
+    "#6AB4FD",
+    "#FF8BF1",
+    "#FFDB7A",
+    "#9D83FF",
+    "#FF839F"
+  ];
 
   function checkRange(initialRange, newRange) {
     if (initialRange.compareBoundaryPoints(Range.START_TO_START) == initialRange.compareBoundaryPoints(Range.START_TO_END)) {
-        return true;
+      return true;
     }
     if (initialRange.compareBoundaryPoints(Range.END_TO_START) !== initialRange.compareBoundaryPoints(Range.END_TO_END)) {
-        return true;
+      return true;
     }
     return false;
   }
@@ -85,17 +90,17 @@ function EditPage() {
       const span = document.createElement("span");
       span.classList.add(styles.highlightedText);
       span.style = "--color: " + color;
-        try {
-          range.surroundContents(span);
-          sel.removeAllRanges();
-          sel.addRange(range); }
-        catch {
-          console.log("Error, overlap");
-          setCurrentlyEditing(false);
-          setaddButton(false);
-          setToggleAddEdit(false);
-          setDisplayErrorMessage(true);
-          return;
+      try {
+        range.surroundContents(span);
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } catch  {
+        console.log("Error, overlap");
+        setCurrentlyEditing(false);
+        setaddButton(false);
+        setToggleAddEdit(false);
+        setDisplayErrorMessage(true);
+        return;
       }
       const EditObject = {
         previous_text: previous_text,
@@ -117,29 +122,30 @@ function EditPage() {
     newRange.insertNode(document.createTextNode(currentEditObject.previous_text));
   }
 
-  function saveEditCallback(commentText){ //This is for newly created edits, below is for changed edits.
-      const new_edit = {
-        EditObject: currentEditObject,
-        comment: commentText
-      };
-      editsArray.push(new_edit);
+  function saveEditCallback(commentText) { //This is for newly created edits, below is for changed edits.
+    const new_edit = {
+      EditObject: currentEditObject,
+      comment: commentText
+    };
+    editsArray.push(new_edit);
 
+    if (currentHighlightIndex == highlightColors.length - 1) {
+      setCurrentHighlightIndex(0);
+    } else {
+      setCurrentHighlightIndex(currentHighlightIndex + 1)
+    }
 
-      if (currentHighlightIndex == highlightColors.length - 1) {
-        setCurrentHighlightIndex(0);
-      } else {setCurrentHighlightIndex(currentHighlightIndex + 1)}
-
-      setCurrentlyEditing(false);
-      setaddButton(false);
-      setToggleAddEdit(false);
+    setCurrentlyEditing(false);
+    setaddButton(false);
+    setToggleAddEdit(false);
   }
-  function saveChangedEditCallback(commentText){
+  function saveChangedEditCallback(commentText) {
     changingEditObject.comment = commentText;
     setCurrentlyEditing(false);
     setaddButton(false);
     setToggleAddEdit(false);
   }
-  function changeEdit(editObject){
+  function changeEdit(editObject) {
     setNewInputBool(false);
     setInputBoxDefault(editObject.comment);
     setInputBoxHeader("Make changes to comment");
@@ -149,14 +155,13 @@ function EditPage() {
     setChangingEditObject(editObject);
   }
 
-  function cancelChangedEditCallback(){
+  function cancelChangedEditCallback() {
     setCurrentlyEditing(false);
     setaddButton(false);
     setToggleAddEdit(false);
   }
 
-
-  function removeEdit(editObject, indexToRemove){
+  function removeEdit(editObject, indexToRemove) {
     const newArray = editsArray.filter((edit, index) => {
       return index !== indexToRemove;
     });
@@ -167,41 +172,55 @@ function EditPage() {
     const newRange = editObject.curr_range.cloneRange();
     newRange.insertNode(document.createTextNode(editObject.previous_text));
 
-
   }
 
-  return (
-    <div className={styles.Page}>
-      <div className={styles.PageContents}>
-        {addButton ?
-          (toggleAddEdit ? <InputBox Header = {inputBoxHeader} cancelEditCallback = {cancelEditCallback}
-             saveEditCallback = {saveEditCallback} defaultValue = {inputBoxDefault}
-             newInputBool = {newInputBool} saveChangedEditCallback = {saveChangedEditCallback}
-             cancelChangedEditCallback = {cancelChangedEditCallback} />
+  return (<div className={styles.Page}>
+    <div className={styles.PageContents}>
+      {
+        addButton
+          ? (
+            toggleAddEdit
+            ? <InputBox Header={inputBoxHeader} cancelEditCallback={cancelEditCallback} saveEditCallback={saveEditCallback} defaultValue={inputBoxDefault} newInputBool={newInputBool} saveChangedEditCallback={saveChangedEditCallback} cancelChangedEditCallback={cancelChangedEditCallback}/>
 
-             :<div className = {styles.Instructions}><h2>Highlight text to add a comment</h2>
-             <button onClick = {addNewEdit}> Add Comment </button></div>)
+            : <div className={styles.Instructions}>
+              <button className ={styles.AddCommentButton} onClick={addNewEdit}>
+                Add Comment
+              </button>
+            </div>)
 
-          : (displayErrorMessage ? <div className = {styles.Instructions}><h2>
-            Highlight text to add a comment</h2> <h2 className = {styles.ErrorMessage}>Selections cannot overlap</h2></div>
-            :<div className = {styles.Instructions}><h2>
-            Highlight text to add a comment</h2> </div>
-          )}
-        <div>
-          <div id = "textarea" className={styles.EssayBox} onMouseUp={onClickInTextArea} ><p> {lorumIpsum}</p> </div>
+          : (
+            displayErrorMessage
+            ? <div className={styles.Instructions}>
+              <h2 className={styles.InstructionsHeader}>
+                Highlight text to add a comment</h2>
+              <h2 className={styles.ErrorMessage}>Selections cannot overlap</h2>
+            </div>
+            : <div className={styles.Instructions}>
+              <h2 className={styles.InstructionsHeader}>
+                Highlight text to add a comment</h2>
+            </div>)
+      }
+      <div>
+        <div id="textarea" className={styles.EssayBox} onMouseUp={onClickInTextArea}>
+          <p>
+            {lorumIpsum}</p>
         </div>
-
-        <div className={styles.Edits}>
-          <EditsList editsArray = {editsArray} removeEditCallback = {removeEdit} changeEditCallback = {changeEdit}/>
-          <div><NavLink to="/reviewEssays"><button className={styles.SubmitButton}>Submit Edits</button></NavLink></div>
-        </div>
-
-
-
       </div>
-    </div>
 
-  );
+      <div className={styles.Edits}>
+        <EditsList editsArray={editsArray} removeEditCallback={removeEdit} changeEditCallback={changeEdit}/> {
+          editsArray.length > 0
+            ? <div>
+                <NavLink to="/reviewEssays">
+                  <button className={styles.SubmitButton}>Submit Edits</button>
+                </NavLink>
+              </div>
+            : null
+        }
+      </div>
+
+    </div>
+  </div>);
 }
 
 export default EditPage;
