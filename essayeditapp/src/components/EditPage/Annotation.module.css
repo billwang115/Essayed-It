@@ -1,0 +1,33 @@
+.Annotation{
+  padding-bottom: 1vh;
+  border-top: solid;
+
+}
+.Quoted {
+  background-color: var(--color);
+}
+
+.AnnotationButton{
+  flex-basis: 50%;
+  border: 1px solid #263238;
+  background-color: #abe5ff;
+  box-shadow: 0px 2px 2px #263238;
+  color: #263238;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 10px;
+  padding: 10px;
+  cursor: pointer;
+
+}
+.AnnotationButtonContainer {
+    width: 100%;
+    left: 63vw;
+    margin-top: -1vh;
+    margin-bottom: 1vh;
+}
+
+.Comment{
+  overflow-wrap: break-word;
+}

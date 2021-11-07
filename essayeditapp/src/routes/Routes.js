@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
 import Header from "../components/Header/Header";
 import WelcomePage from "../components/WelcomePage/WelcomePage";
 import ProfilePage from "../components/ProfilePage/ProfilePage";
@@ -19,50 +20,50 @@ const Router = () => {
         <Route
           path="reviewEssays"
           element={
-            <>
+            <PrivateRoute>
               <Header />
               <ReviewEssaysPage />
-            </>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="profile"
           element={
-            <>
+            <PrivateRoute>
               <Header />
               <ProfilePage />
-            </>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="yourRequests"
           element={
-            <>
+            <PrivateRoute>
               <Header />
               <YourRequestsPage />
-            </>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="Request"
           element={
-            <>
+            <PrivateRoute>
               <Header />
               <ReviewRequest />
-            </>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="Editor"
           element={
-            <>
+            <PrivateRoute>
               <Header />
               <EditPage />
-            </>
+            </PrivateRoute>
           }
         />
       </Routes>

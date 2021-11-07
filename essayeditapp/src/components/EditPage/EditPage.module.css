@@ -11,14 +11,12 @@
 .Page{
   background-color: aliceblue;
   height: calc(100vh - 70px);
-
 }
 .EssayBox {
   width: 30vw;
   border-width: thick;
   outline-style: none;
-  font-size: 20px;
-  font-family: Arial;
+  font-size: 19px;
   height: 85vh;
   resize: none;
   padding: 25px;
@@ -27,16 +25,31 @@
    white-space: pre-line;
   border-color: #263238;
   background-color: white;
-  overflow: scroll;
+  overflow: auto;
   overflow-x: hidden;
 }
+
 .Instructions{
   position: absolute;
   left: -16vw;
   width: 15vw;
   height: 35vh;
-
+  overflow-wrap: anywhere; 
 }
+
+.InstructionsHeader{
+  background-color:#abe5ff;
+  padding: 15px;
+  color: #263238;
+  border-radius: 15px;
+  border: 2px solid #263238;
+  background-color: LightCyan;
+  border-radius: 20px;
+}
+.ErrorMessage{
+  color: red;
+}
+
 .SubmitButton{
   display:block;
   margin-top: 5%;
@@ -45,14 +58,36 @@
   font-size: 20px;
   position: relative;
   top: 0;
+
+  border: 1px solid #263238;
+  background-color: lightgreen;
+  box-shadow: 0px 2px 2px #263238;
+  color: #263238;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-.ColoredBox{
-  background-color: var(--color);
+.AddCommentButton{
+  width: 13vw;
+  height: 5vw;
+  font-size: 20px;
+  background-color: #263238;
+  position: absolute;
+  left: 50%;
+  font-weight: 600;
+  transform: translatex(-50%);
+  border: 1px solid #263238;
+  background-color: #abe5ff;
+  box-shadow: 0px 2px 2px #263238;
+  border-radius: 20px;
+  cursor: pointer;
+
+
 }
 
 .highlightedText {
-  background-color: red;
+  background-color: var(--color);
 }
 .GreenBox{
   width: 10px;

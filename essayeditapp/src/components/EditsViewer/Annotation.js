@@ -17,12 +17,11 @@ function Annotation(props) {
 
   return (
     <div className={styles.Annotation}>
-      <h3 className = {styles.Comment}>{props.editItem.comment}</h3>
-
+      <h3>{props.editItem.comment}
+      </h3>
       <h6><span style = {{"--color": props.editItem.EditObject.highlight_color}} className = {styles.Quoted}> "{props.editItem.EditObject.previous_text}"</span></h6>
-        <div className = {styles.AnnotationButtonContainer}> <button className = {styles.AnnotationButton} onClick = {changeEdit}> Change </button> <button className = {styles.AnnotationButton} onClick = {removeText}> Remove </button></div>
 
-
+      <button onClick = {changeEdit}> Change </button> <button onClick = {removeText}> Remove </button>
     </div>
 
   );
