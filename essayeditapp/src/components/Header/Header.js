@@ -1,7 +1,18 @@
 import styles from "./Header.module.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const { setCurrentUser, setUserType } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setUserType("");
+    navigate("/");
+  };
+
   return (
     <div className={styles.headerContainer}>
       <div className={styles.header}>
@@ -40,6 +51,10 @@ const Header = () => {
         >
           <span className={styles.navli}>Your Requests</span>
         </NavLink>
+
+        <button className={styles.signOutButton} onClick={handleLogout}>
+          Sign out
+        </button>
       </div>
     </div>
   );
