@@ -5,12 +5,16 @@ import Annotation from "./Annotation";
 
 function EditsList(props) {
 
+  function removeEdit(index){
+
+    const editObject = props.editsArray[index].EditObject;
+    props.removeEditCallback(editObject, index);
+  }
 
 
   return (
     <div className = {styles.BoxContainer}>
-      {props.editsArray.map((edit, index) => <Annotation key={index} editItem = {edit} />)}
-      {console.log("here")}
+      {props.editsArray.map((edit, index) => <Annotation key={index} deleteEditCallback = {removeEdit} editItem = {edit} index = {index}/>)}
     </div>
   );
 }

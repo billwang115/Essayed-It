@@ -25,6 +25,8 @@ function EditPage() {
   const [editsArray, setEditsArray] = useState([]);
   const [currentEditObject, setcurrentEditObject] = useState(null);
 
+  const [lastSelectedText, setLastSelectedText] = useState(null);
+
   const [currentHighlightIndex, setCurrentHighlightIndex] = useState(0);
 
   const highlightColors = ["#FDFD6A", "#97FD6A", "#6AB4FD", "#FF8BF1", "#FFDB7A", "#9D83FF", "#FF839F"];
@@ -38,8 +40,11 @@ function EditPage() {
     if (currentlyEditing) {
       return;
     }
+    console.log(window.getSelection().baseNode.parentNode.parentNode.id);
+
     const sel = window.getSelection();
-    if (sel.toString() !== "") {
+    if (sel.toString() !== "" && sel.baseNode.parentNode.parentNode.id == "textarea") {
+      setLastSelectedText(sel.toString());
       setaddButton(true);
       return;
     }
@@ -53,6 +58,12 @@ function EditPage() {
     setToggleAddEdit(true);
 
     const sel = window.getSelection();
+    if (sel.toString() == "") {
+      setCurrentlyEditing(false);
+      setToggleAddEdit(false);
+      setaddButton(false); 
+      return;
+    }
     if (sel.toString() !== "") {
       let previous_text = sel.toString();
       let range = sel.getRangeAt(0).cloneRange();
@@ -80,16 +91,9 @@ function EditPage() {
     setaddButton(false);
     setToggleAddEdit(false);
 
-    //TODO: Get canceling and deletion of edits working correctly
-    currentEditObject.curr_range.detach();
-    const old_text = new Range();
-    old_text.selectNodeContents(document.createTextNode(currentEditObject.previous_text));
-    old_text.setStart(currentEditObject.curr_range.startContainer, currentEditObject.curr_range.startOffset);
-    old_text.setEnd(currentEditObject.curr_range.endContainer, currentEditObject.curr_range.endOffset);
-    console.log(old_text);
-
-    // currentEditObject.previous_range.setStart(currentEditObject.curr_range.startContainer, currentEditObject.curr_range.startOffset);
-    // currentEditObject.previous_range.setEnd(currentEditObject.curr_range.endContainer, currentEditObject.curr_range.endOffset);
+    currentEditObject.curr_range.deleteContents();
+    const newRange = currentEditObject.curr_range.cloneRange();
+    newRange.insertNode(document.createTextNode(currentEditObject.previous_text));
   }
 
   function saveEditCallback(commentText){
@@ -99,6 +103,8 @@ function EditPage() {
         comment: commentText
       };
       editsArray.push(new_edit);
+
+
       if (currentHighlightIndex == highlightColors.length - 1) {
         setCurrentHighlightIndex(0);
       } else {setCurrentHighlightIndex(currentHighlightIndex + 1)}
@@ -106,6 +112,20 @@ function EditPage() {
       setCurrentlyEditing(false);
       setaddButton(false);
       setToggleAddEdit(false);
+  }
+
+  function removeEdit(editObject, indexToRemove){
+    const newArray = editsArray.filter((edit, index) => {
+      return index !== indexToRemove;
+    });
+
+    setEditsArray(newArray);
+
+    editObject.curr_range.deleteContents();
+    const newRange = editObject.curr_range.cloneRange();
+    newRange.insertNode(document.createTextNode(editObject.previous_text));
+
+
   }
 
   return (
@@ -117,11 +137,11 @@ function EditPage() {
             Highlight text to add a comment</h2> </div>
            }
         <div>
-          <div className={styles.EssayBox} onMouseUp={onClickInTextArea} ><p> {lorumIpsum}</p> </div>
+          <div id = "textarea" className={styles.EssayBox} onMouseUp={onClickInTextArea} ><p> {lorumIpsum}</p> </div>
         </div>
 
         <div className={styles.Edits}>
-          <EditsList editsArray = {editsArray}/>
+          <EditsList editsArray = {editsArray} removeEditCallback = {removeEdit}/>
           <div><button className={styles.SubmitButton}>Submit Edits</button></div>
         </div>
 
