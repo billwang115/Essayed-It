@@ -1,6 +1,6 @@
 
 import styles from './ReviewRequest.module.css';
-
+import {NavLink} from "react-router-dom";
 
 const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
 
@@ -14,12 +14,12 @@ Morbi convallis neque sit amet ante tempor, quis lacinia arcu sagittis. In hac h
 
 function ReviewRequest() {
   return (
-    <div>
+    <div className = {styles.PageContainer}>
     <div className = {styles.Page}>
       <div className = {styles.EssayPaste}>
       <form>
        <div className = {styles.EssayPasteTitle}>
-         <label className = {styles.BoxLabel} for="Title">PASTE ESSAY</label><br/>
+           <div className = {styles.LabelContainer}><label className = {styles.BoxLabel} for="Title">PASTE ESSAY</label><br/></div>
        </div>
 
        <div className = {styles.Essay}>
@@ -31,19 +31,19 @@ function ReviewRequest() {
       <div className = {styles.EssayInfo}>
         <form>
           <div className = {styles.Title}>
-            <label className = {styles.BoxLabel} for="Title">TITLE</label><br/>
+              <div className = {styles.LabelContainer}><label className = {styles.BoxLabel} for="Title">TITLE</label><br/></div>
             <input type = "text" className = {styles.TitleBox} /><br/>
           </div>
 
-          <div className = "Description">
-            <label className = {styles.BoxLabel} for="Description">DESCRIPTION</label><br/>
+          <div className = {styles.Description}>
+            <div className = {styles.LabelContainer}><label className = {styles.BoxLabel} for="Description">DESCRIPTION</label><br/></div>
             <textarea type = "text" className = {styles.DescriptionBox} />
           </div>
         </form>
 
         <div className = {styles.PriceSelection} >
-          <label className = {styles.ReviewOptionLabel}  for="PriceSelection">REVIEW OPTIONS</label><br/>
-          <h4>Available Tokens: ⯁4 </h4>
+          <div className = {styles.LabelContainer}><label className = {styles.BoxLabel}  for="PriceSelection">REVIEW OPTIONS</label><br/></div>
+          <div className = {styles.AvalTokensContainer}><h4 >Available Tokens: ⯁4 </h4></div>
 
           <div className = {styles.ButtonLayout} >
             <input id = "regular" type="radio" name="radiogroup1"/>
@@ -53,8 +53,7 @@ function ReviewRequest() {
             <input id = "premium" type="radio" name="radiogroup1"/>
             <label for = "premium"> Premium <br/> ⯁5 </label>
           </div>
-
-          <button className = {styles.SubmitButton} >Submit for Review</button>
+            <NavLink className = {styles.NavLinkStyle} to="/reviewEssays"><button className = {styles.SubmitButton}> Submit for Review</button></NavLink>
         </div>
       </div>
     </div>

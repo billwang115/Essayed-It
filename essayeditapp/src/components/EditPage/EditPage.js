@@ -211,7 +211,7 @@ function EditPage() {
         <EditsList editsArray={editsArray} removeEditCallback={removeEdit} changeEditCallback={changeEdit}/> {
           editsArray.length > 0
             ? <div>
-                <NavLink to="/reviewEssays">
+                <NavLink className = {styles.NavLinkStyle} to="/reviewEssays">
                   <button className={styles.SubmitButton}>Submit Edits</button>
                 </NavLink>
               </div>

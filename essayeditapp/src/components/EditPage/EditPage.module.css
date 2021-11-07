@@ -34,7 +34,7 @@
   left: -16vw;
   width: 15vw;
   height: 35vh;
-  overflow-wrap: anywhere; 
+  overflow-wrap: anywhere;
 }
 
 .InstructionsHeader{
@@ -67,7 +67,9 @@
   font-weight: 600;
   cursor: pointer;
 }
-
+.NavLinkStyle{
+  text-decoration: none;
+}
 .AddCommentButton{
   width: 13vw;
   height: 5vw;
@@ -89,18 +91,7 @@
 .highlightedText {
   background-color: var(--color);
 }
-.GreenBox{
-  width: 10px;
-  height: 50px;
-  background-color: green;
-  display:inline-block;
-}
-.RedBox{
-  width: 10px;
-  height: 50px;
-  background-color: red;
-  display:inline-block;
-}
+
 .Annotation {
   margin-top: 150px;
 }
