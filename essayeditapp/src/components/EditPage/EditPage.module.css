@@ -37,6 +37,10 @@
   height: 35vh;
 
 }
+
+.ErrorMessage{
+  color: red;
+}
 .SubmitButton{
   display:block;
   margin-top: 5%;

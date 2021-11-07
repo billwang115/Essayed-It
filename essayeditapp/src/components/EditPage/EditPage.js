@@ -24,7 +24,7 @@ function EditPage() {
   const [currentlySelected, setCurrentlySelected] = useState("");
   const [editsArray, setEditsArray] = useState([]);
   const [currentEditObject, setcurrentEditObject] = useState(null);
-
+  const [displayErrorMessage, setDisplayErrorMessage] = useState(false);
   const [lastSelectedText, setLastSelectedText] = useState(null);
 
   const [currentHighlightIndex, setCurrentHighlightIndex] = useState(0);
@@ -37,15 +37,21 @@ function EditPage() {
   const highlightColors = ["#FDFD6A", "#97FD6A", "#6AB4FD", "#FF8BF1", "#FFDB7A", "#9D83FF", "#FF839F"];
 
 
-  function checkRange(initalRange, newRange) {
-    return;
+  function checkRange(initialRange, newRange) {
+    if (initialRange.compareBoundaryPoints(Range.START_TO_START) == initialRange.compareBoundaryPoints(Range.START_TO_END)) {
+        return true;
+    }
+    if (initialRange.compareBoundaryPoints(Range.END_TO_START) !== initialRange.compareBoundaryPoints(Range.END_TO_END)) {
+        return true;
+    }
+    return false;
   }
 
   function onClickInTextArea() {
     if (currentlyEditing) {
       return;
     }
-    console.log(window.getSelection().baseNode.parentNode.parentNode.id);
+    setDisplayErrorMessage(false);
 
     const sel = window.getSelection();
     if (sel.toString() !== "" && sel.baseNode.parentNode.parentNode.id == "textarea") {
@@ -79,10 +85,18 @@ function EditPage() {
       const span = document.createElement("span");
       span.classList.add(styles.highlightedText);
       span.style = "--color: " + color;
-      range.surroundContents(span);
-      sel.removeAllRanges();
-      sel.addRange(range);
-
+        try {
+          range.surroundContents(span);
+          sel.removeAllRanges();
+          sel.addRange(range); }
+        catch {
+          console.log("Error, overlap");
+          setCurrentlyEditing(false);
+          setaddButton(false);
+          setToggleAddEdit(false);
+          setDisplayErrorMessage(true);
+          return;
+      }
       const EditObject = {
         previous_text: previous_text,
         curr_range: range,
@@ -121,7 +135,6 @@ function EditPage() {
   }
   function saveChangedEditCallback(commentText){
     changingEditObject.comment = commentText;
-
     setCurrentlyEditing(false);
     setaddButton(false);
     setToggleAddEdit(false);
@@ -169,9 +182,11 @@ function EditPage() {
              :<div className = {styles.Instructions}><h2>Highlight text to add a comment</h2>
              <button onClick = {addNewEdit}> Add Comment </button></div>)
 
-          :<div className = {styles.Instructions}><h2>
+          : (displayErrorMessage ? <div className = {styles.Instructions}><h2>
+            Highlight text to add a comment</h2> <h2 className = {styles.ErrorMessage}>Selections cannot overlap</h2></div>
+            :<div className = {styles.Instructions}><h2>
             Highlight text to add a comment</h2> </div>
-           }
+          )}
         <div>
           <div id = "textarea" className={styles.EssayBox} onMouseUp={onClickInTextArea} ><p> {lorumIpsum}</p> </div>
         </div>
