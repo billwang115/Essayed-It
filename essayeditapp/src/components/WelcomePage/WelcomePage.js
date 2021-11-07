@@ -2,8 +2,45 @@ import styles from "./WelcomePage.module.css";
 import reviewIcon from "../../assets/reviewIcon.png";
 import requestIcon from "../../assets/requestIcon.png";
 import creditIcon from "../../assets/diamondIcon.png";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const WelcomePage = () => {
+  const [loginInfo, setLoginInfo] = useState({ username: "", password: "" });
+  const [registerInfo, setRegisterInfo] = useState({
+    username: "",
+    password: "",
+  });
+
+  const navigate = useNavigate();
+  const { setCurrentUser, setUserType } = useContext(AuthContext);
+
+  const handleSubmit = () => {
+    //the code below will be done on the server in phase 2
+    if (
+      (loginInfo.username === "user" && loginInfo.password === "user") ||
+      (registerInfo.username === "user" && registerInfo.password === "user")
+    ) {
+      setCurrentUser("user");
+      setUserType("user");
+      navigate("/reviewEssays");
+    } else if (
+      (loginInfo.username === "admin" && loginInfo.password === "admin") ||
+      (registerInfo.username === "admin" && registerInfo.password === "admin")
+    ) {
+      setCurrentUser("admin");
+      setUserType("admin");
+      navigate("/reviewEssays");
+    }
+  };
+
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
   return (
     <div className={styles.welcomePageContainer}>
       <div className={styles.loginContainer}>
@@ -14,13 +51,24 @@ const WelcomePage = () => {
               type="text"
               placeholder="username"
               className={styles.loginField}
+              value={loginInfo.username}
+              onInput={(e) =>
+                setLoginInfo({ ...loginInfo, username: e.target.value })
+              }
             />
             <input
               type="password"
               placeholder="password"
               className={styles.loginField}
+              value={loginInfo.password}
+              onInput={(e) =>
+                setLoginInfo({ ...loginInfo, password: e.target.value })
+              }
+              onKeyPress={handleEnter}
             />
-            <button className={styles.loginButton}>Login</button>
+            <button className={styles.loginButton} onClick={handleSubmit}>
+              Login
+            </button>
           </div>
         </div>
       </div>
@@ -33,13 +81,24 @@ const WelcomePage = () => {
               type="text"
               placeholder="username"
               className={styles.loginField}
+              value={registerInfo.username}
+              onInput={(e) =>
+                setRegisterInfo({ ...registerInfo, username: e.target.value })
+              }
             />
             <input
               type="password"
               placeholder="password"
               className={styles.loginField}
+              value={registerInfo.password}
+              onInput={(e) =>
+                setRegisterInfo({ ...registerInfo, password: e.target.value })
+              }
+              onKeyPress={handleEnter}
             />
-            <button className={styles.loginButton}>Register</button>
+            <button className={styles.loginButton} onClick={handleSubmit}>
+              Register
+            </button>
           </div>
         </div>
       </div>
