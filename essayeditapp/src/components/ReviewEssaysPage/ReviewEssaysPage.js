@@ -1,6 +1,8 @@
 import styles from "./ReviewEssaysPage.module.css";
 import creditIcon from "../../assets/credit_icon.svg";
+import searchIcon from "../../assets/searchIcon.png";
 import EssayRequest from "./EssayRequest";
+import { useState, useEffect } from "react";
 
 const numCredits = 15; //this value will be retrieved from a server call
 const currentUserRating = 4; //this value will be retrieved from a server call
@@ -86,13 +88,50 @@ const sampleAllTopicsEssays = [
 ];
 
 const ReviewEssaysPage = () => {
-  const cateredRequests = sampleCateredEssays.map((item) => (
+  const [cateredCopy, setCateredCopy] = useState([]);
+  const [allCopy, setAllCopy] = useState([]);
+
+  useEffect(() => {
+    setCateredCopy(sampleCateredEssays); //essays retrieved from the server
+    setAllCopy(sampleAllTopicsEssays);
+  }, []);
+
+  const cateredRequests = cateredCopy.map((item) => (
     <EssayRequest essay={item} />
   ));
 
-  const allRequests = sampleAllTopicsEssays.map((item) => (
-    <EssayRequest essay={item} />
-  ));
+  const allRequests = allCopy.map((item) => <EssayRequest essay={item} />);
+
+  const [searchInput, setSearchInput] = useState("");
+  const handleSubmit = () => {
+    //the code below will all be done on the server in phase 2
+    const formattedQuery = searchInput.toLowerCase();
+    const newCatered = sampleCateredEssays.filter(
+      (essay) =>
+        essay.title.toLowerCase().includes(formattedQuery) ||
+        essay.description.toLowerCase().includes(formattedQuery) ||
+        essay.author.toLowerCase().includes(formattedQuery) ||
+        essay.topic.toLowerCase().includes(formattedQuery)
+    );
+
+    const newAll = sampleAllTopicsEssays.filter(
+      (essay) =>
+        essay.title.toLowerCase().includes(formattedQuery) ||
+        essay.description.toLowerCase().includes(formattedQuery) ||
+        essay.author.toLowerCase().includes(formattedQuery) ||
+        essay.topic.toLowerCase().includes(formattedQuery)
+    );
+
+    // this code will be done locally
+    setCateredCopy(newCatered);
+    setAllCopy(newAll);
+  };
+
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleSubmit();
+    }
+  };
 
   return (
     <div className={styles.ReviewEssaysContainer}>
@@ -106,7 +145,17 @@ const ReviewEssaysPage = () => {
           type="text"
           placeholder="Search Essays"
           className={styles.searchBar}
+          value={searchInput}
+          onInput={(e) => setSearchInput(e.target.value)}
+          onKeyPress={handleEnter}
         />
+        <button className={styles.searchButton} onClick={handleSubmit}>
+          <img
+            src={searchIcon}
+            alt="search-Icon"
+            className={styles.searchIcon}
+          />
+        </button>
       </div>
 
       <div className={styles.cateredSection}>
