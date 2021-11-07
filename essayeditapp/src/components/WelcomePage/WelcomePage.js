@@ -24,14 +24,14 @@ const WelcomePage = () => {
     ) {
       setCurrentUser("user");
       setUserType("user");
-      navigate("/reviewEssays");
+      navigate("/reviewEssays", { replace: true }); //don't have to replace in phase 2 if authentication status is saved
     } else if (
       (loginInfo.username === "admin" && loginInfo.password === "admin") ||
       (registerInfo.username === "admin" && registerInfo.password === "admin")
     ) {
       setCurrentUser("admin");
       setUserType("admin");
-      navigate("/reviewEssays");
+      navigate("/reviewEssays", { replace: true });
     }
   };
 

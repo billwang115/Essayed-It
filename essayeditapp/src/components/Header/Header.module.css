@@ -40,3 +40,15 @@
   letter-spacing: 0.2px;
   user-select: none;
 }
+
+.signOutButton {
+  border-radius: 20px;
+  border: 1px solid #263238;
+  background-color: white;
+  color: #263238;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
