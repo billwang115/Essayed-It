@@ -2,7 +2,7 @@ import styles from './EditPage.module.css';
 import React, { useState } from 'react';
 import InputBox from "./InputBox";
 import EditsList from "./EditsList";
-
+import { NavLink } from "react-router-dom";
 
 const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
 
@@ -28,6 +28,11 @@ function EditPage() {
   const [lastSelectedText, setLastSelectedText] = useState(null);
 
   const [currentHighlightIndex, setCurrentHighlightIndex] = useState(0);
+
+  const [inputBoxHeader, setInputBoxHeader] = useState("Add new comment to highlighted text");
+  const [inputBoxDefault, setInputBoxDefault] = useState("");
+  const [newInputBool, setNewInputBool] = useState(true);
+  const [changingEditObject, setChangingEditObject] = useState(null);
 
   const highlightColors = ["#FDFD6A", "#97FD6A", "#6AB4FD", "#FF8BF1", "#FFDB7A", "#9D83FF", "#FF839F"];
 
@@ -56,12 +61,14 @@ function EditPage() {
   function addNewEdit() {
     setCurrentlyEditing(true);
     setToggleAddEdit(true);
-
+    setNewInputBool(true);
+    setInputBoxDefault("");
+    setInputBoxHeader("Add new comment to highlighted text");
     const sel = window.getSelection();
     if (sel.toString() == "") {
       setCurrentlyEditing(false);
       setToggleAddEdit(false);
-      setaddButton(false); 
+      setaddButton(false);
       return;
     }
     if (sel.toString() !== "") {
@@ -96,8 +103,7 @@ function EditPage() {
     newRange.insertNode(document.createTextNode(currentEditObject.previous_text));
   }
 
-  function saveEditCallback(commentText){
-
+  function saveEditCallback(commentText){ //This is for newly created edits, below is for changed edits.
       const new_edit = {
         EditObject: currentEditObject,
         comment: commentText
@@ -113,6 +119,29 @@ function EditPage() {
       setaddButton(false);
       setToggleAddEdit(false);
   }
+  function saveChangedEditCallback(commentText){
+    changingEditObject.comment = commentText;
+
+    setCurrentlyEditing(false);
+    setaddButton(false);
+    setToggleAddEdit(false);
+  }
+  function changeEdit(editObject){
+    setNewInputBool(false);
+    setInputBoxDefault(editObject.comment);
+    setInputBoxHeader("Make changes to comment");
+    setCurrentlyEditing(true);
+    setaddButton(true);
+    setToggleAddEdit(true);
+    setChangingEditObject(editObject);
+  }
+
+  function cancelChangedEditCallback(){
+    setCurrentlyEditing(false);
+    setaddButton(false);
+    setToggleAddEdit(false);
+  }
+
 
   function removeEdit(editObject, indexToRemove){
     const newArray = editsArray.filter((edit, index) => {
@@ -132,8 +161,15 @@ function EditPage() {
     <div className={styles.Page}>
       <div className={styles.PageContents}>
         {addButton ?
-          (toggleAddEdit ? <InputBox cancelEditCallback = {cancelEditCallback} saveEditCallback = {saveEditCallback}/> : <div className = {styles.Instructions}><h2>Highlight text to add a comment</h2> <button onClick = {addNewEdit}> Add Comment </button></div>)
-          : <div className = {styles.Instructions}><h2>
+          (toggleAddEdit ? <InputBox Header = {inputBoxHeader} cancelEditCallback = {cancelEditCallback}
+             saveEditCallback = {saveEditCallback} defaultValue = {inputBoxDefault}
+             newInputBool = {newInputBool} saveChangedEditCallback = {saveChangedEditCallback}
+             cancelChangedEditCallback = {cancelChangedEditCallback} />
+
+             :<div className = {styles.Instructions}><h2>Highlight text to add a comment</h2>
+             <button onClick = {addNewEdit}> Add Comment </button></div>)
+
+          :<div className = {styles.Instructions}><h2>
             Highlight text to add a comment</h2> </div>
            }
         <div>
@@ -141,8 +177,8 @@ function EditPage() {
         </div>
 
         <div className={styles.Edits}>
-          <EditsList editsArray = {editsArray} removeEditCallback = {removeEdit}/>
-          <div><button className={styles.SubmitButton}>Submit Edits</button></div>
+          <EditsList editsArray = {editsArray} removeEditCallback = {removeEdit} changeEditCallback = {changeEdit}/>
+          <div><NavLink to="/reviewEssays"><button className={styles.SubmitButton}>Submit Edits</button></NavLink></div>
         </div>
 
 
