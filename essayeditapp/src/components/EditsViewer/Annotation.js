@@ -21,7 +21,7 @@ function Annotation(props) {
       </h3>
       <h6><span style = {{"--color": props.editItem.EditObject.highlight_color}} className = {styles.Quoted}> "{props.editItem.EditObject.previous_text}"</span></h6>
 
-      <button onClick = {changeEdit}> Change </button> <button onClick = {removeText}> Remove </button>
+    
     </div>
 
   );

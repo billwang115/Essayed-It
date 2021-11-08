@@ -211,6 +211,20 @@
   font-weight: 600;
   font-size: 18px;
   line-height: 22px;
-  padding: 24px;
+  height: 80px;
+  cursor: pointer;
+}
+
+.removeEssayButton {
+  flex-basis: 50%;
+  border: 1px solid #263238;
+  background-color: IndianRed;
+  box-shadow: 0px 2px 2px #263238;
+  color: #263238;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+  height: 80px;
   cursor: pointer;
 }

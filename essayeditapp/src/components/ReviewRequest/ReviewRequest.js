@@ -1,7 +1,7 @@
 
 import styles from './ReviewRequest.module.css';
-
-
+import {NavLink} from "react-router-dom";
+import React, { useState } from 'react';
 const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
 
 Donec vulputate nulla id justo ultrices varius. Mauris mattis bibendum dolor, quis consequat libero venenatis vel. Maecenas at posuere enim. Etiam aliquam rutrum pretium. Phasellus vehicula commodo tortor vel ultrices. Donec vel venenatis metus. Cras vel congue eros, vel malesuada libero. Nam auctor, nibh et dapibus vehicula, nisl tortor rhoncus lectus, quis ornare ex lectus sit amet ante. Praesent sit amet augue quam. Morbi imperdiet diam eget pharetra viverra. Aliquam ac lacus est. Integer fermentum quis quam sed malesuada. Donec finibus ligula a vestibulum lobortis.
@@ -13,17 +13,42 @@ Morbi lacinia arcu mi, facilisis gravida dolor faucibus sed. Mauris feugiat elit
 Morbi convallis neque sit amet ante tempor, quis lacinia arcu sagittis. In hac habitasse platea dictumst. Maecenas condimentum elit sed sem efficitur lacinia. Suspendisse sit amet imperdiet erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin nec ultrices dolor. Praesent eu neque fermentum, blandit massa a, blandit diam. Donec congue, neque in vestibulum tincidunt, nisi urna dapibus eros, vel aliquet enim nisl id risus.`;
 
 function ReviewRequest() {
+
+  const [essayPasteInput, setEssayPasteInput] = useState(null);
+  const [titleInput, setTitleInput] = useState(null);
+  const [descriptionInput, setDescriptionInput] = useState(null);
+  const [priceInput, setpriceInput] = useState(null);
+  const [readyToSubmit, setReadyToSubmit] = useState(false);
+
+
+  function checkIfReady(){
+    console.log("checking");
+    if (essayPasteInput !== null && titleInput !== null && descriptionInput !== null && priceInput !== null){
+      setReadyToSubmit(true);
+    }
+    else {
+      setReadyToSubmit(false);
+    }
+  }
+
+  function onChangeEvent(eventValue, Inputfunction){
+    Inputfunction(eventValue);
+    checkIfReady();
+  }
+
+
   return (
-    <div>
+
+    <div className = {styles.PageContainer}>
     <div className = {styles.Page}>
       <div className = {styles.EssayPaste}>
       <form>
        <div className = {styles.EssayPasteTitle}>
-         <label className = {styles.BoxLabel} for="Title">PASTE ESSAY</label><br/>
+           <div className = {styles.LabelContainer}><label className = {styles.BoxLabel} for="Essay">PASTE ESSAY</label><br/></div>
        </div>
 
        <div className = {styles.Essay}>
-         <textarea placeholder= {lorumIpsum} className = {styles.EssayBox} />
+         <textarea value = {essayPasteInput} onClick= {e => onChangeEvent(e.target.value, setEssayPasteInput)} onInput = {e => onChangeEvent(e.target.value, setEssayPasteInput)} placeholder= {lorumIpsum} className = {styles.EssayBox} />
        </div>
      </form>
      </div>
@@ -31,30 +56,30 @@ function ReviewRequest() {
       <div className = {styles.EssayInfo}>
         <form>
           <div className = {styles.Title}>
-            <label className = {styles.BoxLabel} for="Title">TITLE</label><br/>
-            <input type = "text" className = {styles.TitleBox} /><br/>
+              <div className = {styles.LabelContainer}><label className = {styles.BoxLabel} for="Title">TITLE</label><br/></div>
+            <input value = {titleInput} onClick= {e => onChangeEvent(e.target.value, setTitleInput)} onInput = {e => onChangeEvent(e.target.value, setTitleInput)} type = "text" className = {styles.TitleBox} /><br/>
           </div>
 
-          <div className = "Description">
-            <label className = {styles.BoxLabel} for="Description">DESCRIPTION</label><br/>
-            <textarea type = "text" className = {styles.DescriptionBox} />
+          <div className = {styles.Description}>
+            <div className = {styles.LabelContainer}><label className = {styles.BoxLabel} for="Description">DESCRIPTION</label><br/></div>
+            <textarea  value = {descriptionInput} onClick= {e => onChangeEvent(e.target.value, setDescriptionInput)} onInput = {e => onChangeEvent(e.target.value, setDescriptionInput)} type = "text" className = {styles.DescriptionBox} />
           </div>
         </form>
 
         <div className = {styles.PriceSelection} >
-          <label className = {styles.ReviewOptionLabel}  for="PriceSelection">REVIEW OPTIONS</label><br/>
-          <h4>Available Tokens: ⯁4 </h4>
+          <div className = {styles.LabelContainer}><label className = {styles.BoxLabel}  for="PriceSelection">REVIEW OPTIONS</label><br/></div>
+          <div className = {styles.AvalTokensContainer}><h4 >Available Tokens: ⯁4 </h4></div>
 
           <div className = {styles.ButtonLayout} >
-            <input id = "regular" type="radio" name="radiogroup1"/>
+            <input value = {priceInput} onClick= {e => onChangeEvent(e.target.id, setpriceInput)} onInput = {e => onChangeEvent(e.target.id, setpriceInput)}  id = "regular" type="radio" name="radiogroup1"/>
             <label for = "regular">Regular <br/> ⯁1 </label>
-            <input id = "plus" type="radio" name="radiogroup1"/ >
+            <input value = {priceInput} onClick= {e => onChangeEvent(e.target.id, setpriceInput)} onInput = {e => onChangeEvent(e.target.id, setpriceInput)} id = "plus" type="radio" name="radiogroup1"/ >
             <label for = "plus">Plus <br/> ⯁2 </label>
-            <input id = "premium" type="radio" name="radiogroup1"/>
+            <input value = {priceInput} onClick= {e => onChangeEvent(e.target.id, setpriceInput)} onInput = {e => onChangeEvent(e.target.id, setpriceInput)}  id = "premium" type="radio" name="radiogroup1"/>
             <label for = "premium"> Premium <br/> ⯁5 </label>
           </div>
-
-          <button className = {styles.SubmitButton} >Submit for Review</button>
+            {readyToSubmit ? <NavLink className = {styles.NavLinkStyle} to="/reviewEssays"><button className = {styles.SubmitButton}> Submit for Review</button></NavLink>
+           :<button className = {styles.SubmitButton}> Fill out all required fields to submit</button>}
         </div>
       </div>
     </div>

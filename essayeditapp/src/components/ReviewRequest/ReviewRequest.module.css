@@ -1,51 +1,86 @@
 .BoxLabel {
   font-size: 1.2vw;
-  font-family: 'Red Hat Display', sans-serif;
   font-weight: bold;
   color: black;
+
 }
 
 .TitleBox {
-  width: 20vw;
+  width: 100%;
   font-size: 30px;
-  border-width: thick;
+  border-width: 3px;
   outline-style: none;
-  font-family: Arial;
+  text-align: center;
+  border-radius: 20px;
+  border-style: solid;
+   white-space: pre-line;
+  border-color: #263238;
+  padding: 2px;
+  padding-left: 10px;
 }
 
 .DescriptionBox {
-  width: 20vw;
+  width: 100%;
   font-size: 30px;
-  border-width: thick;
+  border-width: 3px;
   outline-style: none;
   height: 500px;
   font-family: Arial;
+  border-radius: 20px;
+  border-style: solid;
+   white-space: pre-line;
+  border-color: #263238;
+  padding: 2px;
+  padding-left: 10px;
+  padding-top: 4px;
 }
 .Description {
-  margin-top: 2vh;
+  margin-top: 5vh;
 }
-
+.LabelContainer{
+  text-align: center;
+}
 .Page {
   position:absolute;
   display:grid;
   grid-template-columns: 30vw 23vw;
-
+  margin-top: -2vh;
   grid-column-gap: 4%;
   left:50%;
 
   transform: translate(-50%, 5%);
 
 }
-
+.AvalTokensContainer {
+  text-align: center;
+  margin-top: -18px;
+}
+.PageContainer {
+  background-color: aliceblue;
+  height: calc(100vh - 70px);
+}
 
 .EssayBox {
   width: 30vw;
-  border-width: thick;
+  border-width: 3px;
   outline-style: none;
   font-size: 20px;
   font-family: Arial;
   height: 85vh;
   resize: none;
+
+
+  outline-style: none;
+  resize: none;
+  padding: 25px;
+  border-radius: 35px;
+  border-style: solid;
+   white-space: pre-line;
+  border-color: #263238;
+  background-color: white;
+  overflow: auto;
+  overflow-x: hidden;
+
 }
 
 .ButtonLayout {
@@ -56,7 +91,9 @@
   width: 80%;
 }
 
-
+.Description{
+  margin-top: 15px;
+}
 .PriceSelection{
   margin-top: 5%;
   width: 21vw;
@@ -64,8 +101,8 @@
 .ReviewOptionLabel {
   display: block;
   font-size: 1.2vw;
-  font-family: 'Red Hat Display', sans-serif;
   left: 50%;
+
   text-align: center;
 }
 
@@ -76,24 +113,39 @@
   width: 20vw;
   height: 3vh;
   font-size: 20px;
+
+  border: 1px solid #263238;
+  background-color: lightgreen;
+  box-shadow: 0px 2px 2px #263238;
+  color: #263238;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
 }
 
-
-h4 {
-  margin-top: -4%;
-  text-align: center;
+.EssayInfo {
+  width: 20vw;
 }
-input[name="radiogroup1"] {
+.NavLinkStyle{
+  text-decoration: none;
+}
+.ButtonLayout input[name="radiogroup1"] {
   display: none;
 }
-input[name="radiogroup1"]+label {
-  color:white;
-  background-color: gray;
+.ButtonLayout input[name="radiogroup1"]+label {
+  color: #263238;
+  background-color:LightCyan;
   padding: 10px;
   text-align: center;
+  border-radius: 15px;
+  border: 2px solid #263238;
 
+  border-radius: 20px;
   font-family: 'Red Hat Display', sans-serif;
 }
-input[name="radiogroup1"]:checked+label {
-  background-color: black;
+.ButtonLayout input[name="radiogroup1"]:checked+label {
+  background-color:#abe5ff;
+
+
 }
