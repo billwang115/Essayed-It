@@ -4,6 +4,7 @@ import searchIcon from "../../assets/searchIcon.png";
 import EssayRequest from "./EssayRequest";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
+import { useNavigate } from "react-router";
 
 const numCredits = 15; //this value will be retrieved from a server call
 const currentUserRating = 4; //this value will be retrieved from a server call
@@ -168,6 +169,8 @@ const ReviewEssaysPage = () => {
     }
   };
 
+  const Navigate = useNavigate();
+
   return (
     <div className={styles.ReviewEssaysContainer}>
       <div className={styles.totalCreditsContainer}>
@@ -199,7 +202,10 @@ const ReviewEssaysPage = () => {
           <span className={styles.ratingText}>
             Your Rating: {currentUserRating}
           </span>
-          <button className={styles.topicButton}>
+          <button
+            className={styles.topicButton}
+            onClick={() => Navigate("/profile")}
+          >
             Change Preferred Topics
           </button>
         </div>

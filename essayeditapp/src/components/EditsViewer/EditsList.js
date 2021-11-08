@@ -4,7 +4,6 @@ import Annotation from "./Annotation";
 
 
 function EditsList(props) {
-
   function removeEdit(index){
 
     const editObject = props.editsArray[index].EditObject;

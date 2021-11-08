@@ -15,6 +15,8 @@ const lorumIpsum = <div className = {styles.WhiteSpace}><p >     Mauris mattis b
 Morbi convallis neque sit amet ante tempor, <span className = {styles.BlueHighlight}>quis lacinia arcu sagittis. In hac habitasse platea dictumst. Maecenas condimentum elit sed sem efficitur lacinia. Suspendisse sit amet imperdiet erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin nec ultrices dolor. Praesent eu neque fermentum, blandit massa a, blandit diam. Donec congue, neque in vestibulum tincidunt, nisi urna dapibus eros, vel aliquet enim nisl id risus.  </span></p></div>;
 
 function ViewEdits() {
+  //This function will handle the server call to load in the correct essay into the essay editor, as well as the assosiated edits to be read
+  function getEdits(){}
 
   const hardCodeEditObject1 = {
     previous_text: "Sed ac dolor consectetur, condimentum elit a, vestibulum risus. Nunc ut diam id diam semper finibus quis in dui. Donec mi leo, feugiat vitae nibh vel, porta euismod sem. Aenean pellentesque arcu suscipit vehicula bibendum. Fusce feugiat id odio sed consequat. Phasellus sodales sem eget purus pharetra, eu dignissim nulla fringilla. Proin et felis pharetra, mollis dui sed, consectetur ex. Duis porttitor vulputate velit, id consectetur nunc. Suspendisse cursus accumsan condimentum. Curabitur id aliquam ipsum. Vestibulum rhoncus rutrum nisi, ut commodo sem blandit maximus.",
@@ -104,6 +106,7 @@ function ViewEdits() {
       <div className={styles.Edits}>
         <EditsList editsArray={editsArray}/>
           <h2 className = {styles.RatingHeader}>Leave a rating!</h2>
+          {/*The code here and in the CSS file to create stars has some code made by the author allenhe: https://codepen.io/hesguru/pen/BaybqXv*/}
           <div className= {styles.rate}>
           <input type="radio" id="star5" name="rate" value="5" />
           <label for="star5" title="text">5 stars</label>

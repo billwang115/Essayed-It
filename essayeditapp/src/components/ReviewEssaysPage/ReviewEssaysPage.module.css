@@ -198,7 +198,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: 15px;
+  column-gap: 24px;
 }
 
 .selectEssayButton {

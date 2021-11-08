@@ -4,6 +4,8 @@ import InputBox from "./InputBox";
 import EditsList from "./EditsList";
 import {NavLink} from "react-router-dom";
 
+
+//This Essay
 const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
 
 Donec vulputate nulla id justo ultrices varius. Mauris mattis bibendum dolor, quis consequat libero venenatis vel. Maecenas at posuere enim. Etiam aliquam rutrum pretium. Phasellus vehicula commodo tortor vel ultrices. Donec vel venenatis metus. Cras vel congue eros, vel malesuada libero. Nam auctor, nibh et dapibus vehicula, nisl tortor rhoncus lectus, quis ornare ex lectus sit amet ante. Praesent sit amet augue quam. Morbi imperdiet diam eget pharetra viverra. Aliquam ac lacus est. Integer fermentum quis quam sed malesuada. Donec finibus ligula a vestibulum lobortis.
@@ -41,6 +43,9 @@ function EditPage() {
     "#9D83FF",
     "#FF839F"
   ];
+
+  //This function will handle the server call to load in the correct essay into the essay editor
+  function getEssay(){}
 
   function checkRange(initialRange, newRange) {
     if (initialRange.compareBoundaryPoints(Range.START_TO_START) == initialRange.compareBoundaryPoints(Range.START_TO_END)) {
