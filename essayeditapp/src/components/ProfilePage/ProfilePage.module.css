@@ -42,7 +42,6 @@
   margin-top: 80px;
   width: 100%;
   text-align: center;
-  justify-content: center;
 }
 .header {
   font-size: 40px;
@@ -53,4 +52,6 @@
   margin: auto;
   font-size: 30px;
   letter-spacing: 1px;
+  width: 50%;
+  text-align: left;
 }
