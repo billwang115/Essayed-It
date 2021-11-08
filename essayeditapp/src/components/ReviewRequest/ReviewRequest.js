@@ -20,6 +20,8 @@ function ReviewRequest() {
   const [priceInput, setpriceInput] = useState(null);
   const [readyToSubmit, setReadyToSubmit] = useState(false);
 
+  //This function will handle the server call to make sure the right profile is loaded in to be prepared to send in the input information to the server
+  function publishResponse(){}
 
   function checkIfReady(){
     console.log("checking");
