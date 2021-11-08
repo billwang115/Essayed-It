@@ -1,12 +1,16 @@
 import styles from "./Request.module.css";
 import creditIcon from "../../assets/credit_icon.svg";
+import {useNavigate} from "react-router-dom";
+
 
 const Request = ({ essay }) => {
 
   const cancel = () => {}
+  const Navigate = useNavigate();
+
 
   return (
-    <div className={styles.essayRequestContainer}>
+    <div className={styles.essayRequestContainer}onClick = {()=>Navigate("/viewRequest/edit")}>
       <div className={styles.essayRequest}>
         <div className={styles.essayInfoContainer}>
           <div className={styles.essayTitle}>{essay.title}</div>
