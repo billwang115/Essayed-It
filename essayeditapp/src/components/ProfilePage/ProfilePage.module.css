@@ -22,3 +22,36 @@
   margin-right: 5px;
   margin-bottom: -15px;
 }
+
+#subjectsContainer {
+  clear: both;
+  margin-left: 40px;
+}
+.subject {
+  color: #263238;
+  margin: 5px;
+  border-radius: 200px;
+  padding: 10px 20px;
+  font-size: 24px;
+  background-color: aliceblue;
+  font-family: "lato";
+  border-color: #00bad0;
+  cursor: pointer;
+}
+#statsContainer {
+  margin-top: 80px;
+  width: 100%;
+  text-align: center;
+}
+.header {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+#statsTable {
+  margin: auto;
+  font-size: 30px;
+  letter-spacing: 1px;
+  width: 50%;
+  text-align: left;
+}
