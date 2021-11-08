@@ -2,15 +2,17 @@ import styles from "./ReviewEssaysPage.module.css";
 import creditIcon from "../../assets/credit_icon.svg";
 import searchIcon from "../../assets/searchIcon.png";
 import EssayRequest from "./EssayRequest";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const numCredits = 15; //this value will be retrieved from a server call
 const currentUserRating = 4; //this value will be retrieved from a server call
-const sampleCateredEssays = [
+let sampleCateredEssays = [
   // this information will be retrived from a server call. Only a select number of them will be given by the server (to reduce lag and since only a few are needed)
   // these essays are catered to the current users favourite topic
   // only the essays that have the number of credits, less than or equal to their current user rating will be given by the server
   {
+    id: "5d1ff7c6-f1f2-44f5-8640-b1265dedd257",
     title: "Facebook for the better or worse?",
     description:
       "Social Media is one aspect of technology that has taken the world by storm. Is one the of the most influential social networks, Facebook, hurting us? Should we be worried by the lack of privacy and face to face interaction?",
@@ -21,6 +23,7 @@ const sampleCateredEssays = [
     numCredits: 4,
   },
   {
+    id: "248c4525-c026-4cc2-bf24-b122c95a9a38",
     title: "Twitter as Political Platform",
     description:
       "With the amount of campaigning done on social networks nowadays, it has become a concern whether action should be taken against political misuse. There has been debates whether Twitter be responsible to take down accounts for violating human rights.",
@@ -31,6 +34,7 @@ const sampleCateredEssays = [
     numCredits: 4,
   },
   {
+    id: "97969781-8462-4fe6-8fd7-0c169d5e31f5",
     title: "Dangers of Facial Recognition",
     description:
       "Being an avid user of Social Media, I've had some scary experiences using their facial recognition technology. I describe all of the horrors of this new technology in my essay.",
@@ -42,10 +46,11 @@ const sampleCateredEssays = [
   },
 ];
 
-const sampleAllTopicsEssays = [
+let sampleAllTopicsEssays = [
   // this information will be retrived from a server call. Only a select number of them will be given by the server at a time
   // these essays are not catered to a certain topic
   {
+    id: "ec0602bd-6c6b-4ab9-a2ca-b2a65fef0232",
     title: "Theseus vs Hercules",
     description:
       "Hercules and Theseus are two of the most well known heroes in greek mythology. They've defeated mythical monsters and travelled to the ends of the earth. An analysis of the similiarities between these heroes are provided.",
@@ -56,6 +61,7 @@ const sampleAllTopicsEssays = [
     numCredits: 4,
   },
   {
+    id: "f758dbc0-bec5-44ee-8f0b-54fb95ef8125",
     title: "An analysis of Stomach Cancer",
     description:
       "From the various types of cancers, stomach cancer has been one of the most common ones people get diagnosed with. In this essay, an analysis of the effects of stomach cancer on the stomach and the inheritance of the cancer is made.",
@@ -66,6 +72,7 @@ const sampleAllTopicsEssays = [
     numCredits: 3,
   },
   {
+    id: "cd9de47d-c967-4e72-b706-2747d89616ab",
     title: "How government control can backfire",
     description:
       "In the pursuit of stability, these governments attempt to control how the citizens act and think, using unethical laws or propaganda.  However, the government’s enforcement of these ideas can instead further motivate the citizens to disregard the laws, backfiring on the government’s original intentions.",
@@ -76,6 +83,7 @@ const sampleAllTopicsEssays = [
     numCredits: 2,
   },
   {
+    id: "92a5e87e-9828-4e21-a4d3-10f267b531b4",
     title: "The power of learning through imitation",
     description:
       "During the mid 20th century, juvenile delinquency had become very prevalent in many big american cities. Many psychologists did experiments on this topic, which will be elaborated further in the essay.",
@@ -96,11 +104,38 @@ const ReviewEssaysPage = () => {
     setAllCopy(sampleAllTopicsEssays);
   }, []);
 
+  const { userType } = useContext(AuthContext);
+  const removeRequest = (requestID) => {
+    // a server call will be done first to remove the request from the server
+    //then dom will be manipulated
+    if (cateredCopy.some((request) => request.id === requestID)) {
+      const newArray = cateredCopy.filter(
+        (request) => request.id !== requestID
+      );
+      setCateredCopy(newArray);
+      sampleCateredEssays = newArray; //done in the server
+    } else {
+      const newArray = allCopy.filter((request) => request.id !== requestID);
+      setAllCopy(newArray);
+      sampleAllTopicsEssays = newArray;
+    }
+  };
+
   const cateredRequests = cateredCopy.map((item) => (
-    <EssayRequest essay={item} />
+    <EssayRequest
+      essay={item}
+      isAdmin={userType === "admin"}
+      removeRequest={removeRequest}
+    />
   ));
 
-  const allRequests = allCopy.map((item) => <EssayRequest essay={item} />);
+  const allRequests = allCopy.map((item) => (
+    <EssayRequest
+      essay={item}
+      isAdmin={userType === "admin"}
+      removeRequest={removeRequest}
+    />
+  ));
 
   const [searchInput, setSearchInput] = useState("");
   const handleSubmit = () => {

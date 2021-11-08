@@ -1,7 +1,7 @@
 import styles from "./ReviewEssaysPage.module.css";
 import creditIcon from "../../assets/credit_icon.svg";
 
-const EssayRequest = ({ essay }) => {
+const EssayRequest = ({ essay, isAdmin, removeRequest }) => {
   return (
     <div className={styles.essayRequestContainer}>
       <div className={styles.essayRequest}>
@@ -43,6 +43,14 @@ const EssayRequest = ({ essay }) => {
 
       <div className={styles.essayOptionsContainer}>
         <button className={styles.selectEssayButton}>Select Essay</button>
+        {isAdmin && (
+          <button
+            className={styles.removeEssayButton}
+            onClick={() => removeRequest(essay.id)}
+          >
+            Delete Request
+          </button>
+        )}
       </div>
     </div>
   );
