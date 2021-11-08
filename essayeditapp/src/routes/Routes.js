@@ -14,8 +14,17 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
-        <Route path="/viewRequest/:id" element={<ViewEdits />} />
-        {/*Delete this route*/}
+
+        <Route
+          path="/viewRequest/:id"
+          element={
+            <PrivateRoute>
+              <Header />
+              <ViewEdits />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="reviewEssays"
           element={
