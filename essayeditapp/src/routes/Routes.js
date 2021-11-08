@@ -16,7 +16,7 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<WelcomePage />} />
         <Route path="/viewRequest/:id" element={<ViewEdits />} />
-        <Route path="/viewRequest/:id" element={<RequestDetailPage />} />{" "}
+        <Route path="/viewRequest/:id" element={<RequestDetailPage />} />
         {/*Delete this route*/}
         <Route
           path="reviewEssays"
