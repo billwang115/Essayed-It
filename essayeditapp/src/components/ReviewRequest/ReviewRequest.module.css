@@ -8,7 +8,7 @@
 .TitleBox {
   width: 100%;
   font-size: 30px;
-  border-width: thick;
+  border-width: 3px;
   outline-style: none;
   text-align: center;
   border-radius: 20px;
@@ -22,7 +22,7 @@
 .DescriptionBox {
   width: 100%;
   font-size: 30px;
-  border-width: thick;
+  border-width: 3px;
   outline-style: none;
   height: 500px;
   font-family: Arial;
@@ -62,14 +62,14 @@
 
 .EssayBox {
   width: 30vw;
-  border-width: thick;
+  border-width: 3px;
   outline-style: none;
   font-size: 20px;
   font-family: Arial;
   height: 85vh;
   resize: none;
 
-  border-width: thick;
+
   outline-style: none;
   resize: none;
   padding: 25px;
@@ -140,7 +140,7 @@
   text-align: center;
   border-radius: 15px;
   border: 2px solid #263238;
-  
+
   border-radius: 20px;
   font-family: 'Red Hat Display', sans-serif;
 }
