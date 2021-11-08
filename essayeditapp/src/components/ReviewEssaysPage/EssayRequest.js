@@ -1,7 +1,10 @@
 import styles from "./ReviewEssaysPage.module.css";
 import creditIcon from "../../assets/credit_icon.svg";
+import { useNavigate } from "react-router-dom";
 
 const EssayRequest = ({ essay, isAdmin, removeRequest }) => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.essayRequestContainer}>
       <div className={styles.essayRequest}>
@@ -42,7 +45,12 @@ const EssayRequest = ({ essay, isAdmin, removeRequest }) => {
       </div>
 
       <div className={styles.essayOptionsContainer}>
-        <button className={styles.selectEssayButton}>Select Essay</button>
+        <button
+          className={styles.selectEssayButton}
+          onClick={() => navigate("/Editor")}
+        >
+          Select Essay
+        </button>
         {isAdmin && (
           <button
             className={styles.removeEssayButton}

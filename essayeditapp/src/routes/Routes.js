@@ -8,15 +8,16 @@ import ReviewRequest from "../components/ReviewRequest/ReviewRequest";
 import EditPage from "../components/EditPage/EditPage";
 import ReviewEssaysPage from "../components/ReviewEssaysPage/ReviewEssaysPage";
 import RequestDetailPage from "../components/RequestDetailPage/RequestDetailPage";
+import ViewEdits from "../../src/components/EditsViewer/ViewEdits";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<WelcomePage />} />
-
-        <Route path="/viewRequest/:id" element={<RequestDetailPage />} />
-
+        <Route path="/viewRequest/:id" element={<ViewEdits />} />
+        <Route path="/viewRequest/:id" element={<RequestDetailPage />} />{" "}
+        {/*Delete this route*/}
         <Route
           path="reviewEssays"
           element={
@@ -26,7 +27,6 @@ const Router = () => {
             </PrivateRoute>
           }
         />
-
         <Route
           path="profile"
           element={
@@ -36,7 +36,6 @@ const Router = () => {
             </PrivateRoute>
           }
         />
-
         <Route
           path="yourRequests"
           element={
@@ -46,7 +45,6 @@ const Router = () => {
             </PrivateRoute>
           }
         />
-
         <Route
           path="Request"
           element={
@@ -56,7 +54,6 @@ const Router = () => {
             </PrivateRoute>
           }
         />
-
         <Route
           path="Editor"
           element={
