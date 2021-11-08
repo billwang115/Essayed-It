@@ -106,6 +106,7 @@ function ViewEdits() {
       <div className={styles.Edits}>
         <EditsList editsArray={editsArray}/>
           <h2 className = {styles.RatingHeader}>Leave a rating!</h2>
+          //The code here and in the CSS file to create stars has some code made by the author allenhe: https://codepen.io/hesguru/pen/BaybqXv
           <div className= {styles.rate}>
           <input type="radio" id="star5" name="rate" value="5" />
           <label for="star5" title="text">5 stars</label>

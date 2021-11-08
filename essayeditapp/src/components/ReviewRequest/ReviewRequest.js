@@ -18,6 +18,9 @@ function ReviewRequest() {
   const [titleInput, setTitleInput] = useState(null);
   const [descriptionInput, setDescriptionInput] = useState(null);
   const [priceInput, setpriceInput] = useState(null);
+  const [topicInput, setTopicInput] = useState(null);
+  const [typeInput, setTypeInput] = useState(null);
+
   const [readyToSubmit, setReadyToSubmit] = useState(false);
 
   //This function will handle the server call to make sure the right profile is loaded in to be prepared to send in the input information to the server
@@ -25,7 +28,7 @@ function ReviewRequest() {
 
   function checkIfReady(){
     console.log("checking");
-    if (essayPasteInput !== null && titleInput !== null && descriptionInput !== null && priceInput !== null){
+    if (essayPasteInput !== null && titleInput !== null && descriptionInput !== null && priceInput !== null && typeInput !== null && topicInput !== null){
       setReadyToSubmit(true);
     }
     else {
@@ -65,6 +68,14 @@ function ReviewRequest() {
           <div className = {styles.Description}>
             <div className = {styles.LabelContainer}><label className = {styles.BoxLabel} for="Description">DESCRIPTION</label><br/></div>
             <textarea  value = {descriptionInput} onClick= {e => onChangeEvent(e.target.value, setDescriptionInput)} onInput = {e => onChangeEvent(e.target.value, setDescriptionInput)} type = "text" className = {styles.DescriptionBox} />
+          </div>
+          <div className = {styles.Topic}>
+            <div className = {styles.LabelContainer}><label className = {styles.BoxLabel} for="Topic">TOPIC</label><br/></div>
+            <input placeholder="Technology, Greek Mythology, etc" value = {topicInput} onClick= {e => onChangeEvent(e.target.value, setTopicInput)} onInput = {e => onChangeEvent(e.target.value, setTopicInput)} type = "text" className = {styles.TypeBox} />
+          </div>
+          <div className = {styles.Type}>
+            <div className = {styles.LabelContainer}><label className = {styles.BoxLabel} for="Topic">TYPE</label><br/></div>
+            <input placeholder="Argumentative, Expository, etc" value = {typeInput} onClick= {e => onChangeEvent(e.target.value, setTypeInput)} onInput = {e => onChangeEvent(e.target.value, setTypeInput)} type = "text" className = {styles.TypeBox} />
           </div>
         </form>
 
