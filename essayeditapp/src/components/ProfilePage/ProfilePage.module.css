@@ -2,6 +2,7 @@
   background-color: aliceblue;
   min-width: 100%;
   min-height: 100vh;
+  padding-bottom: 45px;
 }
 #username {
   font-size: 50px;
