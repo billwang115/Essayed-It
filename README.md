@@ -47,7 +47,7 @@ you can submit.
 
 DASHBOARD: An admin will have a delete request button next to every essay in order to remove them from being able to be edited from everyone.
 
-PROFILE: An admin profile page can ban a user and search by user. 
+PROFILE: An admin profile page can search by user, then can ban them, award them credits, and deduct credits. 
 
 Every other view will be the same as a user, as an admin can edit and request edits as any other user can. Admins have unlimited credits
 and have access to every essay, so their rating also isn't assigned the same as a user. 
