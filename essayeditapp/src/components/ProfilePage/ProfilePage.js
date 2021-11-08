@@ -1,8 +1,9 @@
 import DefaultProfileImage from "../../assets/default_profile.png";
 import styles from "./ProfilePage.module.css";
 import CreditIcon from "../../assets/credit_icon.svg";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import searchIcon from "../../assets/searchIcon.png";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const subjects = [
   "Culinary Arts",
@@ -15,12 +16,21 @@ const subjects = [
 ];
 
 const ProfilePage = () => {
+  const { userType } = useContext(AuthContext);
 
+  const ban = () => {}
   const submit = () => {};
   const handleSubmit = () => {};
   const handleEnter = () => {};
-  const [searchInput, setSearchInput] = useState("");
+  const award = () => {
+    setCredits(credits+1);
+  }
+  const deduct = () => {
+    setCredits(credits-1);
+  }
 
+  const [searchInput, setSearchInput] = useState("");
+  const [credits, setCredits] = useState(18);
 
   return (
     <div id={styles.root}>
@@ -31,17 +41,30 @@ const ProfilePage = () => {
       {/*Info & statistics below will be fetched from our backend.*/}
       <div id={styles.userInfoContainer}>
         <span id={styles.username}>Kailas_Moon2000</span>
+
+        {userType === "admin" && (<>
+        <button id={styles.banUserButton} onClick={ban}>
+          REMOVE USER
+        </button>
+
+        <button id={styles.banUserButton} onClick={award}>
+          Award credits
+        </button>
+
+        <button id={styles.banUserButton} onClick={deduct}>
+          Deduct credits
+        </button>
+        </>
+        )}
         <br />
         <img id={styles.creditIcon} src={CreditIcon} />
-        <span className={styles.subheading}>15 CREDITS</span>
+        <span className={styles.subheading}>{credits} CREDITS</span>
       </div>
 
       <div id={styles.subjectsContainer}>
-        {subjects.map((subject, i) => (
-          <button disabled className={styles.subject} key={i}>
-            {subject}
+          <button disabled className={styles.subject}>
+            Indigenous Studies
           </button>
-        ))}
       </div>
 
       {/*The values below will be fetched from our backend.*/}
@@ -86,28 +109,29 @@ const ProfilePage = () => {
         </button>
       </div>
 
-      <div id={styles.searchForUser}>
-      <span className={styles.header}>Search for a user</span>
+      {userType === "admin" && (
+        <div id={styles.searchForUser}>
+          <span className={styles.header}>Search for a user</span>
 
-      <div className={styles.searchBarContainer}>
-        <input
-          type="text"
-          placeholder="Search Essays"
-          className={styles.searchBar}
-          value={searchInput}
-          onInput={(e) => setSearchInput(e.target.value)}
-          onKeyPress={handleEnter}
-        />
-        <button className={styles.searchButton} onClick={handleSubmit}>
-          <img
-            src={searchIcon}
-            alt="search-Icon"
-            className={styles.searchIcon}
-          />
-        </button>
-      </div>
-      </div>
-
+          <div className={styles.searchBarContainer}>
+            <input
+              type="text"
+              placeholder="Search Users"
+              className={styles.searchBar}
+              value={searchInput}
+              onInput={(e) => setSearchInput(e.target.value)}
+              onKeyPress={handleEnter}
+            />
+            <button className={styles.searchButton} onClick={handleSubmit}>
+              <img
+                src={searchIcon}
+                alt="search-Icon"
+                className={styles.searchIcon}
+              />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
