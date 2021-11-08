@@ -51,7 +51,7 @@ const EssayPlaceholder =
 const YourRequests = () => {
   return (
     <div id={styles.container}>
-      Your Requests:
+      <span className={styles.header}> Your Requests: </span>
       {sampleEssayRequests.map((request, i) => (
         <Request key={i} essay={request} />
       ))}

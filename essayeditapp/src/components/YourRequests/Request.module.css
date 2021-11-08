@@ -215,4 +215,5 @@
   line-height: 22px;
   padding: 24px;
   cursor: pointer;
+  max-width: 10%;
 }

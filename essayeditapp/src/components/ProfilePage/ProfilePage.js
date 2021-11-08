@@ -1,6 +1,8 @@
 import DefaultProfileImage from "../../assets/default_profile.png";
 import styles from "./ProfilePage.module.css";
 import CreditIcon from "../../assets/credit_icon.svg";
+import { useState } from "react";
+import searchIcon from "../../assets/searchIcon.png";
 
 const subjects = [
   "Culinary Arts",
@@ -13,12 +15,20 @@ const subjects = [
 ];
 
 const ProfilePage = () => {
+
+  const submit = () => {};
+  const handleSubmit = () => {};
+  const handleEnter = () => {};
+  const [searchInput, setSearchInput] = useState("");
+
+
   return (
-    <>
+    <div id={styles.root}>
       <div id={styles.profileImageContainer}>
         <img id={styles.profileImage} src={DefaultProfileImage} />
       </div>
 
+      {/*Info & statistics below will be fetched from our backend.*/}
       <div id={styles.userInfoContainer}>
         <span id={styles.username}>Kailas_Moon2000</span>
         <br />
@@ -34,6 +44,7 @@ const ProfilePage = () => {
         ))}
       </div>
 
+      {/*The values below will be fetched from our backend.*/}
       <div id={styles.statsContainer}>
         <span className={styles.header}>STATISTICS</span>
         <table id={styles.statsTable}>
@@ -55,7 +66,49 @@ const ProfilePage = () => {
           </tr>
         </table>
       </div>
-    </>
+
+      <div id={styles.editProfileContainer}>
+        <span className={styles.header}>Edit Profile:</span>
+
+        <form id={styles.editForm}>
+          <label for="fname">Username:</label>
+          <input className={styles.field} type="text" id="fname" name="fname" />
+          <br />
+          <label for="lname">Profile Image URL:</label>
+          <input className={styles.field} type="text" id="lname" name="lname" />
+          <br />
+          <label for="lname">Topic of interest:</label>
+          <input className={styles.field} type="text" id="lname" name="lname" />
+        </form>
+
+        <button id={styles.submitButton} onClick={submit}>
+          Submit
+        </button>
+      </div>
+
+      <div id={styles.searchForUser}>
+      <span className={styles.header}>Search for a user</span>
+
+      <div className={styles.searchBarContainer}>
+        <input
+          type="text"
+          placeholder="Search Essays"
+          className={styles.searchBar}
+          value={searchInput}
+          onInput={(e) => setSearchInput(e.target.value)}
+          onKeyPress={handleEnter}
+        />
+        <button className={styles.searchButton} onClick={handleSubmit}>
+          <img
+            src={searchIcon}
+            alt="search-Icon"
+            className={styles.searchIcon}
+          />
+        </button>
+      </div>
+      </div>
+
+    </div>
   );
 };
 

@@ -2,8 +2,11 @@ import styles from "./Request.module.css";
 import creditIcon from "../../assets/credit_icon.svg";
 
 const Request = ({ essay }) => {
+
+  const cancel = () => {}
+
   return (
-    <div className={styles.essayRequestContainer} onClick={() => window.open("/viewRequest/" + essay.requestID, "_self")}>
+    <div className={styles.essayRequestContainer}>
       <div className={styles.essayRequest}>
         <div className={styles.essayInfoContainer}>
           <div className={styles.essayTitle}>{essay.title}</div>
@@ -42,7 +45,12 @@ const Request = ({ essay }) => {
         <div className={styles.essayDescriptionContainer}>
           <div className={styles.essayDescription}>{essay.description}</div>
         </div>
+
+
+
       </div>
+
+       {essay.status === "PENDING" && <button className={styles.selectEssayButton} onClick={cancel}>Cancel</button>}
 
     </div>
   );
