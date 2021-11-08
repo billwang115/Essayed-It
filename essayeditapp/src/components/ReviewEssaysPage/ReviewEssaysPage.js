@@ -175,7 +175,9 @@ const ReviewEssaysPage = () => {
     <div className={styles.ReviewEssaysContainer}>
       <div className={styles.totalCreditsContainer}>
         <img src={creditIcon} alt="credit-icon" className={styles.creditIcon} />
-        <span className={styles.creditText}>{numCredits} Credits</span>
+        <span className={styles.creditText}>
+          {userType !== "admin" ? numCredits : "Unlimited"} Credits
+        </span>
       </div>
 
       <div className={styles.searchBarContainer}>
@@ -200,7 +202,8 @@ const ReviewEssaysPage = () => {
         <h2 className={styles.sectionHeader}>Catered for You</h2>
         <div className={styles.ratingAndButton}>
           <span className={styles.ratingText}>
-            Your Rating: {currentUserRating}
+            Your Rating:{" "}
+            {userType !== "admin" ? currentUserRating : "No Rating"}
           </span>
           <button
             className={styles.topicButton}
