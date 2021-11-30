@@ -18,16 +18,35 @@ const subjects = [
 const ProfilePage = () => {
   const { userType } = useContext(AuthContext);
 
-  const ban = () => {}
-  const submit = () => {};
+  const [username, setUsername] = useState("Kailas_Moon2000");
+  const [usernameField, setUsernameField] = useState("");
+
+  const [topic, setTopic] = useState("Indigenous Studies");
+  const [topicField, setTopicField] = useState("");
+
+  const [profileImageURL, setProfileImageURL] = useState(DefaultProfileImage);
+  const [profileImageField, setProfileImageField] = useState("");
+
+  const ban = () => {};
+  const submit = () => {
+    if (usernameField) {
+      setUsername(usernameField);
+    }
+    if (topicField) {
+      setTopic(topicField);
+    }
+    if (profileImageField) {
+      setProfileImageURL(profileImageField);
+    }
+  };
   const handleSubmit = () => {};
   const handleEnter = () => {};
   const award = () => {
-    setCredits(credits+1);
-  }
+    setCredits(credits + 1);
+  };
   const deduct = () => {
-    setCredits(credits-1);
-  }
+    setCredits(credits - 1);
+  };
 
   const [searchInput, setSearchInput] = useState("");
   const [credits, setCredits] = useState(18);
@@ -35,26 +54,27 @@ const ProfilePage = () => {
   return (
     <div id={styles.root}>
       <div id={styles.profileImageContainer}>
-        <img id={styles.profileImage} src={DefaultProfileImage} />
+        <img id={styles.profileImage} src={profileImageURL} />
       </div>
 
       {/*Info & statistics below will be fetched from our backend.*/}
       <div id={styles.userInfoContainer}>
-        <span id={styles.username}>Kailas_Moon2000</span>
+        <span id={styles.username}>{username}</span>
 
-        {userType === "admin" && (<>
-        <button id={styles.banUserButton} onClick={ban}>
-          REMOVE USER
-        </button>
+        {userType === "admin" && (
+          <>
+            <button id={styles.banUserButton} onClick={ban}>
+              REMOVE USER
+            </button>
 
-        <button id={styles.banUserButton} onClick={award}>
-          Award credits
-        </button>
+            <button id={styles.banUserButton} onClick={award}>
+              Award credits
+            </button>
 
-        <button id={styles.banUserButton} onClick={deduct}>
-          Deduct credits
-        </button>
-        </>
+            <button id={styles.banUserButton} onClick={deduct}>
+              Deduct credits
+            </button>
+          </>
         )}
         <br />
         <img id={styles.creditIcon} src={CreditIcon} />
@@ -62,9 +82,9 @@ const ProfilePage = () => {
       </div>
 
       <div id={styles.subjectsContainer}>
-          <button disabled className={styles.subject}>
-            Indigenous Studies
-          </button>
+        <button disabled className={styles.subject}>
+          {topic}
+        </button>
       </div>
 
       {/*The values below will be fetched from our backend.*/}
@@ -87,6 +107,10 @@ const ProfilePage = () => {
             <td>Average cost per review</td>
             <td>8</td>
           </tr>
+          <tr>
+            <td>Average score from reviewers</td>
+            <td>4.6</td>
+          </tr>
         </table>
       </div>
 
@@ -95,13 +119,34 @@ const ProfilePage = () => {
 
         <form id={styles.editForm}>
           <label for="fname">Username:</label>
-          <input className={styles.field} type="text" id="fname" name="fname" />
+          <input
+            onChange={(e) => {
+              setUsernameField(e.target.value);
+            }}
+            value={usernameField}
+            className={styles.field}
+            type="text"
+          />
           <br />
           <label for="lname">Profile Image URL:</label>
-          <input className={styles.field} type="text" id="lname" name="lname" />
+          <input
+            onChange={(e) => {
+              setProfileImageField(e.target.value);
+            }}
+            value={profileImageField}
+            className={styles.field}
+            type="text"
+          />
           <br />
           <label for="lname">Topic of interest:</label>
-          <input className={styles.field} type="text" id="lname" name="lname" />
+          <input
+            onChange={(e) => {
+              setTopicField(e.target.value);
+            }}
+            value={topicField}
+            className={styles.field}
+            type="text"
+          />
         </form>
 
         <button id={styles.submitButton} onClick={submit}>

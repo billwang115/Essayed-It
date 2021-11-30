@@ -1,17 +1,19 @@
 import styles from "./Request.module.css";
 import creditIcon from "../../assets/credit_icon.svg";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-
-const Request = ({ essay }) => {
-
-  const cancel = () => {}
+const Request = ({ essay, index, cancelRequest }) => {
+  const cancel = () => {
+    cancelRequest(index);
+  };
   const Navigate = useNavigate();
 
-
   return (
-    <div className={styles.essayRequestContainer}onClick = {()=>Navigate("/viewRequest/edit")}>
-      <div className={styles.essayRequest}>
+    <div className={styles.essayRequestContainer}>
+      <div
+        className={styles.essayRequest}
+        onClick={() => Navigate("/viewRequest/edit")}
+      >
         <div className={styles.essayInfoContainer}>
           <div className={styles.essayTitle}>{essay.title}</div>
           <div className={styles.essayInfoRow}>
@@ -49,13 +51,13 @@ const Request = ({ essay }) => {
         <div className={styles.essayDescriptionContainer}>
           <div className={styles.essayDescription}>{essay.description}</div>
         </div>
-
-
-
       </div>
 
-       {essay.status === "PENDING" && <button className={styles.selectEssayButton} onClick={cancel}>Cancel</button>}
-
+      {essay.status === "PENDING" && (
+        <button className={styles.selectEssayButton} onClick={cancel}>
+          Cancel
+        </button>
+      )}
     </div>
   );
 };

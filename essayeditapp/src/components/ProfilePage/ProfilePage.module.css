@@ -5,7 +5,7 @@
   padding-bottom: 45px;
 }
 #username {
-  font-size: 50px;
+  font-size: 40px;
   font-weight: bold;
 }
 #profileImage {
@@ -38,7 +38,7 @@
   margin: 5px;
   border-radius: 200px;
   padding: 10px 20px;
-  font-size: 24px;
+  font-size: 20px;
   background-color: aliceblue;
   font-family: "lato";
   border-color: #00bad0;
@@ -50,13 +50,13 @@
   text-align: center;
 }
 .header {
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
 }
 
 #statsTable {
   margin: auto;
-  font-size: 30px;
+  font-size: 24px;
   letter-spacing: 1px;
   width: 50%;
   text-align: left;
@@ -68,7 +68,7 @@
 }
 #editForm {
   text-align: right;
-  font-size: 30px;
+  font-size: 24px;
   width: 50%;
   margin: auto;
   margin-top: 30px;
