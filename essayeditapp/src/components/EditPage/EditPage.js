@@ -3,18 +3,19 @@ import React, {useState} from 'react';
 import InputBox from "./InputBox";
 import EditsList from "./EditsList";
 import {NavLink} from "react-router-dom";
-
-
+import {useLocation} from "react-router-dom";
+import ENV from '../../config.js'
+const API_HOST = ENV.api_host
 //This Essay
-const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
-
-Donec vulputate nulla id justo ultrices varius. Mauris mattis bibendum dolor, quis consequat libero venenatis vel. Maecenas at posuere enim. Etiam aliquam rutrum pretium. Phasellus vehicula commodo tortor vel ultrices. Donec vel venenatis metus. Cras vel congue eros, vel malesuada libero. Nam auctor, nibh et dapibus vehicula, nisl tortor rhoncus lectus, quis ornare ex lectus sit amet ante. Praesent sit amet augue quam. Morbi imperdiet diam eget pharetra viverra. Aliquam ac lacus est. Integer fermentum quis quam sed malesuada. Donec finibus ligula a vestibulum lobortis.
-
-Sed ac dolor consectetur, condimentum elit a, vestibulum risus. Nunc ut diam id diam semper finibus quis in dui. Donec mi leo, feugiat vitae nibh vel, porta euismod sem. Aenean pellentesque arcu suscipit vehicula bibendum. Fusce feugiat id odio sed consequat. Phasellus sodales sem eget purus pharetra, eu dignissim nulla fringilla. Proin et felis pharetra, mollis dui sed, consectetur ex. Duis porttitor vulputate velit, id consectetur nunc. Suspendisse cursus accumsan condimentum. Curabitur id aliquam ipsum. Vestibulum rhoncus rutrum nisi, ut commodo sem blandit maximus.
-
-Morbi lacinia arcu mi, facilisis gravida dolor faucibus sed. Mauris feugiat elit sed elit varius fermentum. In a mauris lectus. Donec tempus mollis diam, efficitur gravida lorem posuere non. Phasellus consectetur nec nulla sit amet sagittis. Nam mi erat, tincidunt a facilisis sit amet, dictum ut ipsum. Suspendisse posuere ligula a lectus gravida, convallis blandit neque dapibus. Nunc semper eget nibh vel lacinia. Aenean volutpat hendrerit lacus non pretium. Nulla eget tellus mauris. Aenean pulvinar nulla non turpis varius lobortis. In imperdiet ex eu massa tincidunt pretium.
-
-Morbi convallis neque sit amet ante tempor, quis lacinia arcu sagittis. In hac habitasse platea dictumst. Maecenas condimentum elit sed sem efficitur lacinia. Suspendisse sit amet imperdiet erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin nec ultrices dolor. Praesent eu neque fermentum, blandit massa a, blandit diam. Donec congue, neque in vestibulum tincidunt, nisi urna dapibus eros, vel aliquet enim nisl id risus. `;
+// const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
+//
+// Donec vulputate nulla id justo ultrices varius. Mauris mattis bibendum dolor, quis consequat libero venenatis vel. Maecenas at posuere enim. Etiam aliquam rutrum pretium. Phasellus vehicula commodo tortor vel ultrices. Donec vel venenatis metus. Cras vel congue eros, vel malesuada libero. Nam auctor, nibh et dapibus vehicula, nisl tortor rhoncus lectus, quis ornare ex lectus sit amet ante. Praesent sit amet augue quam. Morbi imperdiet diam eget pharetra viverra. Aliquam ac lacus est. Integer fermentum quis quam sed malesuada. Donec finibus ligula a vestibulum lobortis.
+//
+// Sed ac dolor consectetur, condimentum elit a, vestibulum risus. Nunc ut diam id diam semper finibus quis in dui. Donec mi leo, feugiat vitae nibh vel, porta euismod sem. Aenean pellentesque arcu suscipit vehicula bibendum. Fusce feugiat id odio sed consequat. Phasellus sodales sem eget purus pharetra, eu dignissim nulla fringilla. Proin et felis pharetra, mollis dui sed, consectetur ex. Duis porttitor vulputate velit, id consectetur nunc. Suspendisse cursus accumsan condimentum. Curabitur id aliquam ipsum. Vestibulum rhoncus rutrum nisi, ut commodo sem blandit maximus.
+//
+// Morbi lacinia arcu mi, facilisis gravida dolor faucibus sed. Mauris feugiat elit sed elit varius fermentum. In a mauris lectus. Donec tempus mollis diam, efficitur gravida lorem posuere non. Phasellus consectetur nec nulla sit amet sagittis. Nam mi erat, tincidunt a facilisis sit amet, dictum ut ipsum. Suspendisse posuere ligula a lectus gravida, convallis blandit neque dapibus. Nunc semper eget nibh vel lacinia. Aenean volutpat hendrerit lacus non pretium. Nulla eget tellus mauris. Aenean pulvinar nulla non turpis varius lobortis. In imperdiet ex eu massa tincidunt pretium.
+//
+// Morbi convallis neque sit amet ante tempor, quis lacinia arcu sagittis. In hac habitasse platea dictumst. Maecenas condimentum elit sed sem efficitur lacinia. Suspendisse sit amet imperdiet erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin nec ultrices dolor. Praesent eu neque fermentum, blandit massa a, blandit diam. Donec congue, neque in vestibulum tincidunt, nisi urna dapibus eros, vel aliquet enim nisl id risus. `;
 
 function EditPage() {
   const [toggleAddEdit, setToggleAddEdit] = useState(false);
@@ -33,6 +34,7 @@ function EditPage() {
   const [inputBoxDefault, setInputBoxDefault] = useState("");
   const [newInputBool, setNewInputBool] = useState(true);
   const [changingEditObject, setChangingEditObject] = useState(null);
+  const [essayData, setEssayData] = useState(null);
 
   const highlightColors = [
     "#FDFD6A",
@@ -44,8 +46,30 @@ function EditPage() {
     "#FF839F"
   ];
 
+
+  const location = useLocation();
+  React.useEffect(() => getEssay(), []) //Will only run once, on the first render
   //This function will handle the server call to load in the correct essay into the essay editor
-  function getEssay(){}
+  function getEssay(){
+    const url = `${API_HOST}/api/essays/${location.state.essayID}`;
+    console.log(url)
+    fetch(url)
+        .then(res => {
+            if (res.status === 200) {
+                return res.json();
+            } else {
+                alert("Could not get Essay");
+            }
+        })
+        .then(json => {
+            setEssayData(json)
+
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+  }
 
   function checkRange(initialRange, newRange) {
     if (initialRange.compareBoundaryPoints(Range.START_TO_START) == initialRange.compareBoundaryPoints(Range.START_TO_END)) {
@@ -73,6 +97,40 @@ function EditPage() {
       setaddButton(false);
     }
   }
+
+
+  function saveDBChanges(){
+    console.log("Saving edits to database..")
+
+   const url = `${API_HOST}/api/essays/${location.state.essayID}`;
+
+   for (const edit of editsArray){
+     const json_set = {edit_comment: edit.comment, assosiated_text: edit.EditObject.previous_text}
+     const request = new Request(url, {
+         method: "post",
+         body: JSON.stringify(json_set),
+         headers: {
+             Accept: "application/json, text/plain, */*",
+             "Content-Type": "application/json"
+         }
+     });
+
+     fetch(request)
+         .then(function (res) {
+             if (res.status === 200) {
+                 console.log("Successfully added edits")
+                 }
+             else {
+                 console.log("Failed to add essay")
+                }
+         })
+         .catch(error => {
+             console.log(error);
+         });
+
+       }
+  }
+
 
   function addNewEdit() {
     setCurrentlyEditing(true);
@@ -208,7 +266,7 @@ function EditPage() {
       <div>
         <div id="textarea" className={styles.EssayBox} onMouseUp={onClickInTextArea}>
           <p>
-            {lorumIpsum}</p>
+            {essayData ? essayData.body : ""}</p>
         </div>
       </div>
 
@@ -216,7 +274,7 @@ function EditPage() {
         <EditsList editsArray={editsArray} removeEditCallback={removeEdit} changeEditCallback={changeEdit}/> {
           editsArray.length > 0
             ? <div>
-                <NavLink className = {styles.NavLinkStyle} to="/reviewEssays">
+                <NavLink onClick ={saveDBChanges} className = {styles.NavLinkStyle} to="/reviewEssays">
                   <button className={styles.SubmitButton}>Submit Edits</button>
                 </NavLink>
               </div>

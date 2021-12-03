@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const { ObjectID } = require('mongodb');
-const EditSchema = new mongoose.Schema({
 
+const EditSchema = new mongoose.Schema({
+    edit_comment: {type: String},
+    assosiated_text: {type: String}
 
 })
 
