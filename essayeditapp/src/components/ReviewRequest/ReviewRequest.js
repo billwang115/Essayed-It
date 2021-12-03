@@ -2,6 +2,11 @@
 import styles from './ReviewRequest.module.css';
 import {NavLink} from "react-router-dom";
 import React, { useState } from 'react';
+
+import ENV from '../../config.js'
+const API_HOST = ENV.api_host
+
+
 const lorumIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum elementum risus non ligula pharetra interdum. Mauris in accumsan ex. Aenean neque nisl, dignissim et felis sed, feugiat tristique augue. Maecenas nunc purus, pulvinar porta mi in, sodales tincidunt ligula. Duis auctor risus eget dictum cursus. Nullam vitae mattis lectus. Praesent porta, lorem vitae rutrum laoreet, lorem nunc fermentum orci, eget volutpat eros enim sed tellus. Aenean sit amet lacinia sem.
 
 Donec vulputate nulla id justo ultrices varius. Mauris mattis bibendum dolor, quis consequat libero venenatis vel. Maecenas at posuere enim. Etiam aliquam rutrum pretium. Phasellus vehicula commodo tortor vel ultrices. Donec vel venenatis metus. Cras vel congue eros, vel malesuada libero. Nam auctor, nibh et dapibus vehicula, nisl tortor rhoncus lectus, quis ornare ex lectus sit amet ante. Praesent sit amet augue quam. Morbi imperdiet diam eget pharetra viverra. Aliquam ac lacus est. Integer fermentum quis quam sed malesuada. Donec finibus ligula a vestibulum lobortis.
@@ -24,10 +29,41 @@ function ReviewRequest() {
   const [readyToSubmit, setReadyToSubmit] = useState(false);
 
   //This function will handle the server call to make sure the right profile is loaded in to be prepared to send in the input information to the server
-  function publishResponse(){}
+  function publishResponse(){
+    //TODO: check that user is authenticated before making post request
+    console.log("POSTing to database..")
+    console.log(`${API_HOST}/api/essays`)
+
+   const url = `${API_HOST}/api/essays`;
+   let price_int = 0;
+   priceInput == "regular" ? price_int = 1: priceInput == "plus" ? price_int = 3: price_int = 5;
+   const json_set = { title: titleInput, body: essayPasteInput,
+                         description: descriptionInput, price: price_int,
+                          topic: topicInput, type: typeInput}
+   const request = new Request(url, {
+       method: "post",
+       body: JSON.stringify(json_set),
+       headers: {
+           Accept: "application/json, text/plain, */*",
+           "Content-Type": "application/json"
+       }
+   });
+
+   fetch(request)
+       .then(function (res) {
+           if (res.status === 200) {
+               console.log("Successfully added essay")
+               }
+           else {
+               console.log("Failed to add essay")
+              }
+       })
+       .catch(error => {
+           console.log(error);
+       });
+  }
 
   function checkIfReady(){
-    console.log("checking");
     if (essayPasteInput !== null && titleInput !== null && descriptionInput !== null && priceInput !== null && typeInput !== null && topicInput !== null){
       setReadyToSubmit(true);
     }
@@ -87,11 +123,11 @@ function ReviewRequest() {
             <input value = {priceInput} onClick= {e => onChangeEvent(e.target.id, setpriceInput)} onInput = {e => onChangeEvent(e.target.id, setpriceInput)}  id = "regular" type="radio" name="radiogroup1"/>
             <label for = "regular">Regular <br/> ⯁1 </label>
             <input value = {priceInput} onClick= {e => onChangeEvent(e.target.id, setpriceInput)} onInput = {e => onChangeEvent(e.target.id, setpriceInput)} id = "plus" type="radio" name="radiogroup1"/ >
-            <label for = "plus">Plus <br/> ⯁2 </label>
+            <label for = "plus">Plus <br/> ⯁3 </label>
             <input value = {priceInput} onClick= {e => onChangeEvent(e.target.id, setpriceInput)} onInput = {e => onChangeEvent(e.target.id, setpriceInput)}  id = "premium" type="radio" name="radiogroup1"/>
             <label for = "premium"> Premium <br/> ⯁5 </label>
           </div>
-            {readyToSubmit ? <NavLink className = {styles.NavLinkStyle} to="/reviewEssays"><button className = {styles.SubmitButton}> Submit for Review</button></NavLink>
+            {readyToSubmit ? <NavLink onClick={publishResponse} className = {styles.NavLinkStyle} to="/reviewEssays"><button className = {styles.SubmitButton}>Submit for Review</button></NavLink>
            :<button className = {styles.SubmitButton}> Fill out all required fields to submit</button>}
         </div>
       </div>
