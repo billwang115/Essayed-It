@@ -36,7 +36,10 @@ UserSchema.pre("save", async function (next) {
   }
 });
 
-UserSchema.statics.findUserByCred = async function (username, password) {
+UserSchema.statics.findUserByUsernamePassword = async function (
+  username,
+  password
+) {
   const foundUser = await this.findOne({ username: username });
 
   if (!foundUser) {
