@@ -86,7 +86,8 @@ app.post("/users/login", async (req, res) => {
     const foundUser = await User.findUserByUsernamePassword(username, password);
     req.session.user = foundUser._id;
     req.session.username = foundUser.username;
-    res.send({ currentUser: foundUser.username });
+    req.session.isAdmin = foundUser.isAdmin;
+    res.send({ currentUser: foundUser.username, isAdmin: foundUser.isAdmin });
   } catch (error) {
     res.status(400).send();
   }
@@ -106,7 +107,10 @@ app.get("/users/logout", (req, res) => {
 // A route to check if a user is logged in on the session
 app.get("/users/check-session", (req, res) => {
   if (req.session.user) {
-    res.send({ currentUser: req.session.username });
+    res.send({
+      currentUser: req.session.username,
+      isAdmin: req.session.isAdmin,
+    });
   } else {
     res.status(401).send();
   }

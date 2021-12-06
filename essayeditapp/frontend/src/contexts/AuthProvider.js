@@ -18,6 +18,7 @@ const AuthProvider = ({ children }) => {
         const json = await res.json();
         if (json && json.currentUser) {
           setCurrentUser(json.currentUser);
+          setUserType(json.isAdmin ? "admin" : "user");
         }
       }
     } catch (error) {
@@ -40,6 +41,7 @@ const AuthProvider = ({ children }) => {
         const json = await res.json();
         if (json.currentUser !== undefined) {
           setCurrentUser(json.currentUser);
+          setUserType(json.isAdmin ? "admin" : "user");
         }
       }
     } catch (error) {
@@ -53,6 +55,7 @@ const AuthProvider = ({ children }) => {
     try {
       const res = await fetch(url);
       setCurrentUser(null);
+      setUserType("");
     } catch (error) {
       console.log(error);
     }
@@ -74,6 +77,7 @@ const AuthProvider = ({ children }) => {
         const json = await res.json();
         if (json !== undefined) {
           setCurrentUser(json);
+          setUserType(json.isAdmin ? "admin" : "user");
         }
       }
     } catch (error) {
@@ -90,15 +94,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{
-        currentUser,
-        setCurrentUser,
-        userType,
-        setUserType,
-        login,
-        logout,
-        register,
-      }}
+      value={{ currentUser, userType, login, logout, register }}
     >
       {!loading && children}
     </AuthContext.Provider>

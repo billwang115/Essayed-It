@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: 4,
   },
+  isAdmin: Boolean,
 });
 
 UserSchema.pre("save", async function (next) {
@@ -30,6 +31,13 @@ UserSchema.pre("save", async function (next) {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(this.password, salt);
     this.password = hash;
+    if (this.username === "admin") {
+      //temporary way of adding admin
+      this.isAdmin = true;
+    } else {
+      this.isAdmin = false;
+    }
+
     next();
   } else {
     next();

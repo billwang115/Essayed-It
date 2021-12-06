@@ -14,18 +14,16 @@ const WelcomePage = () => {
   });
 
   const navigate = useNavigate();
-  const { setUserType, login, register } = useContext(AuthContext);
+  const { login, register } = useContext(AuthContext);
 
   const handleLogin = async () => {
     await login(loginInfo);
-    navigate("/reviewEssays", { replace: true });
-    setUserType("user");
+    navigate("/reviewEssays");
   };
 
   const handleRegister = async () => {
     await register(registerInfo);
-    navigate("/reviewEssays", { replace: true });
-    setUserType("user");
+    navigate("/reviewEssays");
   };
 
   const handleEnter = (e, inputType) => {

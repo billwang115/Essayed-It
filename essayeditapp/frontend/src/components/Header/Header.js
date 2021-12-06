@@ -5,11 +5,10 @@ import { AuthContext } from "../../contexts/AuthProvider";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { setCurrentUser, setUserType } = useContext(AuthContext);
+  const { logout } = useContext(AuthContext);
 
-  const handleLogout = () => {
-    setCurrentUser(null);
-    setUserType("");
+  const handleLogout = async () => {
+    await logout();
     navigate("/");
   };
 
