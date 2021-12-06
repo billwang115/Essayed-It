@@ -20,6 +20,7 @@ const { ObjectId } = require("mongodb");
 const { mongoose } = require("./db/mongoose");
 const { Essay } = require("./models/essay");
 const { User } = require("./models/user");
+const { Member } = require("./models/member");
 
 //manage user sessions
 const session = require("express-session");
@@ -122,10 +123,17 @@ app.post("/api/users", mongoChecker, async (req, res) => {
   const user = new User({
     username: req.body.username,
     password: req.body.password,
+    isAdmin: false,
   });
 
   try {
     const newUser = await user.save();
+    const member = new Member({
+      userID: newUser._id,
+      essays: [],
+      reviews: [],
+    });
+    await member.save();
     res.send(newUser);
   } catch (error) {
     if (isMongoError(error)) {
