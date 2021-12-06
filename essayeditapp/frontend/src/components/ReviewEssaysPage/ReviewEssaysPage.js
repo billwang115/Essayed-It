@@ -125,6 +125,7 @@ const ReviewEssaysPage = () => {
   const cateredRequests = cateredCopy.map((item) => (
     <EssayRequest
       essay={item}
+      key={item.id}
       isAdmin={userType === "admin"}
       removeRequest={removeRequest}
     />
@@ -133,6 +134,7 @@ const ReviewEssaysPage = () => {
   const allRequests = allCopy.map((item) => (
     <EssayRequest
       essay={item}
+      key={item.id}
       isAdmin={userType === "admin"}
       removeRequest={removeRequest}
     />

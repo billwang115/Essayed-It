@@ -70,6 +70,9 @@ const Router = () => {
             </PrivateRoute>
           }
         />
+
+        {/* 404 if URL isn't expected. */}
+        <Route path="*" element={<div>404 Not found</div>} />
       </Routes>
     </BrowserRouter>
   );

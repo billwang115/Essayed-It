@@ -46,7 +46,7 @@ UserSchema.statics.findUserByUsernamePassword = async function (
     return Promise.reject("no user found");
   }
 
-  const isMatch = await bcrypt.compare(password, this.password);
+  const isMatch = await bcrypt.compare(password, foundUser.password);
   return isMatch
     ? Promise.resolve(foundUser)
     : Promise.reject("Passwords do not match");

@@ -14,30 +14,25 @@ const WelcomePage = () => {
   });
 
   const navigate = useNavigate();
-  const { setCurrentUser, setUserType } = useContext(AuthContext);
+  const { setUserType, login, register } = useContext(AuthContext);
 
-  const handleSubmit = () => {
-    //the code below will be done on the server in phase 2
-    if (
-      (loginInfo.username === "user" && loginInfo.password === "user") ||
-      (registerInfo.username === "user" && registerInfo.password === "user")
-    ) {
-      setCurrentUser("user");
-      setUserType("user");
-      navigate("/reviewEssays", { replace: true }); //don't have to replace in phase 2 if authentication status is saved
-    } else if (
-      (loginInfo.username === "admin" && loginInfo.password === "admin") ||
-      (registerInfo.username === "admin" && registerInfo.password === "admin")
-    ) {
-      setCurrentUser("admin");
-      setUserType("admin");
-      navigate("/reviewEssays", { replace: true });
-    }
+  const handleLogin = async () => {
+    await login(loginInfo);
+    navigate("/reviewEssays", { replace: true });
+    setUserType("user");
   };
 
-  const handleEnter = (e) => {
-    if (e.key === "Enter") {
-      handleSubmit();
+  const handleRegister = async () => {
+    await register(registerInfo);
+    navigate("/reviewEssays", { replace: true });
+    setUserType("user");
+  };
+
+  const handleEnter = (e, inputType) => {
+    if (e.key === "Enter" && inputType === "login") {
+      handleLogin();
+    } else if (e.key === "Enter") {
+      handleRegister();
     }
   };
 
@@ -64,9 +59,9 @@ const WelcomePage = () => {
               onInput={(e) =>
                 setLoginInfo({ ...loginInfo, password: e.target.value })
               }
-              onKeyPress={handleEnter}
+              onKeyPress={(e) => handleEnter(e, "login")}
             />
-            <button className={styles.loginButton} onClick={handleSubmit}>
+            <button className={styles.loginButton} onClick={handleLogin}>
               Login
             </button>
           </div>
@@ -94,9 +89,9 @@ const WelcomePage = () => {
               onInput={(e) =>
                 setRegisterInfo({ ...registerInfo, password: e.target.value })
               }
-              onKeyPress={handleEnter}
+              onKeyPress={(e) => handleEnter(e, "register")}
             />
-            <button className={styles.loginButton} onClick={handleSubmit}>
+            <button className={styles.loginButton} onClick={handleRegister}>
               Register
             </button>
           </div>

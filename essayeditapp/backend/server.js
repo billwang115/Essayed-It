@@ -85,7 +85,7 @@ app.post("/users/login", async (req, res) => {
   try {
     const foundUser = await User.findUserByUsernamePassword(username, password);
     req.session.user = foundUser._id;
-    res.session.username = foundUser.username;
+    req.session.username = foundUser.username;
     res.send({ currentUser: foundUser.username });
   } catch (error) {
     res.status(400).send();
