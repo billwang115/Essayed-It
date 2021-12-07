@@ -110,7 +110,7 @@ const ReviewEssaysPage = () => {
   }, []);
 
   const { userType } = useContext(AuthContext);
-
+  const {currentUser} = useContext(AuthContext);
   function getAllEssays(){
     const url = `${API_HOST}/api/essays`;
     console.log(url)
@@ -125,17 +125,22 @@ const ReviewEssaysPage = () => {
         .then(json => {
             const allEssaysJson = json;
             console.log(allEssaysJson)
-            setAllCopy(allEssaysJson)
+            setAllCopy(removeMyEssays(allEssaysJson))
         })
         .catch(error => {
             console.log(error);
         });
   }
 
-  function setUpComponents(essaysJson){
-    //TODO: Check only the essays that you are not the author of
+  function removeMyEssays(essaysJson){
+    const displayList = []
+    for(let i = 0; i < essaysJson.length; i++) {
+    if(essaysJson[i].author != currentUser){
+      displayList.push(essaysJson[i])
+    }
   }
-
+  return displayList
+}
   const removeRequest = (requestID) => {
     // a server call will be done first to remove the request from the server
     //then dom will be manipulated

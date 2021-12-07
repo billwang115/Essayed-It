@@ -56,16 +56,50 @@ function ReviewRequest() {
        .then(function (res) {
            if (res.status === 200) {
                console.log("Successfully added essay")
-               }
+               return res.json()
+            }
            else {
                console.log("Failed to add essay")
+
               }
        })
+       .then(data => {
+          console.log(data)
+          addToMemberList(data)
+        })
        .catch(error => {
            console.log(error);
        });
-  }
 
+  }
+  function addToMemberList(essayJSON){
+
+    console.log(essayJSON)
+    const result = null;
+    const url = `${API_HOST}/api/users/` + currentUser;
+    const request = new Request(url, {
+        method: "post",
+        body: JSON.stringify(essayJSON),
+        headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+        }
+    });
+    fetch(request)
+        .then(function (res) {
+            if (res.status === 200) {
+                console.log("Successfully added essay to member list")
+                }
+            else {
+                console.log("Failed to add essay to member list")
+               }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+
+  }
   function checkIfReady(){
     if (essayPasteInput !== null && titleInput !== null && descriptionInput !== null && priceInput !== null && typeInput !== null && topicInput !== null){
       setReadyToSubmit(true);

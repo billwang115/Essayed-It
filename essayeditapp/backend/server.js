@@ -236,6 +236,29 @@ app.get(
   }
 );
 
+//POST new essay to list of essays after getting member by username
+app.post("/api/users/:username", mongoChecker, authenticate, async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    const member = await Member.findByUsername(username);
+    if (!member) {
+      res.status(404).send("Resource not found");
+    } else {
+      member.essays.push(req.body);
+      const result = await member.save();
+      res.send(result);
+    }
+  } catch (error) {
+    log(error);
+    if (isMongoError(error)) {
+      res.status(500).send("Internal server error");
+    } else {
+      res.status(400).send("Bad Request");
+    }
+  }
+});
+
 /*//route for changing your topics of interest
 app.post("/api/users", mongoChecker, authenticate, async () => {
   const id = req.user._id;
@@ -250,7 +273,6 @@ app.post("/api/users", mongoChecker, authenticate, async () => {
 
 // POST /essays, created when user submits their essay to the site
 app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
-  //TODO: Add essay to list of essays for current user
   const essay = new Essay({
     title: req.body.title,
     body: req.body.body,
@@ -264,7 +286,7 @@ app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
   });
   try {
     const result = await essay.save();
-    res.send(result);
+    res.send(essay);
   } catch (error) {
     log(error);
     res.status(400).send("Bad Request");
@@ -286,7 +308,7 @@ app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
     } else {
       essay.edits.push(req.body);
       const result = await essay.save();
-      res.send(result);
+      res.send(essay);
     }
   } catch (error) {
     log(error);
