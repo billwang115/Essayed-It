@@ -238,39 +238,60 @@ app.get(
 );
 
 //POST new essay to list of essays after getting member by username
-app.post("/api/users/:username", mongoChecker, authenticate, async (req, res) => {
-  const username = req.params.username;
+app.post(
+  "/api/users/:username",
+  mongoChecker,
+  authenticate,
+  async (req, res) => {
+    const username = req.params.username;
 
-  try {
-    const member = await Member.findByUsername(username);
-    if (!member) {
-      res.status(404).send("Resource not found");
-    } else {
-      member.essays.push(req.body);
-      const result = await member.save();
-      res.send(result);
-    }
-  } catch (error) {
-    log(error);
-    if (isMongoError(error)) {
-      res.status(500).send("Internal server error");
-    } else {
-      res.status(400).send("Bad Request");
+    try {
+      const member = await Member.findByUsername(username);
+      if (!member) {
+        res.status(404).send("Resource not found");
+      } else {
+        member.essays.push(req.body);
+        const result = await member.save();
+        res.send(result);
+      }
+    } catch (error) {
+      log(error);
+      if (isMongoError(error)) {
+        res.status(500).send("Internal server error");
+      } else {
+        res.status(400).send("Bad Request");
+      }
     }
   }
-});
+);
 
-/*//route for changing your topics of interest
-app.post("/api/users", mongoChecker, authenticate, async () => {
-  const id = req.user._id;
-  const topicsOfInterest = req.body.essay;
-  try {
-    const member = await Member.findById(id);
-  } catch (error) {
-    log(error);
-    res.status(500).send("Internal Server Error");
+//route for changing your topics of interest
+app.post(
+  "/api/users/:username/topics",
+  mongoChecker,
+  authenticate,
+  async (req, res) => {
+    const username = req.params.username;
+    const topics = req.body.topics;
+    try {
+      const member = await Member.findByUsername(username);
+      if (!member) {
+        res.status(404).send("Resource not found");
+      } else {
+        member.topics = topics;
+        const result = await member.save();
+        res.send(result);
+      }
+    } catch (error) {
+      log(error);
+      if (isMongoError(error)) {
+        res.status(500).send("Internal server error");
+      } else {
+        res.status(400).send("Bad Request");
+      }
+    }
   }
-});*/
+);
 
 // POST /essays, created when user submits their essay to the site
 app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
@@ -296,7 +317,6 @@ app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
 
 // POST /essays/id, posting a new edit to an essay, will have to loop through
 app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
-
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
@@ -323,7 +343,6 @@ app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
 });
 
 app.put("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
-
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
@@ -335,7 +354,9 @@ app.put("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
     if (!essay) {
       res.status(404).send("Resource not found");
     } else {
-      if (req.body.editor) {essay.editor = req.body.editor;}
+      if (req.body.editor) {
+        essay.editor = req.body.editor;
+      }
       essay.status = req.body.status;
       const result = await essay.save();
       res.send(essay);

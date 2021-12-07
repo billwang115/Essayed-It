@@ -4,6 +4,8 @@ import CreditIcon from "../../assets/credit_icon.svg";
 import { useState, useContext } from "react";
 import searchIcon from "../../assets/searchIcon.png";
 import { AuthContext } from "../../contexts/AuthProvider";
+import ENV from "../../config.js";
+const API_HOST = ENV.api_host;
 
 const subjects = [
   "Culinary Arts",
@@ -23,7 +25,7 @@ let sampleUsers = [
 ];
 
 const ProfilePage = () => {
-  const { userType } = useContext(AuthContext);
+  const { userType, currentUser } = useContext(AuthContext);
 
   const [username, setUsername] = useState("Kailas_Moon2000");
   const [usernameField, setUsernameField] = useState("");
@@ -50,17 +52,42 @@ const ProfilePage = () => {
     setAllUsers(newAllUsers);
   };
   const ban = () => {};
-  const submit = () => {
+  const submit = async () => {
     if (usernameField) {
       setUsername(usernameField);
     }
     if (topicField) {
-      setTopic(topicField);
+      await setTopicBackend(topicField);
     }
     if (profileImageField) {
       setProfileImageURL(profileImageField);
     }
   };
+
+  const setTopicBackend = async (topic) => {
+    const request = new Request(`${API_HOST}/api/users/${currentUser}/topics`, {
+      method: "post",
+      body: JSON.stringify({ topics: [topic] }),
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+    });
+
+    try {
+      const res = await fetch(request);
+      if (res.status === 200) {
+        const json = await res.json();
+        if (json !== undefined) {
+          setTopic(topic);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      alert(error);
+    }
+  };
+
   const handleSubmit = () => {};
   const handleEnter = () => {};
   const award = () => {
