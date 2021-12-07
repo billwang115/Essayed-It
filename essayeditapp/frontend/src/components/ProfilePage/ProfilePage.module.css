@@ -103,6 +103,7 @@
   justify-content: center;
   align-items: center;
   column-gap: 18px;
+  margin-bottom: 20px;
 }
 
 .searchBar {
@@ -139,5 +140,23 @@
   padding: 10px 20px;
   margin-left: 10px;
   border: none;
+  cursor: pointer;
+}
+.userContainer {
+  text-align: left;
+  font-size: 20px;
+  padding: 0 20px 20px 20px;
+  width: 80%;
+  margin: auto;
+  border: 1px solid black;
+}
+.deleteUser {
+  background-color: red;
+  color: white;
+  cursor: pointer;
+}
+.changeUsernameButton {
+  background-color: blue;
+  color: white;
   cursor: pointer;
 }

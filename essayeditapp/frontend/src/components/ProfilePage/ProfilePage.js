@@ -15,11 +15,20 @@ const subjects = [
   "Indigenous Studies",
 ];
 
+//This information will be pulled from the backend
+let sampleUsers = [
+  { userID: "123456", username: "kailas" },
+  { userID: "123457", username: "ethan" },
+  { userID: "123458", username: "billiam" },
+];
+
 const ProfilePage = () => {
   const { userType } = useContext(AuthContext);
 
   const [username, setUsername] = useState("Kailas_Moon2000");
   const [usernameField, setUsernameField] = useState("");
+
+  const [allUsers, setAllUsers] = useState(sampleUsers);
 
   const [topic, setTopic] = useState("Indigenous Studies");
   const [topicField, setTopicField] = useState("");
@@ -27,6 +36,19 @@ const ProfilePage = () => {
   const [profileImageURL, setProfileImageURL] = useState(DefaultProfileImage);
   const [profileImageField, setProfileImageField] = useState("");
 
+  const [newUsernames, setNewUsernames] = useState(["", "", ""]);
+
+  const adminSetUsername = (index) => {
+    let newAllUsers = [...allUsers];
+    newAllUsers[index].username = newUsernames[index];
+    setAllUsers(newAllUsers);
+  };
+
+  const deleteUser = (index) => {
+    let newAllUsers = [...allUsers];
+    newAllUsers.splice(index, 1);
+    setAllUsers(newAllUsers);
+  };
   const ban = () => {};
   const submit = () => {
     if (usernameField) {
@@ -46,6 +68,11 @@ const ProfilePage = () => {
   };
   const deduct = () => {
     setCredits(credits - 1);
+  };
+  const handleNewUsernameChange = (index, newUsername) => {
+    let newNewUsernames = [...newUsernames];
+    newNewUsernames[index] = newUsername;
+    setNewUsernames(newNewUsernames);
   };
 
   const [searchInput, setSearchInput] = useState("");
@@ -155,27 +182,57 @@ const ProfilePage = () => {
       </div>
 
       {userType === "admin" && (
-        <div id={styles.searchForUser}>
-          <span className={styles.header}>Search for a user</span>
+        <>
+          <div id={styles.searchForUser}>
+            <span className={styles.header}>Search for a user</span>
 
-          <div className={styles.searchBarContainer}>
-            <input
-              type="text"
-              placeholder="Search Users"
-              className={styles.searchBar}
-              value={searchInput}
-              onInput={(e) => setSearchInput(e.target.value)}
-              onKeyPress={handleEnter}
-            />
-            <button className={styles.searchButton} onClick={handleSubmit}>
-              <img
-                src={searchIcon}
-                alt="search-Icon"
-                className={styles.searchIcon}
+            <div className={styles.searchBarContainer}>
+              <input
+                type="text"
+                placeholder="Search Users"
+                className={styles.searchBar}
+                value={searchInput}
+                onInput={(e) => setSearchInput(e.target.value)}
+                onKeyPress={handleEnter}
               />
-            </button>
+              <button className={styles.searchButton} onClick={handleSubmit}>
+                <img
+                  src={searchIcon}
+                  alt="search-Icon"
+                  className={styles.searchIcon}
+                />
+              </button>
+            </div>
           </div>
-        </div>
+
+          {allUsers
+            .filter((e) => e.username.includes(searchInput))
+            .map((e, i) => (
+              <div key={i} className={styles.userContainer}>
+                <h4>{e.username}</h4>
+                User ID: {e.userID}
+                <br />
+                <button
+                  onClick={() => deleteUser(i)}
+                  className={styles.deleteUser}
+                >
+                  DELETE USER
+                </button>
+                <br />
+                <input
+                  type="text"
+                  value={newUsernames[i]}
+                  onChange={(e) => handleNewUsernameChange(i, e.target.value)}
+                ></input>
+                <button
+                  onClick={() => adminSetUsername(i)}
+                  className={styles.changeUsernameButton}
+                >
+                  CHANGE USERNAME
+                </button>
+              </div>
+            ))}
+        </>
       )}
     </div>
   );
