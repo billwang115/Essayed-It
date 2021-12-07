@@ -1,7 +1,7 @@
 "use strict";
 const mongoose = require("mongoose");
 
-const memberSchema = new mongoose.Schema({
+const MemberSchema = new mongoose.Schema({
   username: { type: String, required: true },
   essays: { type: Array, required: true },
   score: { type: Number, required: true },
@@ -9,5 +9,14 @@ const memberSchema = new mongoose.Schema({
   credits: { type: Number, required: true },
 });
 
-const Member = mongoose.model("Member", memberSchema);
+MemberSchema.statics.findByUsername = async function (username) {
+  const foundUser = await this.findOne({ username: username });
+  if (!foundUser) {
+    return Promise.reject("no user found");
+  } else {
+    return Promise.resolve(foundUser);
+  }
+};
+
+const Member = mongoose.model("Member", MemberSchema);
 module.exports = { Member };
