@@ -133,9 +133,11 @@ const ReviewEssaysPage = () => {
   }
 
   function removeMyEssays(essaysJson){
+    //Also removes essays that have already been completed
     const displayList = []
     for(let i = 0; i < essaysJson.length; i++) {
-    if(essaysJson[i].author != currentUser){
+      console.log(essaysJson[i].status)
+    if(essaysJson[i].author != currentUser && essaysJson[i].status != "COMPLETED"){
       displayList.push(essaysJson[i])
     }
   }

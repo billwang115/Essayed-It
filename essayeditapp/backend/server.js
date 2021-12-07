@@ -166,6 +166,7 @@ app.post("/api/users", mongoChecker, async (req, res) => {
   const member = new Member({
     username: req.body.username,
     essays: [],
+    essaysReviewed: [],
     score: 0,
     topics: [],
     credits: 1,
@@ -291,6 +292,7 @@ app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
 
 // POST /essays/id, posting a new edit to an essay, will have to loop through
 app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
+
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
@@ -303,6 +305,34 @@ app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
       res.status(404).send("Resource not found");
     } else {
       essay.edits.push(req.body);
+      const result = await essay.save();
+      res.send(essay);
+    }
+  } catch (error) {
+    log(error);
+    if (isMongoError(error)) {
+      res.status(500).send("Internal server error");
+    } else {
+      res.status(400).send("Bad Request");
+    }
+  }
+});
+
+app.put("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
+
+  const id = req.params.id;
+  if (!ObjectId.isValid(id)) {
+    res.status(404).send();
+    return;
+  }
+
+  try {
+    const essay = await Essay.findById(id);
+    if (!essay) {
+      res.status(404).send("Resource not found");
+    } else {
+      essay.editor = req.body.editor;
+      essay.status = req.body.status;
       const result = await essay.save();
       res.send(essay);
     }

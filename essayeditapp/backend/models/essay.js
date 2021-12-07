@@ -14,7 +14,7 @@ const EssaySchema = new mongoose.Schema({
   type: { type: String, required: true },
   numCredits: { type: Number, required: true, min: 1, max: 5 },
   numWords: { type: Number},
-  author: { type: String, required: true}, 
+  author: { type: String, required: true},
   editor: { type: String, required: false, default: null },
   edits: [EditSchema],
   edit_rating: { type: Number, min: 1, max: 5 },

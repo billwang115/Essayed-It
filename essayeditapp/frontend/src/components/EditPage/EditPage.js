@@ -4,6 +4,9 @@ import InputBox from "./InputBox";
 import EditsList from "./EditsList";
 import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthProvider";
+
 import ENV from '../../config.js'
 const API_HOST = ENV.api_host
 //This Essay
@@ -18,6 +21,7 @@ const API_HOST = ENV.api_host
 // Morbi convallis neque sit amet ante tempor, quis lacinia arcu sagittis. In hac habitasse platea dictumst. Maecenas condimentum elit sed sem efficitur lacinia. Suspendisse sit amet imperdiet erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin nec ultrices dolor. Praesent eu neque fermentum, blandit massa a, blandit diam. Donec congue, neque in vestibulum tincidunt, nisi urna dapibus eros, vel aliquet enim nisl id risus. `;
 
 function EditPage() {
+  const {currentUser} = useContext(AuthContext);
   const [toggleAddEdit, setToggleAddEdit] = useState(false);
   const [addButton, setaddButton] = useState(false);
   const [currentlyEditing, setCurrentlyEditing] = useState(false);
@@ -119,6 +123,7 @@ function EditPage() {
          .then(function (res) {
              if (res.status === 200) {
                  console.log("Successfully added edits")
+                 updateEssayEditor()
                  }
              else {
                  console.log("Failed to add essay")
@@ -127,11 +132,40 @@ function EditPage() {
          .catch(error => {
              console.log(error);
          });
-
        }
+
+
   }
 
+  function updateEssayEditor(){
 
+       console.log("Updating essay to have new editor")
+       const url = `${API_HOST}/api/essays/${location.state.essayID}`;
+       const json_set = { editor: currentUser, status: "COMPLETED"}
+       const request = new Request(url, {
+           method: "put",
+           body: JSON.stringify(json_set),
+           headers: {
+               Accept: "application/json, text/plain, */*",
+               "Content-Type": "application/json"
+           }
+       });
+
+       fetch(request)
+           .then(function (res) {
+               if (res.status === 200) {
+                   console.log("Successfully added editor")
+                }
+               else {
+                   console.log("Failed to add editor")
+
+                  }
+           })
+           .catch(error => {
+               console.log(error);
+           });
+
+  }
   function addNewEdit() {
     setCurrentlyEditing(true);
     setToggleAddEdit(true);

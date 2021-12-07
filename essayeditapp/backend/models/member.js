@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const MemberSchema = new mongoose.Schema({
   username: { type: String, required: true },
   essays: { type: Array, required: true },
+  essaysReviewed: { type: Array, required: true },
   score: { type: Number, required: true },
   topics: { type: Array, required: true },
   credits: { type: Number, required: true },
