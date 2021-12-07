@@ -1,11 +1,12 @@
 import styles from './ViewEdits.module.css';
 import React, {useState} from 'react';
-
 import EditsList from "./EditsList";
 import {NavLink} from "react-router-dom";
 import { useEffect } from 'react';
-
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthProvider";
 import {useLocation} from "react-router-dom";
+
 import ENV from '../../config.js'
 const API_HOST = ENV.api_host
 
@@ -21,7 +22,7 @@ Morbi convallis neque sit amet ante tempor, <span className = {styles.BlueHighli
 function ViewEdits() {
   //This function will handle the server call to load in the correct essay into the essay editor, as well as the assosiated edits to be read
   function getEdits(){}
-
+  const {currentUser} = useContext(AuthContext);
   const hardCodeEditObject1 = {
     previous_text: "Sed ac dolor consectetur, condimentum elit a, vestibulum risus. Nunc ut diam id diam semper finibus quis in dui. Donec mi leo, feugiat vitae nibh vel, porta euismod sem. Aenean pellentesque arcu suscipit vehicula bibendum. Fusce feugiat id odio sed consequat. Phasellus sodales sem eget purus pharetra, eu dignissim nulla fringilla. Proin et felis pharetra, mollis dui sed, consectetur ex. Duis porttitor vulputate velit, id consectetur nunc. Suspendisse cursus accumsan condimentum. Curabitur id aliquam ipsum. Vestibulum rhoncus rutrum nisi, ut commodo sem blandit maximus.",
     curr_range: null,
@@ -84,6 +85,8 @@ function ViewEdits() {
   const [inputBoxDefault, setInputBoxDefault] = useState("");
   const [newInputBool, setNewInputBool] = useState(true);
   const [changingEditObject, setChangingEditObject] = useState(null);
+  const [rating, setRating] = useState(1);
+
   const location = useLocation();
 
   function loadEssayAndEdits(){
@@ -127,9 +130,41 @@ function ViewEdits() {
       newEditsArray.push(edit)
     }
     setEditsArray(newEditsArray)
+  }
 
+
+  function submitReview(){
+    console.log("Updating essay to be reviewed")
+    const url = `${API_HOST}/api/essays/${location.state.essayID}`;
+    const json_set = {edit_rating:rating ,status: "REVIEWED"}
+    const request = new Request(url, {
+        method: "put",
+        body: JSON.stringify(json_set),
+        headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+        }
+    });
+
+    fetch(request)
+        .then(function (res) {
+            if (res.status === 200) {
+                console.log("Successfully added review")
+             }
+            else {
+                console.log("Failed to add review")
+
+               }
+        })
+        .catch(error => {
+            console.log(error);
+        });
 
   }
+  function selectRating(selectedrating){
+    setRating(selectedrating)
+  }
+
   function onLoadComponent(){
       loadEssayAndEdits();
   }
@@ -137,7 +172,7 @@ function ViewEdits() {
     onLoadComponent();
 
   }, [])
-  
+
 
   return (
 
@@ -156,19 +191,19 @@ function ViewEdits() {
           <h2 className = {styles.RatingHeader}>Leave a rating!</h2>
           {/*The code here and in the CSS file to create stars has some code made by the author allenhe: https://codepen.io/hesguru/pen/BaybqXv*/}
           <div className= {styles.rate}>
-          <input type="radio" id="star5" name="rate" value="5" />
+          <input onClick= {e => selectRating(e.target.value)} type="radio" id="star5" name="rate" value="5" />
           <label for="star5" title="text">5 stars</label>
-          <input type="radio" id="star4" name="rate" value="4" />
+          <input onClick= {e => selectRating(e.target.value)} type="radio" id="star4" name="rate" value="4" />
           <label for="star4" title="text">4 stars</label>
-          <input type="radio" id="star3" name="rate" value="3" />
+          <input onClick= {e => selectRating(e.target.value)} type="radio" id="star3" name="rate" value="3" />
           <label for="star3" title="text">3 stars</label>
-          <input type="radio" id="star2" name="rate" value="2" />
+          <input onClick= {e => selectRating(e.target.value)} type="radio" id="star2" name="rate" value="2" />
           <label for="star2" title="text">2 stars</label>
-          <input type="radio" id="star1" name="rate" value="1" />
+          <input onClick= {e => selectRating(e.target.value)} type="radio" id="star1" name="rate" value="1" />
           <label for="star1" title="text">1 star</label>
         </div>
           <NavLink to="/reviewEssays">
-            <button className={styles.SubmitButton}>Submit Review</button>
+            <button onClick= {submitReview()}className={styles.SubmitButton}>Submit Review</button>
           </NavLink>
         </div>
       </div>
