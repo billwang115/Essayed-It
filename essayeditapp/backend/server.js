@@ -8,8 +8,8 @@ const log = console.log;
 // To run in production mode, run in terminal: "NODE_ENV=production node server.js" (if on linux) OR "SET NODE_ENV=production node server.js" (if on command prompt) OR "$env:NODE_ENV="production"; node server.js" (if on Powershell)
 const env = process.env.NODE_ENV; // read the environment variable (will be 'production' in production mode)
 const USE_TEST_USER = env !== "production" && process.env.TEST_USER_ON; // option to turn on the test user.
-const TEST_USER_ID = "61aee4677169c23109368fc7"; // the id of our test user (you will have to replace it with a test user that you made). can also put this into a separate configutation file
-const TEST_USER_USERNAME = "user";
+const TEST_USER_ID = "61af9af5fa3bd73f7cd565d5"; // the id of our test user (you will have to replace it with a test user that you made). can also put this into a separate configutation file
+const TEST_USER_USERNAME = "ethan";
 const TEST_ISADMIN = false;
 
 const path = require("path");
@@ -245,10 +245,11 @@ app.post("/api/users", mongoChecker, authenticate, async () => {
 // POST /essays, created when user submits their essay to the site
 app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
   //TODO: Add essay to list of essays for current user
+  console.log(Member.findOne({username: req.user.username }).username)
   const essay = new Essay({
     title: req.body.title,
     body: req.body.body,
-    //author: req.user._id,
+    author: Member.findOne({"username": req.user.username }).username,
     description: req.body.description,
     topic: req.body.topic,
     type: req.body.type,
