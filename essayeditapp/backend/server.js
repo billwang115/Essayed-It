@@ -8,7 +8,7 @@ const log = console.log;
 // To run in production mode, run in terminal: "NODE_ENV=production node server.js" (if on linux) OR "SET NODE_ENV=production node server.js" (if on command prompt) OR "$env:NODE_ENV="production"; node server.js" (if on Powershell)
 const env = process.env.NODE_ENV; // read the environment variable (will be 'production' in production mode)
 const USE_TEST_USER = env !== "production" && process.env.TEST_USER_ON; // option to turn on the test user.
-const TEST_USER_ID = "61af9af5fa3bd73f7cd565d5"; // the id of our test user (you will have to replace it with a test user that you made). can also put this into a separate configutation file
+const TEST_USER_ID = "61afb20c09866fe9bafda05e"; // the id of our test user (you will have to replace it with a test user that you made). can also put this into a separate configutation file
 const TEST_USER_USERNAME = "ethan";
 const TEST_ISADMIN = false;
 
@@ -231,6 +231,29 @@ app.get(
   }
 );
 
+//POST new essay to list of essays after getting member by username
+app.post("/api/users/:username", mongoChecker, authenticate, async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    const member = await Member.findByUsername(username);
+    if (!member) {
+      res.status(404).send("Resource not found");
+    } else {
+      member.essays.push(req.body);
+      const result = await member.save();
+      res.send(result);
+    }
+  } catch (error) {
+    log(error);
+    if (isMongoError(error)) {
+      res.status(500).send("Internal server error");
+    } else {
+      res.status(400).send("Bad Request");
+    }
+  }
+});
+
 /*//route for changing your topics of interest
 app.post("/api/users", mongoChecker, authenticate, async () => {
   const id = req.user._id;
@@ -245,7 +268,6 @@ app.post("/api/users", mongoChecker, authenticate, async () => {
 
 // POST /essays, created when user submits their essay to the site
 app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
-  //TODO: Add essay to list of essays for current user
   const essay = new Essay({
     title: req.body.title,
     body: req.body.body,
@@ -259,7 +281,7 @@ app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
   });
   try {
     const result = await essay.save();
-    res.send(result);
+    res.send(essay);
   } catch (error) {
     log(error);
     res.status(400).send("Bad Request");
@@ -281,7 +303,7 @@ app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
     } else {
       essay.edits.push(req.body);
       const result = await essay.save();
-      res.send(result);
+      res.send(essay);
     }
   } catch (error) {
     log(error);

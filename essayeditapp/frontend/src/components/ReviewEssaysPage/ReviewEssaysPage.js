@@ -117,6 +117,7 @@ const ReviewEssaysPage = () => {
     fetch(url)
         .then(res => {
             if (res.status === 200) {
+              console.log("got here")
                 return res.json();
             } else {
                 alert("Could not get all essays");
