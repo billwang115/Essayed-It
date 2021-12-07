@@ -2,6 +2,8 @@
 import styles from './ReviewRequest.module.css';
 import {NavLink} from "react-router-dom";
 import React, { useState } from 'react';
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 import ENV from '../../config.js'
 const API_HOST = ENV.api_host
@@ -18,29 +20,29 @@ Morbi lacinia arcu mi, facilisis gravida dolor faucibus sed. Mauris feugiat elit
 Morbi convallis neque sit amet ante tempor, quis lacinia arcu sagittis. In hac habitasse platea dictumst. Maecenas condimentum elit sed sem efficitur lacinia. Suspendisse sit amet imperdiet erat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin nec ultrices dolor. Praesent eu neque fermentum, blandit massa a, blandit diam. Donec congue, neque in vestibulum tincidunt, nisi urna dapibus eros, vel aliquet enim nisl id risus.`;
 
 function ReviewRequest() {
-
+  const {currentUser} = useContext(AuthContext);
   const [essayPasteInput, setEssayPasteInput] = useState(null);
   const [titleInput, setTitleInput] = useState(null);
   const [descriptionInput, setDescriptionInput] = useState(null);
   const [priceInput, setpriceInput] = useState(null);
   const [topicInput, setTopicInput] = useState(null);
   const [typeInput, setTypeInput] = useState(null);
-
   const [readyToSubmit, setReadyToSubmit] = useState(false);
 
   //This function will handle the server call to make sure the right profile is loaded in to be prepared to send in the input information to the server
   function publishResponse(){
 
+
    console.log("POSTing to database..")
    console.log(`${API_HOST}/api/essays`)
-
+   console.log(currentUser)
    const url = `${API_HOST}/api/essays`;
    let price_int = 0;
    priceInput == "regular" ? price_int = 1: priceInput == "plus" ? price_int = 3: price_int = 5
    const numWordsCalc = essayPasteInput.trim().split(/\s+/).length;
    const json_set = { title: titleInput, body: essayPasteInput,
                          description: descriptionInput, numCredits: price_int,
-                          topic: topicInput, type: typeInput, numWords: numWordsCalc, status: "PENDING"}
+                          topic: topicInput, type: typeInput, numWords: numWordsCalc, author: currentUser, status: "PENDING"}
    const request = new Request(url, {
        method: "post",
        body: JSON.stringify(json_set),

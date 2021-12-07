@@ -246,11 +246,10 @@ app.post("/api/users", mongoChecker, authenticate, async () => {
 // POST /essays, created when user submits their essay to the site
 app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
   //TODO: Add essay to list of essays for current user
-  console.log(Member.findOne({username: req.user.username }).username)
   const essay = new Essay({
     title: req.body.title,
     body: req.body.body,
-    author: Member.findOne({"username": req.user.username }).username,
+    author: req.body.author,
     description: req.body.description,
     topic: req.body.topic,
     type: req.body.type,

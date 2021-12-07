@@ -14,8 +14,8 @@ const EssaySchema = new mongoose.Schema({
   type: { type: String, required: true },
   numCredits: { type: Number, required: true, min: 1, max: 5 },
   numWords: { type: Number},
-  author: { type: ObjectId, required: false, default: null }, //TODO: change this to not be null on default, but have a required requester
-  editor: { type: ObjectId, required: false, default: null },
+  author: { type: String, required: true}, 
+  editor: { type: String, required: false, default: null },
   edits: [EditSchema],
   edit_rating: { type: Number, min: 1, max: 5 },
   status: {type: String}
