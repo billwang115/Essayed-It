@@ -5,7 +5,7 @@ const { ObjectId } = require("mongodb");
 const memberSchema = new mongoose.Schema({
   userID: { type: ObjectId, required: true },
   essays: { type: Array, required: true },
-  reviews: { type: Array, required: true },
+  score: { type: Number, required: true },
 });
 
 const Member = mongoose.model("Member", memberSchema);

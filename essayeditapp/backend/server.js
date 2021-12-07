@@ -4,6 +4,7 @@ const log = console.log;
 
 /*Server environment setup*/
 const env = process.env.NODE_ENV; // read the environment variable (will be 'production' in production mode)
+const path = require("path");
 
 // Express
 const express = require("express");
@@ -13,7 +14,9 @@ app.use(express.json()); //For JSON requests
 app.use(express.urlencoded({ extended: true }));
 const cors = require("cors");
 
-app.use(cors());
+if (env !== "production") {
+  app.use(cors());
+}
 
 // Mongo and Mongoose
 const { ObjectId } = require("mongodb");
@@ -88,7 +91,11 @@ app.post("/users/login", async (req, res) => {
     req.session.user = foundUser._id;
     req.session.username = foundUser.username;
     req.session.isAdmin = foundUser.isAdmin;
-    res.send({ currentUser: foundUser.username, isAdmin: foundUser.isAdmin });
+    res.send({
+      currentUser: foundUser.username,
+      isAdmin: foundUser.isAdmin,
+      currentUserID: req.session.user,
+    });
   } catch (error) {
     res.status(400).send();
   }
@@ -111,6 +118,7 @@ app.get("/users/check-session", (req, res) => {
     res.send({
       currentUser: req.session.username,
       isAdmin: req.session.isAdmin,
+      currentUserID: req.session.user,
     });
   } else {
     res.status(401).send();
@@ -131,7 +139,7 @@ app.post("/api/users", mongoChecker, async (req, res) => {
     const member = new Member({
       userID: newUser._id,
       essays: [],
-      reviews: [],
+      score: 0,
     });
     await member.save();
     res.send(newUser);
@@ -145,13 +153,31 @@ app.post("/api/users", mongoChecker, async (req, res) => {
   }
 });
 
-// POST /essays, created when user submits their essay to the site
-app.post("/api/essays", async (req, res) => {
-  if (mongoose.connection.readyState != 1) {
-    log("Issue with mongoose connection");
-    res.status(500).send("Internal server error");
+//route for getting member info
+app.get("/api/users/:id", mongoChecker, authenticate, async (req, res) => {
+  const id = req.params.id;
+  if (!ObjectId.isValid(id)) {
+    res.status(404).send();
     return;
   }
+
+  try {
+    const member = await Member.findById(id);
+    if (!member) {
+      res.status(404).send("Resource not found");
+    } else {
+      res.send(member);
+    }
+  } catch (error) {
+    log(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+//route for
+
+// POST /essays, created when user submits their essay to the site
+app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
   const essay = new Essay({
     title: req.body.title,
     body: req.body.body,
@@ -171,15 +197,10 @@ app.post("/api/essays", async (req, res) => {
 });
 
 // POST /essays/id, posting a new edit to an essay, will have to loop through
-app.post("/api/essays/:id", async (req, res) => {
+app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
-    return;
-  }
-  if (mongoose.connection.readyState != 1) {
-    log("Issue with mongoose connection");
-    res.status(500).send("Internal server error");
     return;
   }
 
@@ -203,17 +224,11 @@ app.post("/api/essays/:id", async (req, res) => {
 });
 
 //Request to GET one specific essay
-app.get("/api/essays/:id", async (req, res) => {
+app.get("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
   const id = req.params.id;
   console.log(id);
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
-    return;
-  }
-
-  if (mongoose.connection.readyState != 1) {
-    log("Issue with mongoose connection");
-    res.status(500).send("Internal server error");
     return;
   }
 
@@ -228,6 +243,29 @@ app.get("/api/essays/:id", async (req, res) => {
     log(error);
     res.status(500).send("Internal Server Error");
   }
+});
+
+/*** Webpage routes below **********************************/
+app.use(express.static(path.join(__dirname, "/client/build")));
+
+// All routes other than above will go to index.html
+app.get("*", (req, res) => {
+  // check for page routes that we expect in the frontend to provide correct status code.
+  const goodPageRoutes = [
+    "/",
+    "/viewRequest",
+    "/reviewEssays",
+    "/profile",
+    "/yourRequests",
+    "/Request",
+    "/Editor",
+  ];
+  if (!goodPageRoutes.includes(req.url)) {
+    res.status(404);
+  }
+
+  // send index.html
+  res.sendFile(path.join(__dirname, "/client/build/index.html"));
 });
 
 const port = process.env.PORT || 5000;
