@@ -8,11 +8,17 @@ const Request = ({ essay, index, cancelRequest }) => {
   };
   const Navigate = useNavigate();
 
+  function checkIfCompleted(){
+    if (essay.status == "COMPLETED"){
+      Navigate("/viewRequest/edit", {state:{essayID: essay._id}})
+    }
+  }
+
   return (
     <div className={styles.essayRequestContainer}>
       <div
         className={styles.essayRequest}
-        onClick={() => Navigate("/viewRequest/edit")}
+        onClick={() => checkIfCompleted()}
       >
         <div className={styles.essayInfoContainer}>
           <div className={styles.essayTitle}>{essay.title}</div>

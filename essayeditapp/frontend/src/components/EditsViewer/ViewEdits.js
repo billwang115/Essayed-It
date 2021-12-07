@@ -5,6 +5,10 @@ import EditsList from "./EditsList";
 import {NavLink} from "react-router-dom";
 import { useEffect } from 'react';
 
+import {useLocation} from "react-router-dom";
+import ENV from '../../config.js'
+const API_HOST = ENV.api_host
+
 
 const lorumIpsum = <div className = {styles.WhiteSpace}><p >     Mauris mattis bibendum dolor, quis consequat libero venenatis vel. Maecenas at posuere enim. Etiam aliquam rutrum pretium. Phasellus vehicula commodo tortor vel ultrices. Donec vel venenatis metus. Cras vel congue eros, vel malesuada libero. Nam auctor, nibh et dapibus vehicula, nisl tortor rhoncus lectus, quis ornare ex lectus sit amet ante. Praesent sit amet augue quam. Morbi imperdiet diam eget pharetra viverra. Aliquam ac lacus est. Integer fermentum quis quam sed malesuada. Donec finibus ligula a vestibulum lobortis.<br /><br />
 
@@ -58,38 +62,82 @@ function ViewEdits() {
 
 
 
-
+   const highlightColors = [
+     "#FDFD6A",
+     "#97FD6A",
+     "#6AB4FD",
+     "#FF8BF1",
+     "#FFDB7A",
+     "#9D83FF",
+     "#FF839F"
+   ];
 
   const [editsArray, setEditsArray] = useState([]);
   const [currentEditObject, setcurrentEditObject] = useState(null);
   const [displayErrorMessage, setDisplayErrorMessage] = useState(false);
   const [lastSelectedText, setLastSelectedText] = useState(null);
-
+  const [essayObject, setEssayObject] = useState(null)
+  const [essayText, setEssayText] = useState("")
   const [currentHighlightIndex, setCurrentHighlightIndex] = useState(0);
 
   const [inputBoxHeader, setInputBoxHeader] = useState("Add new comment to highlighted text");
   const [inputBoxDefault, setInputBoxDefault] = useState("");
   const [newInputBool, setNewInputBool] = useState(true);
   const [changingEditObject, setChangingEditObject] = useState(null);
+  const location = useLocation();
 
+  function loadEssayAndEdits(){
+    const url = `${API_HOST}/api/essays/${location.state.essayID}`;
+    console.log(url)
+    fetch(url)
+        .then(res => {
+            if (res.status === 200) {
+                return res.json();
+            } else {
+                alert("Could not get Essay");
+            }
+        })
+        .then(json => {
+            console.log(json)
+            addEssayAndEdits(json)
+
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+
+  }
+
+  function addEssayAndEdits(essayObject){
+    console.log(essayObject)
+    setEssayText(essayObject.body)
+
+    //Need to redefine edits array to match form of this js file
+    const newEditsArray = []
+    for (let i = 0; i < essayObject.edits.length; i++){
+      const edit = {
+        EditObject: {
+          previous_text: essayObject.edits[i].assosiated_text,
+          curr_range: null,
+          highlight_color: highlightColors[i%essayObject.edits.length]
+         },
+        comment: essayObject.edits[i].edit_comment
+      };
+      newEditsArray.push(edit)
+    }
+    setEditsArray(newEditsArray)
+
+
+  }
   function onLoadComponent(){
-    console.log("got here");
-      setEditsArray(hardCodeEditsArray);
+      loadEssayAndEdits();
   }
   useEffect(()=>{
-
     onLoadComponent();
 
   }, [])
-  const highlightColors = [
-    "#FDFD6A",
-    "#97FD6A",
-    "#6AB4FD",
-    "#FF8BF1",
-    "#FFDB7A",
-    "#9D83FF",
-    "#FF839F"
-  ];
+  
 
   return (
 
@@ -99,7 +147,7 @@ function ViewEdits() {
       <div>
         <div id="textarea" className={styles.EssayBox}>
           <p>
-            {lorumIpsum}</p>
+            {essayText}</p>
         </div>
       </div>
 

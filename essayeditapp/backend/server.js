@@ -335,7 +335,7 @@ app.put("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
     if (!essay) {
       res.status(404).send("Resource not found");
     } else {
-      essay.editor = req.body.editor;
+      if (req.body.editor) {essay.editor = req.body.editor;}
       essay.status = req.body.status;
       const result = await essay.save();
       res.send(essay);
