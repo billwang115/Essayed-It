@@ -73,7 +73,7 @@ function ReviewRequest() {
 
   }
   function addToMemberList(essayJSON){
-    //Add essay to member's list of essays
+
     console.log(essayJSON)
     const result = null;
     const url = `${API_HOST}/api/users/` + currentUser;
