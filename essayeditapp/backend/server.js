@@ -3,7 +3,15 @@
 const log = console.log;
 
 /*Server environment setup*/
+// To run in development mode, run normally: "node server.js"
+// To run in development with the test user logged in the backend, run: "SET TEST_USER_ON=true node server.js" (if on command prompt) OR "$env:TEST_USER_ON="true"; node server.js" (if on Powershell) OR "TEST_USER_ON=true node server.js" (If on Linux)
+// To run in production mode, run in terminal: "NODE_ENV=production node server.js" (if on linux) OR "SET NODE_ENV=production node server.js" (if on command prompt) OR "$env:NODE_ENV="production"; node server.js" (if on Powershell)
 const env = process.env.NODE_ENV; // read the environment variable (will be 'production' in production mode)
+const USE_TEST_USER = env !== "production" && process.env.TEST_USER_ON; // option to turn on the test user.
+const TEST_USER_ID = "61aee4677169c23109368fc7"; // the id of our test user (you will have to replace it with a test user that you made). can also put this into a separate configutation file
+const TEST_USER_USERNAME = "user";
+const TEST_ISADMIN = false;
+
 const path = require("path");
 
 // Express
@@ -27,6 +35,7 @@ const { Member } = require("./models/member");
 
 //manage user sessions
 const session = require("express-session");
+const MongoStore = require("connect-mongo"); // to store session information on the database in production
 
 /*** Helper functions **************************************/
 const isMongoError = (error) => {
@@ -50,6 +59,10 @@ const mongoChecker = (req, res, next) => {
 };
 
 const authenticate = async (req, res, next) => {
+  if (env !== "production" && USE_TEST_USER) {
+    req.session.user = TEST_USER_ID; // test user on development. (remember to run `TEST_USER_ON=true node server.js` if you want to use this user.)
+  }
+
   if (req.session.user) {
     try {
       const foundUser = await User.findById(req.session.user);
@@ -78,6 +91,15 @@ app.use(
       expires: 60000,
       httpOnly: true,
     },
+    // store the sessions on the database in production
+    store:
+      env === "production"
+        ? MongoStore.create({
+            mongoUrl:
+              process.env.MONGODB_URI ||
+              "mongodb://localhost:27017/EssayedItAPI",
+          })
+        : null,
   })
 );
 
@@ -94,7 +116,7 @@ app.post("/users/login", async (req, res) => {
     res.send({
       currentUser: foundUser.username,
       isAdmin: foundUser.isAdmin,
-      currentUserID: req.session.user,
+      currentUserID: foundUser._id,
     });
   } catch (error) {
     res.status(400).send();
@@ -114,6 +136,18 @@ app.get("/users/logout", (req, res) => {
 
 // A route to check if a user is logged in on the session
 app.get("/users/check-session", (req, res) => {
+  if (env !== "production" && USE_TEST_USER) {
+    req.session.user = TEST_USER_ID;
+    req.session.username = TEST_USER_USERNAME;
+    req.session.isAdmin = TEST_ISADMIN;
+    res.send({
+      currentUser: TEST_USER_USERNAME,
+      isAdmin: TEST_ISADMIN,
+      currentUserID: TEST_USER_ID,
+    });
+    return;
+  }
+
   if (req.session.user) {
     res.send({
       currentUser: req.session.username,
@@ -128,21 +162,43 @@ app.get("/users/check-session", (req, res) => {
 /*** API Routes below ************************************/
 // route for creating new user
 app.post("/api/users", mongoChecker, async (req, res) => {
+  const member = new Member({
+    username: req.body.username,
+    essays: [],
+    score: 0,
+    topics: [],
+    credits: 1,
+  });
+
+  let newMember;
+  try {
+    newMember = await member.save();
+  } catch (error) {
+    if (isMongoError(error)) {
+      res.status(500).send("Internal server error");
+    } else {
+      log(error);
+      res.status(400).send("Bad Request");
+    }
+  }
+
   const user = new User({
     username: req.body.username,
     password: req.body.password,
     isAdmin: false,
+    memberID: newMember._id,
   });
 
   try {
     const newUser = await user.save();
-    const member = new Member({
-      userID: newUser._id,
-      essays: [],
-      score: 0,
+    req.session.user = newUser._id;
+    req.session.username = newUser.username;
+    req.session.isAdmin = newUser.isAdmin;
+    res.send({
+      currentUser: newUser.username,
+      isAdmin: newUser.isAdmin,
+      currentUserID: newUser._id,
     });
-    await member.save();
-    res.send(newUser);
   } catch (error) {
     if (isMongoError(error)) {
       res.status(500).send("Internal server error");
@@ -174,7 +230,17 @@ app.get("/api/users/:id", mongoChecker, authenticate, async (req, res) => {
   }
 });
 
-//route for
+/*//route for changing your topics of interest
+app.post("/api/users", mongoChecker, authenticate, async () => {
+  const id = req.user._id;
+  const topicsOfInterest = req.body.essay;
+  try {
+    const member = await Member.findById(id);
+  } catch (error) {
+    log(error);
+    res.status(500).send("Internal Server Error");
+  }
+});*/
 
 // POST /essays, created when user submits their essay to the site
 app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
