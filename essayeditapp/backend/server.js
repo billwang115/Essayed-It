@@ -202,6 +202,10 @@ app.post("/api/users", mongoChecker, async (req, res) => {
       currentUserID: newUser._id,
     });
   } catch (error) {
+    try {
+      await Member.findOneAndDelete({ _id: newMember._id });
+    } catch (e) {}
+
     if (isMongoError(error)) {
       res.status(500).send("Internal server error");
     } else {
