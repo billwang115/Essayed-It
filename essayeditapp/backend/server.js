@@ -323,7 +323,7 @@ app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
 });
 
 app.put("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
-
+  console.log("changing essay")
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
@@ -336,6 +336,7 @@ app.put("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
       res.status(404).send("Resource not found");
     } else {
       if (req.body.editor) {essay.editor = req.body.editor;}
+      if (req.body.edit_rating) {essay.edit_rating = req.body.edit_rating;}
       essay.status = req.body.status;
       const result = await essay.save();
       res.send(essay);
@@ -368,7 +369,6 @@ app.get("/api/essays", mongoChecker, authenticate, async (req, res) => {
 //Request to GET one specific essay
 app.get("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
   const id = req.params.id;
-  console.log(id);
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
     return;

@@ -35,7 +35,7 @@ function ReviewRequest() {
 
    console.log("POSTing to database..")
    console.log(`${API_HOST}/api/essays`)
-   console.log(currentUser)
+
    const url = `${API_HOST}/api/essays`;
    let price_int = 0;
    priceInput == "regular" ? price_int = 1: priceInput == "plus" ? price_int = 3: price_int = 5
