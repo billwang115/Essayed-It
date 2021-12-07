@@ -209,26 +209,27 @@ app.post("/api/users", mongoChecker, async (req, res) => {
   }
 });
 
-//route for getting member info
-app.get("/api/users/:id", mongoChecker, authenticate, async (req, res) => {
-  const id = req.params.id;
-  if (!ObjectId.isValid(id)) {
-    res.status(404).send();
-    return;
-  }
+//route for getting member info from username
+app.get(
+  "/api/users/:username",
+  mongoChecker,
+  authenticate,
+  async (req, res) => {
+    const username = req.params.username;
 
-  try {
-    const member = await Member.findById(id);
-    if (!member) {
-      res.status(404).send("Resource not found");
-    } else {
-      res.send(member);
+    try {
+      const member = await Member.findByUsername(username);
+      if (!member) {
+        res.status(404).send("Resource not found");
+      } else {
+        res.send(member);
+      }
+    } catch (error) {
+      log(error);
+      res.status(500).send("Internal Server Error");
     }
-  } catch (error) {
-    log(error);
-    res.status(500).send("Internal Server Error");
   }
-});
+);
 
 /*//route for changing your topics of interest
 app.post("/api/users", mongoChecker, authenticate, async () => {
