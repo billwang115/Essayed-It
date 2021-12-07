@@ -18,6 +18,7 @@ const EssaySchema = new mongoose.Schema({
   editor: { type: ObjectId, required: false, default: null },
   edits: [EditSchema],
   edit_rating: { type: Number, min: 1, max: 5 },
+  status: {type: String}
 });
 
 const Essay = mongoose.model("Essay", EssaySchema);

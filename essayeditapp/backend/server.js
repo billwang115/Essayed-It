@@ -177,7 +177,8 @@ app.get("/api/users/:id", mongoChecker, authenticate, async (req, res) => {
 //route for
 
 // POST /essays, created when user submits their essay to the site
-app.post("/api/essays", mongoChecker, async (req, res) => {
+app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
+  //TODO: Add essay to list of essays for current user
   const essay = new Essay({
     title: req.body.title,
     body: req.body.body,
@@ -186,7 +187,8 @@ app.post("/api/essays", mongoChecker, async (req, res) => {
     topic: req.body.topic,
     type: req.body.type,
     numCredits: req.body.numCredits,
-    numWords: req.body.numWords
+    numWords: req.body.numWords,
+    status: req.body.status
   });
   try {
     const result = await essay.save();
@@ -225,7 +227,7 @@ app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
 });
 
 //Request to GET all essays
-app.get("/api/essays", mongoChecker, async (req, res) => {
+app.get("/api/essays", mongoChecker, authenticate, async (req, res) => {
   try {
     const essays = await Essay.find();
     if (!essays) {

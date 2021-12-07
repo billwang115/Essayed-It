@@ -51,6 +51,8 @@ const sampleEssayRequests = [
 const YourRequests = () => {
   const [essayRequests, setEssayRequests] = useState(sampleEssayRequests);
 
+  //TODO: get member, get all essays they've requested
+
   const cancelRequest = (index) => {
     console.log(index);
     let newRequests = [...essayRequests];

@@ -130,15 +130,10 @@ const ReviewEssaysPage = () => {
         .catch(error => {
             console.log(error);
         });
-
-
   }
 
   function setUpComponents(essaysJson){
-
-
-
-
+    //TODO: Check only the essays that you are not the author of
   }
 
   const removeRequest = (requestID) => {

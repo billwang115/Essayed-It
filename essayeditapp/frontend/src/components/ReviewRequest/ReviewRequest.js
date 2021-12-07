@@ -40,7 +40,7 @@ function ReviewRequest() {
    const numWordsCalc = essayPasteInput.trim().split(/\s+/).length;
    const json_set = { title: titleInput, body: essayPasteInput,
                          description: descriptionInput, numCredits: price_int,
-                          topic: topicInput, type: typeInput, numWords: numWordsCalc}
+                          topic: topicInput, type: typeInput, numWords: numWordsCalc, status: "PENDING"}
    const request = new Request(url, {
        method: "post",
        body: JSON.stringify(json_set),
