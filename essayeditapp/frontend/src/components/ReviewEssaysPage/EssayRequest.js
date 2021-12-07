@@ -47,7 +47,11 @@ const EssayRequest = ({ essay, isAdmin, removeRequest }) => {
       <div className={styles.essayOptionsContainer}>
         <button
           className={styles.selectEssayButton}
-          onClick={() => navigate("/Editor",{state:{essayID: '61aa5e3c27a62a3e6cdbaac9'}})}
+          onClick={() =>
+            navigate("/Editor", {
+              state: { essayID: "61aa5e3c27a62a3e6cdbaac9" },
+            })
+          }
         >
           Select Essay
         </button>

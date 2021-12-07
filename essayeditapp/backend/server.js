@@ -50,6 +50,10 @@ const mongoChecker = (req, res, next) => {
 };
 
 const authenticate = async (req, res, next) => {
+  if (env !== "production") {
+    return Promise.resolve();
+  }
+
   if (req.session.user) {
     try {
       const foundUser = await User.findById(req.session.user);
@@ -94,7 +98,7 @@ app.post("/users/login", async (req, res) => {
     res.send({
       currentUser: foundUser.username,
       isAdmin: foundUser.isAdmin,
-      currentUserID: req.session.user,
+      currentUserID: foundUser._id,
     });
   } catch (error) {
     res.status(400).send();
@@ -128,21 +132,43 @@ app.get("/users/check-session", (req, res) => {
 /*** API Routes below ************************************/
 // route for creating new user
 app.post("/api/users", mongoChecker, async (req, res) => {
+  const member = new Member({
+    username: req.body.username,
+    essays: [],
+    score: 0,
+    topics: [],
+    credits: 1,
+  });
+
+  let newMember;
+  try {
+    newMember = await member.save();
+  } catch (error) {
+    if (isMongoError(error)) {
+      res.status(500).send("Internal server error");
+    } else {
+      log(error);
+      res.status(400).send("Bad Request");
+    }
+  }
+
   const user = new User({
     username: req.body.username,
     password: req.body.password,
     isAdmin: false,
+    memberID: newMember._id,
   });
 
   try {
     const newUser = await user.save();
-    const member = new Member({
-      userID: newUser._id,
-      essays: [],
-      score: 0,
+    req.session.user = newUser._id;
+    req.session.username = newUser.username;
+    req.session.isAdmin = newUser.isAdmin;
+    res.send({
+      currentUser: newUser.username,
+      isAdmin: newUser.isAdmin,
+      currentUserID: newUser._id,
     });
-    await member.save();
-    res.send(newUser);
   } catch (error) {
     if (isMongoError(error)) {
       res.status(500).send("Internal server error");
@@ -154,7 +180,7 @@ app.post("/api/users", mongoChecker, async (req, res) => {
 });
 
 //route for getting member info
-app.get("/api/users/:id", mongoChecker, authenticate, async (req, res) => {
+app.get("/api/users/:id", mongoChecker, async (req, res) => {
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
@@ -174,10 +200,20 @@ app.get("/api/users/:id", mongoChecker, authenticate, async (req, res) => {
   }
 });
 
-//route for
+/*//route for changing your topics of interest
+app.post("/api/users", mongoChecker, authenticate, async () => {
+  const id = req.user._id;
+  const topicsOfInterest = req.body.essay;
+  try {
+    const member = await Member.findById(id);
+  } catch (error) {
+    log(error);
+    res.status(500).send("Internal Server Error");
+  }
+});*/
 
 // POST /essays, created when user submits their essay to the site
-app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
+app.post("/api/essays", mongoChecker, async (req, res) => {
   const essay = new Essay({
     title: req.body.title,
     body: req.body.body,
@@ -197,7 +233,7 @@ app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
 });
 
 // POST /essays/id, posting a new edit to an essay, will have to loop through
-app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
+app.post("/api/essays/:id", mongoChecker, async (req, res) => {
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
@@ -224,7 +260,7 @@ app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
 });
 
 //Request to GET one specific essay
-app.get("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
+app.get("/api/essays/:id", mongoChecker, async (req, res) => {
   const id = req.params.id;
   console.log(id);
   if (!ObjectId.isValid(id)) {
