@@ -75,8 +75,8 @@ const AuthProvider = ({ children }) => {
       const res = await fetch(request);
       if (res.status === 200) {
         const json = await res.json();
-        if (json !== undefined) {
-          setCurrentUser(json);
+        if (json.currentUser !== undefined) {
+          setCurrentUser(json.currentUser);
           setUserType(json.isAdmin ? "admin" : "user");
         }
       }
