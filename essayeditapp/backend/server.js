@@ -177,15 +177,16 @@ app.get("/api/users/:id", mongoChecker, authenticate, async (req, res) => {
 //route for
 
 // POST /essays, created when user submits their essay to the site
-app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
+app.post("/api/essays", mongoChecker, async (req, res) => {
   const essay = new Essay({
     title: req.body.title,
     body: req.body.body,
-    //TODO: Add requester when that information is available
+    //author: req.user._id,
     description: req.body.description,
     topic: req.body.topic,
     type: req.body.type,
-    price: req.body.price,
+    numCredits: req.body.numCredits,
+    numWords: req.body.numWords
   });
   try {
     const result = await essay.save();
@@ -220,6 +221,21 @@ app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
     } else {
       res.status(400).send("Bad Request");
     }
+  }
+});
+
+//Request to GET all essays
+app.get("/api/essays", mongoChecker, async (req, res) => {
+  try {
+    const essays = await Essay.find();
+    if (!essays) {
+      res.status(404).send("Resource not found");
+    } else {
+      res.send(essays);
+    }
+  } catch (error) {
+    log(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 

@@ -30,16 +30,17 @@ function ReviewRequest() {
 
   //This function will handle the server call to make sure the right profile is loaded in to be prepared to send in the input information to the server
   function publishResponse(){
-    //TODO: check that user is authenticated before making post request
-    console.log("POSTing to database..")
-    console.log(`${API_HOST}/api/essays`)
+
+   console.log("POSTing to database..")
+   console.log(`${API_HOST}/api/essays`)
 
    const url = `${API_HOST}/api/essays`;
    let price_int = 0;
-   priceInput == "regular" ? price_int = 1: priceInput == "plus" ? price_int = 3: price_int = 5;
+   priceInput == "regular" ? price_int = 1: priceInput == "plus" ? price_int = 3: price_int = 5
+   const numWordsCalc = essayPasteInput.trim().split(/\s+/).length;
    const json_set = { title: titleInput, body: essayPasteInput,
-                         description: descriptionInput, price: price_int,
-                          topic: topicInput, type: typeInput}
+                         description: descriptionInput, numCredits: price_int,
+                          topic: topicInput, type: typeInput, numWords: numWordsCalc}
    const request = new Request(url, {
        method: "post",
        body: JSON.stringify(json_set),

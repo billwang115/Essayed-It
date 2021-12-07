@@ -5,6 +5,9 @@ import EssayRequest from "./EssayRequest";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
 import { useNavigate } from "react-router";
+import ENV from '../../config.js'
+const API_HOST = ENV.api_host
+
 
 const numCredits = 15; //this value will be retrieved from a server call
 const currentUserRating = 4; //this value will be retrieved from a server call
@@ -101,11 +104,43 @@ const ReviewEssaysPage = () => {
   const [allCopy, setAllCopy] = useState([]);
 
   useEffect(() => {
+    getAllEssays()
     setCateredCopy(sampleCateredEssays); //essays retrieved from the server
-    setAllCopy(sampleAllTopicsEssays);
+
   }, []);
 
   const { userType } = useContext(AuthContext);
+
+  function getAllEssays(){
+    const url = `${API_HOST}/api/essays`;
+    console.log(url)
+    fetch(url)
+        .then(res => {
+            if (res.status === 200) {
+                return res.json();
+            } else {
+                alert("Could not get all essays");
+            }
+        })
+        .then(json => {
+            const allEssaysJson = json;
+            console.log(allEssaysJson)
+            setAllCopy(allEssaysJson)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+
+  }
+
+  function setUpComponents(essaysJson){
+
+
+
+
+  }
+
   const removeRequest = (requestID) => {
     // a server call will be done first to remove the request from the server
     //then dom will be manipulated
