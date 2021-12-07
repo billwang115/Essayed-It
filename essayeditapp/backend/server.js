@@ -3,7 +3,15 @@
 const log = console.log;
 
 /*Server environment setup*/
+// To run in development mode, run normally: "node server.js"
+// To run in development with the test user logged in the backend, run: "SET TEST_USER_ON=true node server.js" (if on command prompt) OR "$env:TEST_USER_ON="true"; node server.js" (if on Powershell) OR "TEST_USER_ON=true node server.js" (If on Linux)
+// To run in production mode, run in terminal: "NODE_ENV=production node server.js" (if on linux) OR "SET NODE_ENV=production node server.js" (if on command prompt) OR "$env:NODE_ENV="production"; node server.js" (if on Powershell)
 const env = process.env.NODE_ENV; // read the environment variable (will be 'production' in production mode)
+const USE_TEST_USER = env !== "production" && process.env.TEST_USER_ON; // option to turn on the test user.
+const TEST_USER_ID = "61aee4677169c23109368fc7"; // the id of our test user (you will have to replace it with a test user that you made). can also put this into a separate configutation file
+const TEST_USER_USERNAME = "user";
+const TEST_ISADMIN = false;
+
 const path = require("path");
 
 // Express
@@ -27,6 +35,7 @@ const { Member } = require("./models/member");
 
 //manage user sessions
 const session = require("express-session");
+const MongoStore = require("connect-mongo"); // to store session information on the database in production
 
 /*** Helper functions **************************************/
 const isMongoError = (error) => {
@@ -50,8 +59,8 @@ const mongoChecker = (req, res, next) => {
 };
 
 const authenticate = async (req, res, next) => {
-  if (env !== "production") {
-    return Promise.resolve();
+  if (env !== "production" && USE_TEST_USER) {
+    req.session.user = TEST_USER_ID; // test user on development. (remember to run `TEST_USER_ON=true node server.js` if you want to use this user.)
   }
 
   if (req.session.user) {
@@ -82,6 +91,15 @@ app.use(
       expires: 60000,
       httpOnly: true,
     },
+    // store the sessions on the database in production
+    store:
+      env === "production"
+        ? MongoStore.create({
+            mongoUrl:
+              process.env.MONGODB_URI ||
+              "mongodb://localhost:27017/EssayedItAPI",
+          })
+        : null,
   })
 );
 
@@ -118,6 +136,18 @@ app.get("/users/logout", (req, res) => {
 
 // A route to check if a user is logged in on the session
 app.get("/users/check-session", (req, res) => {
+  if (env !== "production" && USE_TEST_USER) {
+    req.session.user = TEST_USER_ID;
+    req.session.username = TEST_USER_USERNAME;
+    req.session.isAdmin = TEST_ISADMIN;
+    res.send({
+      currentUser: TEST_USER_USERNAME,
+      isAdmin: TEST_ISADMIN,
+      currentUserID: TEST_USER_ID,
+    });
+    return;
+  }
+
   if (req.session.user) {
     res.send({
       currentUser: req.session.username,
@@ -180,7 +210,7 @@ app.post("/api/users", mongoChecker, async (req, res) => {
 });
 
 //route for getting member info
-app.get("/api/users/:id", mongoChecker, async (req, res) => {
+app.get("/api/users/:id", mongoChecker, authenticate, async (req, res) => {
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
@@ -213,7 +243,7 @@ app.post("/api/users", mongoChecker, authenticate, async () => {
 });*/
 
 // POST /essays, created when user submits their essay to the site
-app.post("/api/essays", mongoChecker, async (req, res) => {
+app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
   const essay = new Essay({
     title: req.body.title,
     body: req.body.body,
@@ -233,7 +263,7 @@ app.post("/api/essays", mongoChecker, async (req, res) => {
 });
 
 // POST /essays/id, posting a new edit to an essay, will have to loop through
-app.post("/api/essays/:id", mongoChecker, async (req, res) => {
+app.post("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
   const id = req.params.id;
   if (!ObjectId.isValid(id)) {
     res.status(404).send();
@@ -260,7 +290,7 @@ app.post("/api/essays/:id", mongoChecker, async (req, res) => {
 });
 
 //Request to GET one specific essay
-app.get("/api/essays/:id", mongoChecker, async (req, res) => {
+app.get("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
   const id = req.params.id;
   console.log(id);
   if (!ObjectId.isValid(id)) {
