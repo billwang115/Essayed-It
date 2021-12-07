@@ -8,9 +8,10 @@ const log = console.log;
 // To run in production mode, run in terminal: "NODE_ENV=production node server.js" (if on linux) OR "SET NODE_ENV=production node server.js" (if on command prompt) OR "$env:NODE_ENV="production"; node server.js" (if on Powershell)
 const env = process.env.NODE_ENV; // read the environment variable (will be 'production' in production mode)
 const USE_TEST_USER = env !== "production" && process.env.TEST_USER_ON; // option to turn on the test user.
-const TEST_USER_ID = "61afb20c09866fe9bafda05e"; // the id of our test user (you will have to replace it with a test user that you made). can also put this into a separate configutation file
-const TEST_USER_USERNAME = "ethan";
-const TEST_ISADMIN = false;
+const data = require("./tests/testUsers.json");
+const TEST_USER_ID = data.TEST_USER_ID; // the id of our test user (you will have to replace it with a test user that you made). can also put this into a separate configutation file
+const TEST_USER_USERNAME = data.TEST_USER_USERNAME;
+const TEST_ISADMIN = data.TEST_ISADMIN;
 
 const path = require("path");
 
@@ -277,7 +278,7 @@ app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
     type: req.body.type,
     numCredits: req.body.numCredits,
     numWords: req.body.numWords,
-    status: req.body.status
+    status: req.body.status,
   });
   try {
     const result = await essay.save();
