@@ -1,6 +1,8 @@
 # team31
 NOTE: there may be changes after the due date, will only relate to the deployment and not the base code, because of the issues with heroku services.
 
+Link to deployed webapp: https://quiet-depths-20076.herokuapp.com/
+
 
 ---------------------------------------READ ME FOR PHASE 2 (PHASE 1 README BELOW)------------------------------------------------
 Note: Although we are missing a group member, we are only missing some of the functionality of the admin controls and user profile page. Not everything in those areas connect to the backend.
