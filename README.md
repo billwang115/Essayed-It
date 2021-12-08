@@ -6,6 +6,7 @@ NOTE: there may be changes after the due date, will only relate to the deploymen
 Note: Although we are missing a group member, we are only missing some of the functionality of the admin controls and user profile page. Not everything in those areas connect to the backend.
 No new libraries that weren't shown in lecture.
 
+No edits or changes to the functionality from phase1, we just further implemented the backend of the existing features from phase 1.
 
 LOCAL Running Instructions:
 1) Run npm install in both /backend and /frontend directories.
@@ -95,7 +96,6 @@ Here you can view statistics about your profile, or make any edits to your profi
 
 REQUEST REVIEW:
 Need to get here from the header. Input all information about the essay you would like to request for a review, and submit.
-
 
 YOUR REQUESTS:
 Also accessible from the header, this allows you to see the progress of essay's you've requested to be reviewed.
