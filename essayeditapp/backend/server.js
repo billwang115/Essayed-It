@@ -250,6 +250,7 @@ app.post(
       if (!member) {
         res.status(404).send("Resource not found");
       } else {
+        member.credits = member.credits - req.body.numCredits
         member.essays.push(req.body);
         const result = await member.save();
         res.send(result);

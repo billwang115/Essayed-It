@@ -28,10 +28,11 @@ function ReviewRequest() {
   const [topicInput, setTopicInput] = useState(null);
   const [typeInput, setTypeInput] = useState(null);
   const [readyToSubmit, setReadyToSubmit] = useState(false);
-  const [memberObject, setMemberObject] = useState([])
+  const [memberObject, setMemberObject] = useState(null)
   //This function will handle the server call to make sure the right profile is loaded in to be prepared to send in the input information to the server
-  function publishResponse(){
+  function publishResponse(user){
 
+  console.log(user)
 
    console.log("POSTing to database..")
    console.log(`${API_HOST}/api/essays`)
@@ -39,6 +40,10 @@ function ReviewRequest() {
    const url = `${API_HOST}/api/essays`;
    let price_int = 0;
    priceInput == "regular" ? price_int = 1: priceInput == "plus" ? price_int = 3: price_int = 5
+   if (user.credits < price_int){
+     alert("Not enough credits. Please select another option or edit an essay to gain credits.")
+     return
+   }
    const numWordsCalc = essayPasteInput.trim().split(/\s+/).length;
    const json_set = { title: titleInput, body: essayPasteInput,
                          description: descriptionInput, numCredits: price_int,
@@ -70,6 +75,27 @@ function ReviewRequest() {
        .catch(error => {
            console.log(error);
        });
+
+  }
+
+  function getMemberData(){
+    const url = `${API_HOST}/api/users/${currentUser}`;
+    console.log(url)
+    fetch(url)
+        .then(res => {
+            if (res.status === 200) {
+                return res.json();
+            } else {
+                alert("Could not get User");
+            }
+        })
+        .then(user => {
+            setMemberObject(user)
+            publishResponse(user)
+        })
+        .catch(error => {
+            console.log(error);
+        });
 
   }
   function addToMemberList(essayJSON){
@@ -164,7 +190,7 @@ function ReviewRequest() {
             <input value = {priceInput} onClick= {e => onChangeEvent(e.target.id, setpriceInput)} onInput = {e => onChangeEvent(e.target.id, setpriceInput)}  id = "premium" type="radio" name="radiogroup1"/>
             <label for = "premium"> Premium <br/> ⯁5 </label>
           </div>
-            {readyToSubmit ? <NavLink onClick={publishResponse} className = {styles.NavLinkStyle} to="/reviewEssays"><button className = {styles.SubmitButton}>Submit for Review</button></NavLink>
+            {readyToSubmit ? <NavLink onClick={getMemberData} className = {styles.NavLinkStyle} to="/reviewEssays"><button className = {styles.SubmitButton}>Submit for Review</button></NavLink>
            :<button className = {styles.SubmitButton}> Fill out all required fields to submit</button>}
         </div>
       </div>

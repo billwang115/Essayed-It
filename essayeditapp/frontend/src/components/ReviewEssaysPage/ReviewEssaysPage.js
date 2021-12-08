@@ -103,7 +103,7 @@ const ReviewEssaysPage = () => {
   const [allCopy, setAllCopy] = useState([]);
   const[numCredits, setNumCredits] = useState(0); //this value will be retrieved from a server call
   const[currentUserRating, setCurrentUserRating] = useState(0);  //this value will be retrieved from a server call
-  
+  const[member, setMember] = useState(null)
 
   useEffect(() => {
     getAllEssays()
@@ -131,6 +131,7 @@ const ReviewEssaysPage = () => {
         .then(user => {
             setCurrentUserRating(user.score)
             setNumCredits(user.credits)
+            setMember(user)
         })
         .catch(error => {
             console.log(error);
@@ -151,23 +152,29 @@ const ReviewEssaysPage = () => {
         .then(json => {
             const allEssaysJson = json;
             console.log(allEssaysJson)
-            setAllCopy(removeMyEssays(allEssaysJson))
+            removeMyEssays(allEssaysJson)
         })
         .catch(error => {
             console.log(error);
         });
   }
 
+
   function removeMyEssays(essaysJson){
     //Also removes essays that have already been completed
     const displayList = []
+    const displayListCurated = []
     for(let i = 0; i < essaysJson.length; i++) {
       console.log(essaysJson[i].status)
-    if(essaysJson[i].author != currentUser && essaysJson[i].status != "COMPLETED"){
+    if(essaysJson[i].author != currentUser && essaysJson[i].status == "PENDING"){
       displayList.push(essaysJson[i])
+      if(member.topics.includes(essaysJson[i].topic)) {
+        displayListCurated.push(essaysJson[i])
+      }
     }
   }
-  return displayList
+  setAllCopy(displayList)
+  setCateredCopy(displayListCurated)
 }
   const removeRequest = (requestID) => {
     // a server call will be done first to remove the request from the server
