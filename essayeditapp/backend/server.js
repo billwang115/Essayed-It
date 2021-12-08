@@ -377,7 +377,13 @@ app.put("/api/essays/:id", mongoChecker, authenticate, async (req, res) => {
 
 //Request to GET all essays
 app.get("/api/essays", mongoChecker, authenticate, async (req, res) => {
+  let filter = req.body.filterString;
+  if (filter === undefined) {
+    filter = "";
+  }
+
   try {
+    //const essays = await Essay.find({ $text: { $search: filter } });
     const essays = await Essay.find();
     if (!essays) {
       res.status(404).send("Resource not found");
