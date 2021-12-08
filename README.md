@@ -1,4 +1,7 @@
 # team31
+NOTE: there may be changes after the due date, will only relate to the deployment and not the base code, because of the issues with heroku services.
+
+
 ---------------------------------------READ ME FOR PHASE 2 (PHASE 1 README BELOW)------------------------------------------------
 Note: Although we are missing a group member, we are only missing some of the functionality of the admin controls and user profile page. Not everything in those areas connect to the backend.
 No new libraries that weren't shown in lecture.
@@ -21,7 +24,7 @@ inside the file. Replace the ID (get this from the _id in the user model in comp
 7) Navigate through the website as described below in the phase 1 description.
 
 
-Online deployment:
+Online deployment: LINK WILL GO HERE WHEN WE DEPLOY, DUE TO ISSUES WITH HEROKU SERVERS AND THE ALLOWED EXTENSION FOR DEPLOYMENT
 
 Sample user has "user" and "user" for username and password.
 Sample admin has "admin" and "admin" for username and password.
