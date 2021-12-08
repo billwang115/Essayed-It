@@ -108,8 +108,6 @@ const ReviewEssaysPage = () => {
   useEffect(() => {
     getAllEssays()
     getUserScoreandCredits()
-    setCateredCopy(sampleCateredEssays); //essays retrieved from the server
-
   }, []);
 
   const { userType } = useContext(AuthContext);

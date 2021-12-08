@@ -4,6 +4,7 @@ import {NavLink} from "react-router-dom";
 import React, { useState } from 'react';
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
+import { useNavigate } from "react-router";
 
 import ENV from '../../config.js'
 const API_HOST = ENV.api_host
@@ -29,6 +30,7 @@ function ReviewRequest() {
   const [typeInput, setTypeInput] = useState(null);
   const [readyToSubmit, setReadyToSubmit] = useState(false);
   const [memberObject, setMemberObject] = useState(null)
+  const Navigate = useNavigate();
   //This function will handle the server call to make sure the right profile is loaded in to be prepared to send in the input information to the server
   function publishResponse(user){
 
@@ -115,6 +117,8 @@ function ReviewRequest() {
         .then(function (res) {
             if (res.status === 200) {
                 console.log("Successfully added essay to member list")
+                //Here is the final step, so we can redirect the user.
+                Navigate("/reviewEssays")
                 }
             else {
                 console.log("Failed to add essay to member list")
@@ -190,7 +194,7 @@ function ReviewRequest() {
             <input value = {priceInput} onClick= {e => onChangeEvent(e.target.id, setpriceInput)} onInput = {e => onChangeEvent(e.target.id, setpriceInput)}  id = "premium" type="radio" name="radiogroup1"/>
             <label for = "premium"> Premium <br/> ⯁5 </label>
           </div>
-            {readyToSubmit ? <NavLink onClick={getMemberData} className = {styles.NavLinkStyle} to="/reviewEssays"><button className = {styles.SubmitButton}>Submit for Review</button></NavLink>
+            {readyToSubmit ? <button onClick={getMemberData} className = {styles.SubmitButton}>Submit for Review</button>
            :<button className = {styles.SubmitButton}> Fill out all required fields to submit</button>}
         </div>
       </div>
