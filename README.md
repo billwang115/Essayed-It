@@ -5,7 +5,7 @@ Link to deployed webapp: https://quiet-depths-20076.herokuapp.com/
 
 
 ---------------------------------------READ ME FOR PHASE 2 (PHASE 1 README BELOW)------------------------------------------------
-Note: Although we are missing a group member, we are only missing some of the functionality of the admin controls and user profile page. Not everything in those areas connect to the backend.
+Note: Although we are missing a group member, we are only missing some of the functionality of the admin controls and user profile page, as well as some visual display on the dashboard. Not everything in those areas connect to the backend.
 No new libraries that weren't shown in lecture.
 
 No edits or changes to the functionality from phase1, we just further implemented the backend of the existing features from phase 1.
@@ -27,12 +27,14 @@ inside the file. Replace the ID (get this from the _id in the user model in comp
 7) Navigate through the website as described below in the phase 1 description.
 
 
-Online deployment: LINK WILL GO HERE WHEN WE DEPLOY, DUE TO ISSUES WITH HEROKU SERVERS AND THE ALLOWED EXTENSION FOR DEPLOYMENT
+ONLINE DEPLOYMENT SECTION WAS ONLY PART UPDATED AFTER DUE DATE (allowed by extra day for deployment because of server issues)
+Online deployment: https://quiet-depths-20076.herokuapp.com/
 
 Sample user has "user" and "user" for username and password.
 Sample admin has "admin" and "admin" for username and password.
+user1, user2, and user3 are also examples of other users in the database that can be logged into with "user1" as the username and password, same with the other 2.
 Additional users can be created using the normal registration on the main page.
-
+Again, the specific features and use cases for both user and admin are detailed below under the phase 1 readme.
 
 Routes in server.js:
 
