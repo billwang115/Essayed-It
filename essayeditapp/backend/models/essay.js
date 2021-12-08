@@ -20,13 +20,5 @@ const EssaySchema = new mongoose.Schema({
   status: { type: String },
 });
 
-EssaySchema.index({
-  title: "text",
-  description: "text",
-  topic: "text",
-  type: "text",
-  author: "text",
-});
-
 const Essay = mongoose.model("Essay", EssaySchema);
 module.exports = { Essay };
