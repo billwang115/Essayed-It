@@ -240,7 +240,6 @@ app.get(
 //POST new essay to list of essays after getting member by username
 app.post("/api/users/:username", mongoChecker, authenticate, async (req, res) => {
   const username = req.params.username;
-
   try {
     const member = await Member.findByUsername(username);
     if (!member) {
@@ -260,6 +259,41 @@ app.post("/api/users/:username", mongoChecker, authenticate, async (req, res) =>
   }
 });
 
+//Add a new essay to the editors essay list
+app.put("/api/users/:username", mongoChecker, authenticate, async (req, res) => {
+  const username = req.params.username;
+  try {
+    const member = await Member.findByUsername(username);
+    if (!member) {
+      res.status(404).send("Resource not found");
+    } else {
+      member.essaysReviewed.push(req.body);
+      member.credits = member.credits + req.body.numCredits;
+      let sum = 0;
+      let count = 0;
+      for (let i = 0; i < member.essaysReviewed.length; i++){
+        if (member.essaysReviewed[i].edit_rating != null){
+          sum += member.essaysReviewed[i].edit_rating;
+          count += 1;
+        }
+      }
+      if (sum == 0){
+        member.score = 3
+      } else {
+        member.score = Math.round((sum/count) * 100) / 100
+      }
+      const result = await member.save();
+      res.send(result);
+    }
+  } catch (error) {
+    log(error);
+    if (isMongoError(error)) {
+      res.status(500).send("Internal server error");
+    } else {
+      res.status(400).send("Bad Request");
+    }
+  }
+});
 /*//route for changing your topics of interest
 app.post("/api/users", mongoChecker, authenticate, async () => {
   const id = req.user._id;

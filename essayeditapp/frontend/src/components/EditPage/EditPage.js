@@ -138,7 +138,6 @@ function EditPage() {
   }
 
   function updateEssayEditor(){
-
        console.log("Updating essay to have new editor")
        const url = `${API_HOST}/api/essays/${location.state.essayID}`;
        const json_set = { editor: currentUser, status: "COMPLETED"}
@@ -155,6 +154,7 @@ function EditPage() {
            .then(function (res) {
                if (res.status === 200) {
                    console.log("Successfully added editor")
+                   addEssayToEditor()
                 }
                else {
                    console.log("Failed to add editor")
@@ -166,6 +166,39 @@ function EditPage() {
            });
 
   }
+
+  function addEssayToEditor(){
+    const url = `${API_HOST}/api/users/${currentUser}`;
+    const json_set = essayData;
+    const request = new Request(url, {
+        method: "put",
+        body: JSON.stringify(json_set),
+        headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+        }
+    });
+
+    fetch(request)
+        .then(function (res) {
+            if (res.status === 200) {
+                console.log("Successfully added essay to editor List")
+             }
+            else {
+                console.log("Failed to add essay to editor List")
+
+               }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+
+
+  }
+
+
+
   function addNewEdit() {
     setCurrentlyEditing(true);
     setToggleAddEdit(true);

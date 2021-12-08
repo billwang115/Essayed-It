@@ -9,8 +9,7 @@ import ENV from '../../config.js'
 const API_HOST = ENV.api_host
 
 
-const numCredits = 15; //this value will be retrieved from a server call
-const currentUserRating = 4; //this value will be retrieved from a server call
+
 let sampleCateredEssays = [
   // this information will be retrived from a server call. Only a select number of them will be given by the server (to reduce lag and since only a few are needed)
   // these essays are catered to the current users favourite topic
@@ -102,15 +101,42 @@ let sampleAllTopicsEssays = [
 const ReviewEssaysPage = () => {
   const [cateredCopy, setCateredCopy] = useState([]);
   const [allCopy, setAllCopy] = useState([]);
+  const[numCredits, setNumCredits] = useState(0); //this value will be retrieved from a server call
+  const[currentUserRating, setCurrentUserRating] = useState(0);  //this value will be retrieved from a server call
+  
 
   useEffect(() => {
     getAllEssays()
+    getUserScoreandCredits()
     setCateredCopy(sampleCateredEssays); //essays retrieved from the server
 
   }, []);
 
   const { userType } = useContext(AuthContext);
   const {currentUser} = useContext(AuthContext);
+
+
+
+  function getUserScoreandCredits(){
+    const url = `${API_HOST}/api/users/${currentUser}`;
+    console.log(url)
+    fetch(url)
+        .then(res => {
+            if (res.status === 200) {
+                return res.json();
+            } else {
+                alert("Could not get User");
+            }
+        })
+        .then(user => {
+            setCurrentUserRating(user.score)
+            setNumCredits(user.credits)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+  }
+
   function getAllEssays(){
     const url = `${API_HOST}/api/essays`;
     console.log(url)
