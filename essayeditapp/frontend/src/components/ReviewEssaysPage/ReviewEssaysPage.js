@@ -103,7 +103,7 @@ const ReviewEssaysPage = () => {
   const [allCopy, setAllCopy] = useState([]);
   const[numCredits, setNumCredits] = useState(0); //this value will be retrieved from a server call
   const[currentUserRating, setCurrentUserRating] = useState(0);  //this value will be retrieved from a server call
-  const[member, setMember] = useState(null)
+  const[member, setMember] = useState({})
 
   useEffect(() => {
     getAllEssays()
@@ -166,7 +166,7 @@ const ReviewEssaysPage = () => {
       console.log(essaysJson[i].status)
     if(essaysJson[i].author != currentUser && essaysJson[i].status == "PENDING"){
       displayList.push(essaysJson[i])
-      if(member.topics.includes(essaysJson[i].topic)) {
+      if(member.topics && member.topics.includes(essaysJson[i].topic)) {
         displayListCurated.push(essaysJson[i])
       }
     }

@@ -167,7 +167,7 @@ app.post("/api/users", mongoChecker, async (req, res) => {
     username: req.body.username,
     essays: [],
     essaysReviewed: [],
-    score: 0,
+    score: 3,
     topics: [],
     credits: 1,
   });

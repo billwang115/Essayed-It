@@ -1,9 +1,11 @@
 import DefaultProfileImage from "../../assets/default_profile.png";
 import styles from "./ProfilePage.module.css";
 import CreditIcon from "../../assets/credit_icon.svg";
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import searchIcon from "../../assets/searchIcon.png";
 import { AuthContext } from "../../contexts/AuthProvider";
+
+
 import ENV from "../../config.js";
 const API_HOST = ENV.api_host;
 
@@ -27,18 +29,50 @@ let sampleUsers = [
 const ProfilePage = () => {
   const { userType, currentUser } = useContext(AuthContext);
 
-  const [username, setUsername] = useState("Kailas_Moon2000");
+  const [username, setUsername] = useState();
   const [usernameField, setUsernameField] = useState("");
 
   const [allUsers, setAllUsers] = useState(sampleUsers);
 
-  const [topic, setTopic] = useState("Indigenous Studies");
+  const [topic, setTopic] = useState();
   const [topicField, setTopicField] = useState("");
 
   const [profileImageURL, setProfileImageURL] = useState(DefaultProfileImage);
   const [profileImageField, setProfileImageField] = useState("");
 
   const [newUsernames, setNewUsernames] = useState(["", "", ""]);
+  const [member, setMember] = useState(null)
+
+
+
+  function profileDataSetup(){
+    const url = `${API_HOST}/api/users/${currentUser}`;
+    console.log(url)
+    fetch(url)
+        .then(res => {
+            if (res.status === 200) {
+                return res.json();
+            } else {
+                alert("Could not get User");
+            }
+        })
+        .then(user => {
+
+            setUsername(user.username)
+            setTopic(user.topics[0])
+            setCredits(user.credits)
+            setScore(user.score)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+
+  }
+
+  useEffect(() => {
+    profileDataSetup()
+  }, []);
 
   const adminSetUsername = (index) => {
     let newAllUsers = [...allUsers];
@@ -103,8 +137,8 @@ const ProfilePage = () => {
   };
 
   const [searchInput, setSearchInput] = useState("");
-  const [credits, setCredits] = useState(18);
-
+  const [credits, setCredits] = useState();
+  const [score, setScore] = useState(0);
   return (
     <div id={styles.root}>
       <div id={styles.profileImageContainer}>
@@ -147,23 +181,23 @@ const ProfilePage = () => {
         <table id={styles.statsTable}>
           <tr>
             <td>Reviews completed</td>
-            <td>10</td>
+            <td>N/A</td>
           </tr>
           <tr>
             <td>Total Requests</td>
-            <td>18</td>
+            <td>N/A</td>
           </tr>
           <tr>
             <td>Total credits earned</td>
-            <td>87</td>
+            <td>N/A</td>
           </tr>
           <tr>
             <td>Average cost per review</td>
-            <td>8</td>
+            <td>N/A</td>
           </tr>
           <tr>
             <td>Average score from reviewers</td>
-            <td>4.6</td>
+            <td>{score}</td>
           </tr>
         </table>
       </div>
