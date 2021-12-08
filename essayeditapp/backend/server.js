@@ -301,7 +301,7 @@ app.put("/api/users/:username", mongoChecker, authenticate, async (req, res) => 
     }
   }
 });
-/*//route for changing your topics of interest
+//route for changing your topics of interest
 app.post("/api/users", mongoChecker, authenticate, async () => {
   const id = req.user._id;
   const topicsOfInterest = req.body.essay;
@@ -311,7 +311,7 @@ app.post("/api/users", mongoChecker, authenticate, async () => {
     log(error);
     res.status(500).send("Internal Server Error");
   }
-); */
+});
 
 // POST /essays, created when user submits their essay to the site
 app.post("/api/essays", mongoChecker, authenticate, async (req, res) => {
