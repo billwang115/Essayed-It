@@ -1,12 +1,11 @@
-import Request from "./Request";
+import EssayRequest from "./Request";
 import styles from "./YourRequests.module.css";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
 
-
-import ENV from '../../config.js'
-const API_HOST = ENV.api_host
+import ENV from "../../config.js";
+const API_HOST = ENV.api_host;
 
 const EssayPlaceholder =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tristique eget mauris et bibendum. Nullam ut mollis nunc, sit amet interdum mi. Donec faucibus magna vel ipsum volutpat dapibus eleifend interdum diam. Praesent posuere erat elit, vitae congue diam tempor at. Aliquam dictum, dolor vel placerat ultrices, ex neque tempus odio, vel egestas orci nunc eu ex. Curabitur eget blandit lectus. Maecenas at leo congue, bibendum leo sed, aliquet velit. Duis finibus quis risus quis aliquam. Etiam a nisi ut nibh tempus facilisis vitae non metus. Praesent ultricies nisi eu sagittis consequat. Phasellus et tortor ut augue viverra mattis sed vitae mi. Donec lobortis nunc eu purus sodales posuere. Quisque scelerisque ante arcu, sed auctor odio aliquam nec. Nam pretium quam ex. Fusce vitae bibendum metus, in maximus sem. Phasellus et lacus sed mauris semper malesuada non in ex.";
@@ -54,81 +53,82 @@ const sampleEssayRequests = [
   },
 ];
 
-
 const YourRequests = () => {
   const [essayRequests, setEssayRequests] = useState([]);
 
   const { userType } = useContext(AuthContext);
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext);
 
   useEffect(() => {
-    getAllEssays()
+    getAllEssays();
   }, []);
 
-  function getAllEssays(){
+  function getAllEssays() {
     const url = `${API_HOST}/api/essays`;
-    console.log(url)
+    console.log(url);
     fetch(url)
-        .then(res => {
-            if (res.status === 200) {
-                return res.json();
-            } else {
-                alert("Could not get all essays");
-            }
-        })
-        .then(json => {
-            const allEssaysJson = json;
-            console.log(allEssaysJson)
-            setEssayRequests(removeMyEssays(allEssaysJson))
-        })
-        .catch(error => {
-            console.log(error);
-        });
-  }
-
-  function removeMyEssays(essaysJson){
-    //Also removes essays that have already been completed
-    const displayList = []
-    for(let i = 0; i < essaysJson.length; i++) {
-      console.log(essaysJson[i].status)
-    if(essaysJson[i].author == currentUser && essaysJson[i].status != "CANCELLED"){
-      displayList.push(essaysJson[i])
-    }
-  }
-  return displayList
-}
-
-
-  function setEssayCancelled(essay){
-    const url = `${API_HOST}/api/essays/${essay._id}`;
-    const json_set = { status: "CANCELLED"}
-    const request = new Request(url, {
-        method: "put",
-        body: JSON.stringify(json_set),
-        headers: {
-            Accept: "application/json, text/plain, */*",
-            "Content-Type": "application/json"
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert("Could not get all essays");
         }
+      })
+      .then((json) => {
+        const allEssaysJson = json;
+        console.log(allEssaysJson);
+        setEssayRequests(removeMyEssays(allEssaysJson));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  function removeMyEssays(essaysJson) {
+    //Also removes essays that have already been completed
+    const displayList = [];
+    for (let i = 0; i < essaysJson.length; i++) {
+      console.log(essaysJson[i].status);
+      if (
+        essaysJson[i].author == currentUser &&
+        essaysJson[i].status != "CANCELLED"
+      ) {
+        displayList.push(essaysJson[i]);
+      }
+    }
+    return displayList;
+  }
+
+  function setEssayCancelled(essay) {
+    const url = `${API_HOST}/api/essays/${essay._id}`;
+    const json_set = { status: "CANCELLED" };
+    const request = new Request(url, {
+      method: "put",
+      body: JSON.stringify(json_set),
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
     });
 
     fetch(request)
-        .then(function (res) {
-            if (res.status === 200) {
-                console.log("Successfully cancelled")
-             }
-            else {
-                console.log("Failed to cancelled")
-
-               }
-        })
-        .catch(error => {
-            console.log(error);
-        });
+      .then(function (res) {
+        if (res.status === 200) {
+          console.log("Successfully cancelled");
+          let filteredArray = essayRequests.filter((item) => item !== essay);
+          setEssayRequests(filteredArray);
+        } else {
+          console.log("Failed to cancelled");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   const cancelRequest = (index) => {
     console.log(index);
-    setEssayCancelled(essayRequests[index])
+    setEssayCancelled(essayRequests[index]);
     // let newRequests = [...essayRequests];
     // newRequests.splice(index, 1);
     // setEssayRequests(newRequests);
@@ -137,7 +137,7 @@ const YourRequests = () => {
     <div id={styles.container}>
       <span className={styles.header}> Your Requests: </span>
       {essayRequests.map((request, i) => (
-        <Request
+        <EssayRequest
           key={i}
           index={i}
           essay={request}
