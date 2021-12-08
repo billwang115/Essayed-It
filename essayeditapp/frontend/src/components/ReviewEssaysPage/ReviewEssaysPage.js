@@ -9,8 +9,7 @@ import ENV from '../../config.js'
 const API_HOST = ENV.api_host
 
 
-const numCredits = 15; //this value will be retrieved from a server call
-const currentUserRating = 4; //this value will be retrieved from a server call
+
 let sampleCateredEssays = [
   // this information will be retrived from a server call. Only a select number of them will be given by the server (to reduce lag and since only a few are needed)
   // these essays are catered to the current users favourite topic
@@ -102,15 +101,41 @@ let sampleAllTopicsEssays = [
 const ReviewEssaysPage = () => {
   const [cateredCopy, setCateredCopy] = useState([]);
   const [allCopy, setAllCopy] = useState([]);
+  const[numCredits, setNumCredits] = useState(0); //this value will be retrieved from a server call
+  const[currentUserRating, setCurrentUserRating] = useState(0);  //this value will be retrieved from a server call
+  const[member, setMember] = useState(null)
 
   useEffect(() => {
     getAllEssays()
-    setCateredCopy(sampleCateredEssays); //essays retrieved from the server
-
+    getUserScoreandCredits()
   }, []);
 
   const { userType } = useContext(AuthContext);
   const {currentUser} = useContext(AuthContext);
+
+
+
+  function getUserScoreandCredits(){
+    const url = `${API_HOST}/api/users/${currentUser}`;
+    console.log(url)
+    fetch(url)
+        .then(res => {
+            if (res.status === 200) {
+                return res.json();
+            } else {
+                alert("Could not get User");
+            }
+        })
+        .then(user => {
+            setCurrentUserRating(user.score)
+            setNumCredits(user.credits)
+            setMember(user)
+        })
+        .catch(error => {
+            console.log(error);
+        });
+  }
+
   function getAllEssays(){
     const url = `${API_HOST}/api/essays`;
     console.log(url)
@@ -125,23 +150,29 @@ const ReviewEssaysPage = () => {
         .then(json => {
             const allEssaysJson = json;
             console.log(allEssaysJson)
-            setAllCopy(removeMyEssays(allEssaysJson))
+            removeMyEssays(allEssaysJson)
         })
         .catch(error => {
             console.log(error);
         });
   }
 
+
   function removeMyEssays(essaysJson){
     //Also removes essays that have already been completed
     const displayList = []
+    const displayListCurated = []
     for(let i = 0; i < essaysJson.length; i++) {
       console.log(essaysJson[i].status)
-    if(essaysJson[i].author != currentUser && essaysJson[i].status != "COMPLETED"){
+    if(essaysJson[i].author != currentUser && essaysJson[i].status == "PENDING"){
       displayList.push(essaysJson[i])
+      if(member.topics.includes(essaysJson[i].topic)) {
+        displayListCurated.push(essaysJson[i])
+      }
     }
   }
-  return displayList
+  setAllCopy(displayList)
+  setCateredCopy(displayListCurated)
 }
   const removeRequest = (requestID) => {
     // a server call will be done first to remove the request from the server

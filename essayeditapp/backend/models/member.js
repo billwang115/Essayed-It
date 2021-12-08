@@ -5,7 +5,7 @@ const MemberSchema = new mongoose.Schema({
   username: { type: String, required: true },
   essays: { type: Array, required: true },
   essaysReviewed: { type: Array, required: true },
-  score: { type: Number, required: true },
+  score: { type: Number, required: true, default: 3},
   topics: { type: Array, required: true },
   credits: { type: Number, required: true },
 });

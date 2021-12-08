@@ -6,6 +6,7 @@ import {NavLink} from "react-router-dom";
 import {useLocation} from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
+import { useNavigate } from "react-router";
 
 import ENV from '../../config.js'
 const API_HOST = ENV.api_host
@@ -39,7 +40,7 @@ function EditPage() {
   const [newInputBool, setNewInputBool] = useState(true);
   const [changingEditObject, setChangingEditObject] = useState(null);
   const [essayData, setEssayData] = useState(null);
-
+  const Navigate = useNavigate();
   const highlightColors = [
     "#FDFD6A",
     "#97FD6A",
@@ -138,7 +139,6 @@ function EditPage() {
   }
 
   function updateEssayEditor(){
-
        console.log("Updating essay to have new editor")
        const url = `${API_HOST}/api/essays/${location.state.essayID}`;
        const json_set = { editor: currentUser, status: "COMPLETED"}
@@ -155,6 +155,7 @@ function EditPage() {
            .then(function (res) {
                if (res.status === 200) {
                    console.log("Successfully added editor")
+                   addEssayToEditor()
                 }
                else {
                    console.log("Failed to add editor")
@@ -166,6 +167,41 @@ function EditPage() {
            });
 
   }
+
+  function addEssayToEditor(){
+    const url = `${API_HOST}/api/users/${currentUser}`;
+    const json_set = essayData;
+    const request = new Request(url, {
+        method: "put",
+        body: JSON.stringify(json_set),
+        headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json"
+        }
+    });
+
+    fetch(request)
+        .then(function (res) {
+            if (res.status === 200) {
+                console.log("Successfully added essay to editor List")
+                //This is the final step, so we redirect Here
+                Navigate("/reviewEssays")
+             }
+            else {
+                console.log("Failed to add essay to editor List")
+
+               }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+
+
+
+  }
+
+
+
   function addNewEdit() {
     setCurrentlyEditing(true);
     setToggleAddEdit(true);
@@ -308,9 +344,7 @@ function EditPage() {
         <EditsList editsArray={editsArray} removeEditCallback={removeEdit} changeEditCallback={changeEdit}/> {
           editsArray.length > 0
             ? <div>
-                <NavLink onClick ={saveDBChanges} className = {styles.NavLinkStyle} to="/reviewEssays">
-                  <button className={styles.SubmitButton}>Submit Edits</button>
-                </NavLink>
+                  <button onClick ={saveDBChanges} className={styles.SubmitButton}>Submit Edits</button>
               </div>
             : null
         }

@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthProvider";
 import {useLocation} from "react-router-dom";
-
+import { useNavigate } from "react-router";
 import ENV from '../../config.js'
 const API_HOST = ENV.api_host
 
@@ -86,7 +86,7 @@ function ViewEdits() {
   const [newInputBool, setNewInputBool] = useState(true);
   const [changingEditObject, setChangingEditObject] = useState(null);
   const [rating, setRating] = useState(1);
-
+  const Navigate = useNavigate();
   const location = useLocation();
 
   function loadEssayAndEdits(){
@@ -150,6 +150,8 @@ function ViewEdits() {
         .then(function (res) {
             if (res.status === 200) {
                 console.log("Successfully added review")
+                //Here is where the redirect happens
+                Navigate("/yourRequests")
              }
             else {
                 console.log("Failed to add review")
@@ -202,9 +204,7 @@ function ViewEdits() {
           <input onClick= {e => selectRating(e.target.value)} type="radio" id="star1" name="rate" value="1" />
           <label for="star1" title="text">1 star</label>
         </div>
-          <NavLink to="/reviewEssays">
             <button onClick= {submitReview()}className={styles.SubmitButton}>Submit Review</button>
-          </NavLink>
         </div>
       </div>
 
