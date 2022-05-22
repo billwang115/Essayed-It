@@ -1,4 +1,4 @@
-# team31
+# Essayed It
 NOTE: there may be changes after the due date, will only relate to the deployment and not the base code, because of the issues with heroku services.
 
 Link to deployed webapp: https://quiet-depths-20076.herokuapp.com/
